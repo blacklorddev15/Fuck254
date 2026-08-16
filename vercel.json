@@ -1,0 +1,12 @@
+{
+  "crons": [
+    { "path": "/api/cron/auto-renew", "schedule": "0 0 * * *" }
+  ],
+  "rewrites": [
+    { "source": "/api/admin/:path*", "destination": "/api/admin-handler.js" },
+    { "source": "/api/user/:path*", "destination": "/api/user-handler.js" },
+    { "source": "/api/domains/:path*", "destination": "/api/domain-handler.js" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/$1" }
+  ]
+}
