@@ -11,8 +11,8 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background-color: #0b1329;
-      color: #e2e8f0;
+      background-color: #000000;
+      color: #f3f4f6;
       font-family: 'Plus Jakarta Sans', sans-serif;
       padding-bottom: 2rem;
     }
@@ -21,8 +21,8 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem 1.25rem;
-      background: #111c3a;
-      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+      background: #0d0f12;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       position: sticky;
       top: 0;
       z-index: 50;
@@ -33,9 +33,9 @@
       gap: 1rem;
     }
     .menu-btn {
-      background: #1e293b;
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      color: #60a5fa;
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      color: #facc15;
       width: 40px;
       height: 40px;
       border-radius: 10px;
@@ -53,9 +53,9 @@
       color: #ffffff;
     }
     .user-pill {
-      background: #1e293b;
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      color: #60a5fa;
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      color: #facc15;
       padding: 0.5rem 1rem;
       border-radius: 50px;
       font-weight: 600;
@@ -67,30 +67,30 @@
       padding: 0 1rem;
     }
     .welcome-card {
-      background: #111c3a;
-      border: 1px solid rgba(59, 130, 246, 0.2);
+      background: #111318;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       padding: 1.25rem;
       margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
       gap: 1rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
     .welcome-avatar {
       width: 50px;
       height: 50px;
-      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      background: linear-gradient(135deg, #facc15 0%, #ca8a04 100%);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #ffffff;
+      color: #000000;
       font-size: 1.5rem;
     }
     .welcome-info .label {
       font-size: 0.75rem;
-      color: #94a3b8;
+      color: #9ca3af;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
@@ -107,28 +107,28 @@
       margin-bottom: 1.5rem;
     }
     .quick-card {
-      background: #111c3a;
-      border: 1px solid rgba(59, 130, 246, 0.2);
+      background: #111318;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       padding: 1.25rem;
       text-align: center;
       text-decoration: none;
-      color: #e2e8f0;
+      color: #f3f4f6;
       transition: transform 0.2s, border-color 0.2s, background 0.2s;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
     .quick-card:active { transform: scale(0.97); }
-    .quick-card:hover { border-color: rgba(59, 130, 246, 0.6); background: #16254a; }
+    .quick-card:hover { border-color: rgba(250, 204, 21, 0.4); background: #181b24; }
     .quick-icon {
       width: 44px;
       height: 44px;
-      background: #1e293b;
+      background: #161922;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 0.75rem;
-      color: #60a5fa;
+      color: #facc15;
       font-size: 1.2rem;
     }
     .quick-title {
@@ -139,13 +139,13 @@
     }
     .quick-sub {
       font-size: 0.75rem;
-      color: #94a3b8;
+      color: #9ca3af;
     }
     /* Sidebar Drawer */
     .sidebar-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.8);
       backdrop-filter: blur(4px);
       z-index: 100;
       display: none;
@@ -154,8 +154,8 @@
     .sidebar {
       position: fixed;
       top: 0; left: -280px; width: 280px; height: 100%;
-      background: #111c3a;
-      border-right: 1px solid rgba(59, 130, 246, 0.2);
+      background: #111318;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
       z-index: 101;
       transition: left 0.3s ease;
       padding: 1.5rem 1rem;
@@ -169,7 +169,7 @@
       align-items: center;
       margin-bottom: 2rem;
       padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .sidebar-brand {
       font-family: 'Playfair Display', serif;
@@ -178,7 +178,7 @@
       color: #ffffff;
     }
     .close-sidebar {
-      background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;
+      background: none; border: none; color: #9ca3af; font-size: 1.25rem; cursor: pointer;
     }
     .nav-list {
       list-style: none;
@@ -192,15 +192,15 @@
       gap: 0.75rem;
       padding: 0.85rem 1rem;
       border-radius: 10px;
-      color: #94a3b8;
+      color: #9ca3af;
       text-decoration: none;
       font-weight: 500;
       font-size: 0.9rem;
       transition: background 0.2s, color 0.2s;
     }
     .nav-item a:hover, .nav-item a.active {
-      background: #1e293b;
-      color: #60a5fa;
+      background: #181b24;
+      color: #facc15;
     }
     .nav-item i { width: 20px; text-align: center; }
   </style>
