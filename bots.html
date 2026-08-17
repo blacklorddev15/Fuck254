@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WhatsApp Bot Pairing | BLACKLORD TECH INC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #000000;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding-bottom: 3rem;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1rem 0.5rem;
+      background: #000000;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .menu-btn {
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      color: #facc15;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+    .topbar-subtitle {
+      font-size: 0.7rem;
+      color: #facc15;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+    }
+    .topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      font-style: italic;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+    .crown-btn {
+      width: 42px;
+      height: 42px;
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #facc15;
+      font-size: 1.1rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0.5rem auto;
+      padding: 0 1rem;
+    }
+    .section-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-style: italic;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 1.25rem 0 1.5rem;
+      text-align: center;
+    }
+    .bots-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .bot-card {
+      background: #111318;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.15rem;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .bot-card.selected {
+      border-color: #facc15;
+      box-shadow: 0 0 15px rgba(250, 204, 21, 0.15);
+    }
+    .bot-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .bot-abbr {
+      width: 36px;
+      height: 36px;
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #facc15;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .bot-check {
+      color: #22c55e;
+      font-size: 1rem;
+      display: none;
+    }
+    .bot-card.selected .bot-check { display: block; }
+    .bot-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #ffffff;
+      margin-bottom: 0.1rem;
+    }
+    .bot-type {
+      font-size: 0.75rem;
+      color: #facc15;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    .bot-desc {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      line-height: 1.4;
+    }
+    .pairing-box {
+      background: #111318;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .pairing-label {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    .pairing-input {
+      width: 100%;
+      background: #161922;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .pairing-hint {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+    .generate-btn {
+      width: 100%;
+      background: #facc15;
+      color: #000000;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 0.95rem;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(250, 204, 21, 0.3);
+      text-align: center;
+    }
+    .pairing-status {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #facc15;
+      margin-top: 0.75rem;
+      font-style: italic;
+    }
+    .powered-footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="dashboard.html" class="menu-btn"><i class="fas fa-arrow-left"></i></a>
+      <div>
+        <div class="topbar-subtitle">BWM XMD SMM</div>
+        <div class="topbar-title">Bot Pairing Center</div>
+      </div>
+    </div>
+    <div class="crown-btn"><i class="fas fa-crown"></i></div>
+  </header>
+
+  <main class="container">
+    <div class="section-label">WhatsApp Bot Pairing</div>
+    <div class="bots-grid">
+      <div class="bot-card" id="bot-talkless" onclick="selectBot('talkless', 'Talkless Ultra')">
+        <div class="bot-badge-row">
+          <div class="bot-abbr">TU</div>
+          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="bot-name">Talkless Ultra</div>
+        <div class="bot-type">Automation</div>
+        <div class="bot-desc">Streamlined tools, utilities, and group management features.</div>
+      </div>
+
+      <div class="bot-card" id="bot-skylar" onclick="selectBot('skylar', 'Skylar XMD')">
+        <div class="bot-badge-row">
+          <div class="bot-abbr">SK</div>
+          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="bot-name">Skylar XMD</div>
+        <div class="bot-type">Smart Bot</div>
+        <div class="bot-desc">A flexible assistant with social media and AI commands.</div>
+      </div>
+
+      <div class="bot-card" id="bot-rita" onclick="selectBot('rita', 'Rita XMD')">
+        <div class="bot-badge-row">
+          <div class="bot-abbr">RT</div>
+          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="bot-name">Rita XMD</div>
+        <div class="bot-type">Essential</div>
+        <div class="bot-desc">A clean, lightweight bot for essential WhatsApp commands.</div>
+      </div>
+
+      <div class="bot-card selected" id="bot-titan" onclick="selectBot('titan', 'Titan XD')">
+        <div class="bot-badge-row">
+          <div class="bot-abbr">TM</div>
+          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="bot-name">Titan XD</div>
+        <div class="bot-type">Command Suite</div>
+        <div class="bot-desc">Feature-rich games, tools, AI, music, economy, and social commands.</div>
+      </div>
+
+      <div class="bot-card" id="bot-samsung" onclick="selectBot('samsung', 'Samsung XMD')">
+        <div class="bot-badge-row">
+          <div class="bot-abbr">SX</div>
+          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="bot-name">Samsung XMD</div>
+        <div class="bot-type">Ultra Series</div>
+        <div class="bot-desc">High-performance multitasking bot with advanced API connectors.</div>
+      </div>
+
+      <div class="bot-card" id="bot-blacklord" onclick="selectBot('blacklord', 'Blacklord XMD')">
+        <div class="bot-badge-row">
+          <div class="bot-abbr">BL</div>
+          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="bot-name">Blacklord XMD</div>
+        <div class="bot-type">Flagship Suite</div>
+        <div class="bot-desc">Ultimate gold-on-black bot bridge with zero latency and full features.</div>
+      </div>
+    </div>
+
+    <div class="pairing-box">
+      <div class="pairing-label">WhatsApp Number</div>
+      <input type="text" class="pairing-input" id="whatsappNumber" value="254712345678" placeholder="254712345678">
+      <div class="pairing-hint">Use the full country code without a plus sign. Example: 254712345678.</div>
+      <button class="generate-btn" onclick="generatePairingCode()">Generate Pairing Code</button>
+      <div class="pairing-status" id="pairingStatus">Bot is ready to generate your pairing code...</div>
+    </div>
+
+    <div class="powered-footer">Powered by BLACKLORD TECH INC</div>
+  </main>
+
+  <script>
+    let selectedBotName = 'Titan XD';
+    function selectBot(id, name) {
+      document.querySelectorAll('.bot-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('bot-' + id).classList.add('selected');
+      selectedBotName = name;
+    }
+
+    function generatePairingCode() {
+      const num = document.getElementById('whatsappNumber').value;
+      const status = document.getElementById('pairingStatus');
+      if (!num || num.length < 10) {
+        alert('Please enter a valid WhatsApp phone number with country code.');
+        return;
+      }
+      status.innerText = 'Connecting to Pterodactyl bridge for ' + selectedBotName + '...';
+      setTimeout(() => {
+        const fakeCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+        status.innerHTML = '<b style="color:#22c55e;">Pairing Code generated successfully for ' + selectedBotName + ': <span style="font-size:1.2rem; color:#fff;">' + fakeCode + '</span></b>';
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
