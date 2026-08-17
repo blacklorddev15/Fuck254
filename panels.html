@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel Plans | BLACKLORD TECH INC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #000000;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding-bottom: 3rem;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1rem 0.5rem;
+      background: #000000;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .menu-btn {
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      color: #facc15;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+    .topbar-subtitle {
+      font-size: 0.7rem;
+      color: #facc15;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+    }
+    .topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      font-style: italic;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+    .crown-btn {
+      width: 42px;
+      height: 42px;
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #facc15;
+      font-size: 1.1rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0.5rem auto;
+      padding: 0 1rem;
+    }
+    .section-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-style: italic;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 1.25rem 0 0.25rem;
+      text-align: center;
+    }
+    .section-sub {
+      font-size: 0.8rem;
+      color: #facc15;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+    }
+    .plan-card {
+      background: #111318;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .plan-card.full-width {
+      grid-column: span 2;
+      border-color: rgba(250, 204, 21, 0.3);
+    }
+    .plan-icon {
+      width: 40px;
+      height: 40px;
+      background: #161922;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #facc15;
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+    .plan-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #ffffff;
+      margin-bottom: 0.1rem;
+    }
+    .plan-type {
+      font-size: 0.75rem;
+      color: #facc15;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    .plan-desc {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+    .plan-price-box {
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.2);
+      border-radius: 10px;
+      padding: 0.5rem;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #facc15;
+      margin-bottom: 0.75rem;
+    }
+    .plan-btn {
+      background: #161922;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      color: #facc15;
+      border-radius: 8px;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      text-decoration: none;
+      width: 100%;
+    }
+    .plan-btn:hover { background: #facc15; color: #000; }
+    .powered-footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: #111318;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      background: #161922; border: none; color: #facc15;
+      width: 32px; height: 32px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+    .modal-sub {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+    .modal-btn {
+      width: 100%;
+      background: #facc15;
+      color: #000000;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      padding: 0.85rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="dashboard.html" class="menu-btn"><i class="fas fa-arrow-left"></i></a>
+      <div>
+        <div class="topbar-subtitle">BWM XMD SMM</div>
+        <div class="topbar-title">Hosting Center</div>
+      </div>
+    </div>
+    <div class="crown-btn"><i class="fas fa-crown"></i></div>
+  </header>
+
+  <main class="container">
+    <div class="section-label">Panel Plans</div>
+    <div class="section-sub">Pterodactyl hosting — Pay with SD Balance</div>
+
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div>
+          <div class="plan-icon"><i class="fas fa-database"></i></div>
+          <div class="plan-name">10GB Storage</div>
+          <div class="plan-type">User Panel</div>
+          <div class="plan-desc">1GB RAM, 10GB Disk, 40% CPU. Ideal for small bots.</div>
+        </div>
+        <div>
+          <div class="plan-price-box">10 SD</div>
+          <button class="plan-btn" onclick="openModal('Get Panel: 10GB Storage', 'Confirm hosting activation for 10 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div>
+          <div class="plan-icon"><i class="fas fa-server"></i></div>
+          <div class="plan-name">Bulky 2</div>
+          <div class="plan-type">Power User</div>
+          <div class="plan-desc">Unlimited RAM, Disk, and CPU. Multi-bot support.</div>
+        </div>
+        <div>
+          <div class="plan-price-box">20 SD</div>
+          <button class="plan-btn" onclick="openModal('Get Panel: Bulky 2', 'Confirm hosting activation for 20 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div>
+          <div class="plan-icon"><i class="fas fa-hdd"></i></div>
+          <div class="plan-name">Bulky 3</div>
+          <div class="plan-type">Enterprise</div>
+          <div class="plan-desc">Unlimited RAM, Disk, and CPU. High performance.</div>
+        </div>
+        <div>
+          <div class="plan-price-box">40 SD</div>
+          <button class="plan-btn" onclick="openModal('Get Panel: Bulky 3', 'Confirm hosting activation for 40 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div>
+          <div class="plan-icon"><i class="fas fa-microchip"></i></div>
+          <div class="plan-name">Bulky 4</div>
+          <div class="plan-type">Extreme</div>
+          <div class="plan-desc">Unlimited RAM, Disk, and CPU. Professional use.</div>
+        </div>
+        <div>
+          <div class="plan-price-box">60 SD</div>
+          <button class="plan-btn" onclick="openModal('Get Panel: Bulky 4', 'Confirm hosting activation for 60 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
+        </div>
+      </div>
+
+      <div class="plan-card full-width">
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <div class="plan-icon" style="margin-bottom:0;"><i class="fas fa-infinity"></i></div>
+          <div>
+            <div class="plan-name">Unlimited Admin</div>
+            <div class="plan-type">Full Control</div>
+            <div class="plan-desc">Unlimited RAM/Disk + Full Panel Admin access.</div>
+          </div>
+        </div>
+        <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+          <div class="plan-price-box" style="margin-bottom:0; padding: 0.4rem 1.5rem;">100 SD</div>
+          <button class="plan-btn" style="width: auto; padding: 0.6rem 1.5rem;" onclick="openModal('Get Panel: Unlimited Admin', 'Confirm admin hosting activation for 100 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="powered-footer">Powered by BLACKLORD TECH INC</div>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-title" id="modalTitle">Panel Activation</div>
+      <div class="modal-sub" id="modalSub">Confirm your panel hosting order securely.</div>
+      <button class="modal-btn" onclick="submitModal()">Confirm & Deploy Panel</button>
+    </div>
+  </div>
+
+  <script>
+    function openModal(title, subtitle) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalSub').innerText = subtitle;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+    function submitModal() {
+      alert('Panel order processed successfully! Your Pterodactyl login credentials have been sent.');
+      closeModal();
+    }
+  </script>
+</body>
+</html>
