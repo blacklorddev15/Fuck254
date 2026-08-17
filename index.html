@@ -3,654 +3,324 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Dashboard | BLACKLORD TECH INC</title>
+  <title>Dashboard | BLACKLORD TECH INC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="portal.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #07090e;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding-bottom: 2rem;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      background: #0d121f;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .menu-btn {
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #d4af37;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    .topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+    .user-pill {
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #d4af37;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+    .welcome-card {
+      background: #0d121f;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .welcome-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #07090e;
+      font-size: 1.5rem;
+    }
+    .welcome-info .label {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .welcome-info .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .quick-card {
+      background: #0d121f;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.25rem;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .quick-card:active { transform: scale(0.97); }
+    .quick-card:hover { border-color: rgba(212, 175, 55, 0.4); }
+    .quick-icon {
+      width: 44px;
+      height: 44px;
+      background: #161f33;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.75rem;
+      color: #d4af37;
+      font-size: 1.2rem;
+    }
+    .quick-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+    .quick-sub {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+    /* Sidebar Drawer */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+    }
+    .sidebar-overlay.active { display: block; }
+    .sidebar {
+      position: fixed;
+      top: 0; left: -280px; width: 280px; height: 100%;
+      background: #0d121f;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 101;
+      transition: left 0.3s ease;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar.active { left: 0; }
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .sidebar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .close-sidebar {
+      background: none; border: none; color: #9ca3af; font-size: 1.25rem; cursor: pointer;
+    }
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      color: #9ca3af;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-item a:hover, .nav-item a.active {
+      background: #161f33;
+      color: #d4af37;
+    }
+    .nav-item i { width: 20px; text-align: center; }
+  </style>
 </head>
 <body>
-<div class="shell">
-  <aside class="sidebar">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">♛</div>
-      <div>
-        <div class="brand-name">BLACKLORD</div>
-        <div class="brand-sub">TECH INC.</div>
-      </div>
-    </a>
-    <nav class="nav">
-      <a class="active" href="dashboard.html"><span class="nav-icon"><i class="fas fa-chart-line"></i></span>Dashboard</a>
-      <a href="index.html"><span class="nav-icon"><i class="fas fa-home"></i></span>Main Site</a>
-      <a href="support.html"><span class="nav-icon"><i class="fas fa-headset"></i></span>Support Center</a>
-      <a href="status.html"><span class="nav-icon"><i class="fas fa-heartbeat"></i></span>System Status</a>
-      <a href="affiliate.html"><span class="nav-icon"><i class="fas fa-users"></i></span>Affiliate</a>
-      <a href="admin.html"><span class="nav-icon"><i class="fas fa-user-shield"></i></span>Admin</a>
-    </nav>
-    <div class="sidebar-footer">
-      <strong>BLACKLORD ELITE</strong>
-      Wallet, keys, and support in one place.
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+      <div class="topbar-title">BLACKLORD TECH INC</div>
     </div>
+    <div class="user-pill">KE</div>
+  </header>
+
+  <div class="sidebar-overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">BLACKLORD TECH</div>
+      <button class="close-sidebar" id="closeSidebar"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item"><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+      <li class="nav-item"><a href="#deploy"><i class="fas fa-cloud-upload-alt"></i> Deploy Bot</a></li>
+      <li class="nav-item"><a href="#topup"><i class="fas fa-wallet"></i> Top Up</a></li>
+      <li class="nav-item"><a href="#smm"><i class="fas fa-bullhorn"></i> Boost SMM</a></li>
+      <li class="nav-item"><a href="#referral"><i class="fas fa-users"></i> Referral</a></li>
+      <li class="nav-item"><a href="#panel"><i class="fas fa-shopping-bag"></i> Get Panel</a></li>
+      <li class="nav-item"><a href="#servers"><i class="fas fa-server"></i> My Servers</a></li>
+      <li class="nav-item"><a href="#links"><i class="fas fa-link"></i> Site Links</a></li>
+      <li class="nav-item"><a href="#calculator"><i class="fas fa-calculator"></i> Calculator</a></li>
+      <li class="nav-item"><a href="#earn"><i class="fas fa-dollar-sign"></i> Earn Money</a></li>
+      <li class="nav-item"><a href="#api"><i class="fas fa-code"></i> API</a></li>
+      <li class="nav-item"><a href="#child"><i class="fas fa-network-wired"></i> Child Panel</a></li>
+      <li class="nav-item"><a href="#webdev"><i class="fas fa-laptop-code"></i> Web Dev</a></li>
+    </ul>
   </aside>
 
-  <main class="content">
-    <header class="topbar">
-      <div>
-        <div class="eyebrow">Account overview</div>
-        <h1 class="title">My Dashboard</h1>
-        <p class="subtitle">See your wallet, active keys, hosting services, and recent activity.</p>
+  <main class="container">
+    <div class="welcome-card">
+      <div class="welcome-avatar"><i class="fas fa-crown"></i></div>
+      <div class="welcome-info">
+        <div class="label">Dashboard</div>
+        <div class="name">Welcome back, Guest</div>
       </div>
-      <div class="user-box">
-        <span id="userLabel">Guest user</span>
-        <span class="avatar"><i class="fas fa-crown"></i></span>
-      </div>
-    </header>
-
-    <section class="card" style="margin-top:2rem" id="pairingCard">
-      <div style="margin-bottom:1.5rem">
-        <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic;">Pair WhatsApp Bot</h2>
-        <span class="stat-note">Pair directly while your bot runs on Pterodactyl.</span>
-      </div>
-      <div class="field" style="margin-top:1rem">
-        <label>Select Bot Type</label>
-        <div style="display:flex;gap:0.75rem;flex-wrap:wrap; margin-top:0.5rem;">
-          <button id="dashboardBlacklordBtn" class="btn green" type="button" onclick="selectDashboardBotType('blacklord')">BLACKLORD XMD</button>
-          <button id="dashboardSamsungBtn" class="btn outline" type="button" onclick="selectDashboardBotType('samsung')">SAMSUNG XMD</button>
-          <button id="dashboardTalklessBtn" class="btn outline" type="button" onclick="selectDashboardBotType('talkless')">TALKLESS ULTRA</button>
-          <button id="dashboardSkylarBtn" class="btn outline" type="button" onclick="selectDashboardBotType('skylar')">SKYLAR XMD</button>
-          <button id="dashboardRitaBtn" class="btn outline" type="button" onclick="selectDashboardBotType('rita')">RITA XMD</button>
-        </div>
-      </div>
-      <div class="form-grid" style="margin-top:1.5rem">
-        <div class="field">
-          <label for="pairingPhone">WhatsApp Number to Pair</label>
-          <input id="pairingPhone" placeholder="e.g. 254712345678" />
-        </div>
-        <div style="display:flex;align-items:end;gap:0.6rem;flex-wrap:wrap">
-          <button class="btn green" onclick="requestDashboardPairing()"><i class="fas fa-link"></i> Get Code</button>
-          <button class="btn outline" onclick="checkDashboardPairingHealth()"><i class="fas fa-heartbeat"></i> Health</button>
-        </div>
-      </div>
-      <div id="pairingNotice" class="notice"></div>
-      <div id="pairingCodeBox" style="display:none;margin-top:1.5rem;padding:2rem;border:1px solid var(--gold);border-radius:1rem;background:rgba(250,204,21,0.05);color:var(--gold);font-size:2rem;font-weight:800;letter-spacing:0.2em;text-align:center;font-family:monospace;"></div>
-    </section>
-
-    <section class="grid grid-4" style="margin-top:2rem">
-      <article class="card stat" style="background:rgba(34,197,94,0.05); border-color:rgba(34,197,94,0.2);">
-        <div class="stat-label">Wallet Balance</div>
-        <div class="stat-number" id="balance" style="color:var(--green)">0.00 <small>SD</small></div>
-        <button class="btn green" style="margin-top:0.75rem; padding:0.4rem 1rem; font-size:0.75rem;" onclick="location.href='index.html?openWallet=1'">Add funds</button>
-      </article>
-      <article class="card stat">
-        <div class="stat-label">Active Keys</div>
-        <div class="stat-number" id="keysCount">0</div>
-        <div class="stat-note">Linked to your number</div>
-      </article>
-      <article class="card stat">
-        <div class="stat-label">Active Servers</div>
-        <div class="stat-number" id="serversCount">0</div>
-        <div class="stat-note">Hosting services</div>
-      </article>
-      <article class="card stat">
-        <div class="stat-label">Open Tickets</div>
-        <div class="stat-number" id="ticketsCount">0</div>
-        <div class="stat-note"><a href="support.html" style="color:var(--green)">View support →</a></div>
-      </article>
-    </section>
-
-    <section class="card" style="margin-top:2rem" id="phoneCard">
-      <div style="margin-bottom:1rem">
-        <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic;">Load Your Account</h2>
-        <span class="stat-note">Your phone number is only used to retrieve your existing account data.</span>
-      </div>
-      <div class="form-grid">
-        <div class="field">
-          <label for="phone">WhatsApp / Phone Number</label>
-          <input id="phone" placeholder="e.g. 254712345678" />
-        </div>
-        <div style="display:flex;align-items:end">
-          <button class="btn green" onclick="loadDashboard()"><i class="fas fa-search"></i> Load Account</button>
-        </div>
-      </div>
-      <div id="notice" class="notice"></div>
-    </section>
-
-    <!-- ===== REDEEM VOUCHER ===== -->
-    <section class="card" style="margin-top:2rem; border-color: rgba(34,197,94,0.3);">
-      <div style="margin-bottom:1rem">
-        <h2 style="color: #22c55e; font-family:'Playfair Display',serif; font-style:italic;">Redeem Voucher</h2>
-        <span class="stat-note">Enter your code to instantly credit your balance.</span>
-      </div>
-      <div class="form-grid">
-        <div class="field">
-          <label for="voucherInput">Voucher Code</label>
-          <input id="voucherInput" placeholder="VOUCHER-XXXX" />
-        </div>
-        <div style="display:flex;align-items:end">
-          <button class="btn green" onclick="redeemVoucher()"><i class="fas fa-check-circle"></i> Redeem Now</button>
-        </div>
-      </div>
-      <div id="voucherMsg" class="notice"></div>
-    </section>
-
-
-
-    <!-- ===== TELEGRAM KEY GENERATOR ===== -->
-    <section class="card" style="margin-top:2rem; border-color: rgba(250,204,21,0.35);" id="telegram-key-generator">
-      <div style="margin-bottom:1rem">
-        <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic;"><i class="fab fa-telegram"></i> Telegram Bot Activation Key</h2>
-        <span class="stat-note">Generate the key requested by the Telegram bot before pairing a WhatsApp bot.</span>
-      </div>
-      <div class="form-grid">
-        <div class="field">
-          <label for="keyPhone">Account Phone Number</label>
-          <input id="keyPhone" inputmode="numeric" placeholder="e.g. 254712345678" />
-        </div>
-        <div class="field">
-          <label for="keyBotType">Bot Type</label>
-          <select id="keyBotType">
-            <option value="blacklord">BLACKLORD XMD</option>
-            <option value="samsung">SAMSUNG XMD</option>
-            <option value="talkless">TALKLESS ULTRA</option>
-            <option value="skylar">SKYLAR XMD</option>
-            <option value="rita">RITA XMD</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="telegramUser">Telegram username or ID (optional)</label>
-          <input id="telegramUser" placeholder="@username or Telegram ID" maxlength="120" />
-        </div>
-        <div class="field">
-          <label for="keyDuration">Validity</label>
-          <select id="keyDuration">
-            <option value="7">7 days</option>
-            <option value="30" selected>30 days</option>
-            <option value="90">90 days</option>
-            <option value="365">365 days</option>
-          </select>
-        </div>
-      </div>
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem">
-        <button class="btn green" type="button" onclick="generateTelegramKey()"><i class="fas fa-key"></i> Generate Telegram Key</button>
-        <button class="btn outline" type="button" onclick="loadGeneratedKeys()"><i class="fas fa-rotate"></i> Refresh Keys</button>
-      </div>
-      <div id="keyGeneratorNotice" class="notice"></div>
-      <div id="generatedKeyBox" style="display:none;margin-top:1.25rem;padding:1.25rem;border:1px solid var(--gold);border-radius:1rem;background:rgba(250,204,21,0.06);">
-        <div class="stat-note">Copy this key and send it to the Telegram bot exactly as shown.</div>
-        <div id="generatedKeyValue" style="margin-top:0.6rem;color:var(--gold);font-family:monospace;font-size:1.35rem;font-weight:800;word-break:break-all;"></div>
-        <button class="btn outline" type="button" style="margin-top:0.9rem" onclick="copyGeneratedKey()"><i class="fas fa-copy"></i> Copy Key</button>
-      </div>
-      <div id="generatedKeysList" class="list" style="margin-top:1rem"><div class="empty">Load your account to see previously generated keys.</div></div>
-    </section>
-
-    <!-- ===== ACCOUNT INSIGHTS ===== -->
-    <section class="card" style="margin-top:2rem" id="account-insights">
-      <div style="margin-bottom:1rem">
-        <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic;"><i class="fas fa-chart-pie"></i> Account Insights</h2>
-        <span class="stat-note">Your wallet activity, hosting usage, and referral rewards in one view.</span>
-      </div>
-      <div class="grid grid-4">
-        <article class="card stat"><div class="stat-label">Successful Top-ups</div><div class="stat-number" id="insightDeposits">0</div><div class="stat-note" id="insightDepositTotal">0.00 SD total</div></article>
-        <article class="card stat"><div class="stat-label">Active Services</div><div class="stat-number" id="insightServers">0</div><div class="stat-note">Pterodactyl services</div></article>
-        <article class="card stat"><div class="stat-label">Referrals</div><div class="stat-number" id="insightReferrals">0</div><div class="stat-note" id="insightReferralRewards">0.00 SD earned</div></article>
-        <article class="card stat"><div class="stat-label">Community Posts</div><div class="stat-number" id="insightChat">0</div><div class="stat-note"><a href="community.html" style="color:var(--green)">Open community →</a></div></article>
-      </div>
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem">
-        <a class="btn outline" href="affiliate.html"><i class="fas fa-users"></i> Referral Center</a>
-        <a class="btn outline" href="next-level.html"><i class="fas fa-layer-group"></i> Premium Tools</a>
-        <a class="btn outline" href="auto-renew.html"><i class="fas fa-rotate"></i> Auto-renewal</a>
-      </div>
-      <div id="insightsNotice" class="notice"></div>
-    </section>
-
-    <!-- ===== DOMAIN WORKSPACE ===== -->
-    <section class="card" style="margin-top:2rem; border-color:rgba(56,189,248,0.35)" id="domain-workspace">
-      <div style="margin-bottom:1rem">
-        <h2 style="color:#38bdf8; font-family:'Playfair Display',serif; font-style:italic;"><i class="fas fa-globe"></i> Domain Workspace</h2>
-        <span class="stat-note">Search and register a subdomain such as <strong>yourname.blacklord.tech</strong>.</span>
-      </div>
-      <div class="form-grid">
-        <div class="field">
-          <label for="domainName">Subdomain name</label>
-          <input id="domainName" placeholder="yourname" maxlength="63" />
-        </div>
-        <div style="display:flex;align-items:end;gap:0.6rem;flex-wrap:wrap">
-          <button class="btn outline" type="button" onclick="checkDomainAvailability()"><i class="fas fa-search"></i> Check</button>
-          <button class="btn green" type="button" onclick="registerSubdomain()"><i class="fas fa-cart-plus"></i> Register</button>
-        </div>
-      </div>
-      <div id="domainNotice" class="notice"></div>
-      <div id="domainsList" class="list" style="margin-top:1rem"><div class="empty">Load your account to see your subdomains.</div></div>
-    </section>
-
-    <!-- ===== PANEL PLANS ===== -->
-    <section style="margin-top:3rem" id="panels-section">
-      <div style="margin-bottom:1.5rem">
-        <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic;">Panel Plans</h2>
-        <span class="stat-note">Pterodactyl hosting – Pay with SD Balance</span>
-      </div>
-      <div class="grid grid-3">
-        <article class="card stat">
-          <div class="stat-label">10GB Storage</div>
-          <div class="stat-number">10 <small>SD</small></div>
-          <button class="btn green" style="margin-top:1rem; width:100%" onclick="location.href='index.html#panels-section'">Get Panel</button>
-        </article>
-        <article class="card stat">
-          <div class="stat-label">Bulky 2</div>
-          <div class="stat-number">20 <small>SD</small></div>
-          <button class="btn green" style="margin-top:1rem; width:100%" onclick="location.href='index.html#panels-section'">Get Panel</button>
-        </article>
-        <article class="card stat">
-          <div class="stat-label">Bulky 3</div>
-          <div class="stat-number">40 <small>SD</small></div>
-          <button class="btn green" style="margin-top:1rem; width:100%" onclick="location.href='index.html#panels-section'">Get Panel</button>
-        </article>
-      </div>
-    </section>
-
-    <!-- ===== WHATSAPP BOTS ===== -->
-    <section style="margin-top:3rem" id="bots-section">
-      <div style="margin-bottom:1.5rem">
-        <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic;">WhatsApp Bots</h2>
-        <span class="stat-note">Premium bots powered by BLACKLORD TECH INC</span>
-      </div>
-      <div class="grid grid-3">
-        <article class="card stat">
-          <div class="stat-label">TALKLESS ULTRA</div>
-          <div class="stat-number" style="font-size:0.9rem; margin:0.5rem 0;">ONLINE</div>
-          <button class="btn green" style="width:100%" onclick="initiateDashboardPairing('talkless')"><i class="fab fa-whatsapp"></i> Connect</button>
-        </article>
-        <article class="card stat">
-          <div class="stat-label">SKYLAR XMD</div>
-          <div class="stat-number" style="font-size:0.9rem; margin:0.5rem 0;">ONLINE</div>
-          <button class="btn green" style="width:100%" onclick="initiateDashboardPairing('skylar')"><i class="fab fa-whatsapp"></i> Connect</button>
-        </article>
-        <article class="card stat">
-          <div class="stat-label">RITA XMD</div>
-          <div class="stat-number" style="font-size:0.9rem; margin:0.5rem 0;">ONLINE</div>
-          <button class="btn green" style="width:100%" onclick="initiateDashboardPairing('rita')"><i class="fab fa-whatsapp"></i> Connect</button>
-        </article>
-      </div>
-    </section>
-
-
-
-    <div class="grid grid-2" style="margin-top:3rem">
-      <article class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-          <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic;">My Servers</h2>
-          <a href="status.html" class="stat-note" style="color:var(--green)">System Status →</a>
-        </div>
-        <div id="serversList" class="list"><div class="empty">No hosting services loaded.</div></div>
-      </article>
-      <article class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-          <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic;">Recent Activity</h2>
-          <a href="index.html" class="stat-note" style="color:var(--green)">Open Wallet →</a>
-        </div>
-        <div id="transactionsList" class="list"><div class="empty">No transactions loaded.</div></div>
-      </article>
     </div>
 
-    <div class="footer-note" style="margin-top: 5rem; color: #71717a; font-size: 0.8rem; text-align: center;">
-      BLACKLORD TECH INC. · Secure, reliable, relentless.
+    <div class="quick-grid">
+      <a href="#deploy" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div class="quick-title">Deploy Bot</div>
+        <div class="quick-sub">Watch tutorials</div>
+      </a>
+      <a href="#topup" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-wallet"></i></div>
+        <div class="quick-title">Top Up</div>
+        <div class="quick-sub">Add funds instantly</div>
+      </a>
+      <a href="#smm" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-bullhorn"></i></div>
+        <div class="quick-title">Boost SMM</div>
+        <div class="quick-sub">Likes, follows & more</div>
+      </a>
+      <a href="#referral" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-users"></i></div>
+        <div class="quick-title">Referral</div>
+        <div class="quick-sub">Earn commissions</div>
+      </a>
+      <a href="#panel" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-shopping-bag"></i></div>
+        <div class="quick-title">Get Panel</div>
+        <div class="quick-sub">Setup hosting</div>
+      </a>
+      <a href="#servers" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-server"></i></div>
+        <div class="quick-title">My Servers</div>
+        <div class="quick-sub">Manage active instances</div>
+      </a>
+      <a href="#links" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-link"></i></div>
+        <div class="quick-title">Site Links</div>
+        <div class="quick-sub">Official channels</div>
+      </a>
+      <a href="#calculator" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-calculator"></i></div>
+        <div class="quick-title">Calculator</div>
+        <div class="quick-sub">Cost estimators</div>
+      </a>
+      <a href="#earn" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="quick-title">Earn Money</div>
+        <div class="quick-sub">Monetize traffic</div>
+      </a>
+      <a href="#api" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-code"></i></div>
+        <div class="quick-title">API</div>
+        <div class="quick-sub">Developer endpoints</div>
+      </a>
+      <a href="#child" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-network-wired"></i></div>
+        <div class="quick-title">Child Panel</div>
+        <div class="quick-sub">Reseller panel setup</div>
+      </a>
+      <a href="#webdev" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-laptop-code"></i></div>
+        <div class="quick-title">Web Dev</div>
+        <div class="quick-sub">Custom solutions</div>
+      </a>
     </div>
   </main>
-</div>
 
-<script>
-const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-const savedPhone = localStorage.getItem('samsung_user_phone') || '';
-document.getElementById('phone').value = savedPhone;
-document.getElementById('keyPhone').value = savedPhone;
-if (savedPhone) loadDashboard();
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const closeSidebar = document.getElementById('closeSidebar');
 
-function showNotice(text, type = 'error') {
-  const el = document.getElementById('notice');
-  el.textContent = text;
-  el.className = 'notice show ' + type;
-}
-
-function showPairingNotice(text, type = 'error') {
-  const el = document.getElementById('pairingNotice');
-  el.textContent = text;
-  el.className = 'notice show ' + type;
-}
-
-let dashboardBotType = 'blacklord';
-function selectDashboardBotType(type) {
-  dashboardBotType = type;
-  ['Blacklord', 'Samsung', 'Talkless', 'Skylar', 'Rita'].forEach(b => {
-    const btn = document.getElementById('dashboard' + b + 'Btn');
-    if (!btn) return;
-    if (b.toLowerCase() === type) {
-      btn.className = 'btn green';
-    } else {
-      btn.className = 'btn outline';
+    function toggleNav() {
+      sidebar.classList.toggle('active');
+      overlay.classList.toggle('active');
     }
-  });
-}
 
-function initiateDashboardPairing(type) {
-  selectDashboardBotType(type);
-  document.getElementById('pairingCard').scrollIntoView({ behavior: 'smooth' });
-  document.getElementById('pairingPhone').focus();
-}
-
-async function loadDashboard() {
-  const p = document.getElementById('phone').value.trim();
-  if (!p) { showNotice('Enter your phone number.'); return; }
-  localStorage.setItem('samsung_user_phone', p);
-  const keyPhone = document.getElementById('keyPhone');
-  if (keyPhone) keyPhone.value = p;
-  
-  try {
-    const res = await fetch('/api/user/dashboard?phone=' + encodeURIComponent(p));
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Unable to load dashboard');
-    
-    document.getElementById('balance').innerHTML = Number(data.user.balance || 0).toFixed(2) + ' <small>SD</small>';
-    document.getElementById('userLabel').textContent = data.user.username || p;
-    document.getElementById('serversCount').textContent = data.servers.length;
-    document.getElementById('keysCount').textContent = data.keys.length;
-    document.getElementById('ticketsCount').textContent = data.support.open_count;
-    
-    document.getElementById('serversList').innerHTML = data.servers.length ? data.servers.map(s => `
-      <div class="list-item">
-        <div>
-          <strong style="display:block; color:#fff;">${escapeHtml(s.bot_type || 'Server')}</strong>
-          <small style="color:var(--muted); font-size:0.7rem;">${escapeHtml(s.subdomain || 'no-subdomain')}</small>
-        </div>
-        <span class="pill ${s.status === 'active' ? 'online' : 'offline'}">${s.status}</span>
-      </div>
-    `).join('') : '<div class="empty">No active servers.</div>';
-    
-    document.getElementById('transactionsList').innerHTML = data.deposits.length ? data.deposits.map(d => `
-      <div class="list-item">
-        <div>
-          <strong style="display:block; color:#fff;">+${Number(d.amount_sd).toFixed(2)} SD</strong>
-          <small style="color:var(--muted); font-size:0.7rem;">${new Date(d.created_at).toLocaleDateString()}</small>
-        </div>
-        <span class="pill ${d.status === 'success' ? 'online' : 'offline'}">${d.status}</span>
-      </div>
-    `).join('') : '<div class="empty">No recent transactions.</div>';
-    
-    showNotice('Dashboard updated.', 'success');
-    loadGeneratedKeys();
-    loadEnhancementSummary();
-    loadDomains();
-  } catch (e) {
-    showNotice(e.message);
-  }
-}
-
-async function redeemVoucher() {
-  const code = document.getElementById('voucherInput').value.trim();
-  const p = document.getElementById('phone').value.trim();
-  if (!code || !p) { alert('Phone and code are required.'); return; }
-  
-  try {
-    const res = await fetch('/api/user/wallet', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'redeem', code, phone: p })
-    });
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Redeem failed');
-    
-    document.getElementById('voucherInput').value = '';
-    const msg = document.getElementById('voucherMsg');
-    msg.textContent = 'Success! Balance updated.';
-    msg.className = 'notice show success';
-    loadDashboard();
-  } catch (e) {
-    const msg = document.getElementById('voucherMsg');
-    msg.textContent = e.message;
-    msg.className = 'notice show error';
-  }
-}
-
-function keyPhoneValue() {
-  return (document.getElementById('keyPhone').value.trim() || document.getElementById('phone').value.trim());
-}
-
-function showKeyNotice(text, type = 'error') {
-  const el = document.getElementById('keyGeneratorNotice');
-  el.textContent = text;
-  el.className = 'notice show ' + type;
-}
-
-async function generateTelegramKey() {
-  const phone = keyPhoneValue();
-  const botType = document.getElementById('keyBotType').value;
-  const telegramUser = document.getElementById('telegramUser').value.trim();
-  const durationDays = Number(document.getElementById('keyDuration').value);
-  if (!phone) { showKeyNotice('Enter or load your account phone number.'); return; }
-  showKeyNotice('Generating a secure Telegram key...', 'success');
-  try {
-    const res = await fetch('/api/user/keys', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'generate', phone, botType, telegramUser, durationDays })
-    });
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Key generation failed.');
-    document.getElementById('generatedKeyValue').textContent = data.key.key;
-    document.getElementById('generatedKeyBox').style.display = 'block';
-    showKeyNotice(data.message || 'Telegram key generated.', 'success');
-    loadGeneratedKeys();
-  } catch (e) {
-    showKeyNotice(e.message);
-  }
-}
-
-async function loadGeneratedKeys() {
-  const phone = keyPhoneValue();
-  if (!phone) return;
-  try {
-    const res = await fetch('/api/user/keys?phone=' + encodeURIComponent(phone));
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Unable to load keys.');
-    const list = document.getElementById('generatedKeysList');
-    list.innerHTML = data.keys.length ? data.keys.map(item => `
-      <div class="list-item">
-        <div>
-          <strong style="display:block;color:#fff;font-family:monospace;">${escapeHtml(item.key)}</strong>
-          <small style="color:var(--muted);">${escapeHtml(String(item.type || '').toUpperCase())} · Expires ${item.expires_at ? new Date(item.expires_at).toLocaleDateString() : 'never'}</small>
-        </div>
-        <span class="pill ${item.used_at ? 'offline' : 'online'}">${item.used_at ? 'Used' : 'Ready'}</span>
-      </div>
-    `).join('') : '<div class="empty">No Telegram keys generated yet.</div>';
-  } catch (e) {
-    document.getElementById('generatedKeysList').innerHTML = '<div class="empty">Unable to load keys right now.</div>';
-  }
-}
-
-async function copyGeneratedKey() {
-  const value = document.getElementById('generatedKeyValue').textContent.trim();
-  if (!value) return;
-  try {
-    await navigator.clipboard.writeText(value);
-    showKeyNotice('Key copied. Send it to the Telegram bot.', 'success');
-  } catch (_) {
-    showKeyNotice('Copy failed. Select the key and copy it manually.', 'error');
-  }
-}
-
-function showInsightsNotice(text, type = 'error') {
-  const el = document.getElementById('insightsNotice');
-  el.textContent = text;
-  el.className = 'notice show ' + type;
-}
-
-function showDomainNotice(text, type = 'error') {
-  const el = document.getElementById('domainNotice');
-  el.textContent = text;
-  el.className = 'notice show ' + type;
-}
-
-async function loadEnhancementSummary() {
-  const phone = keyPhoneValue();
-  if (!phone) return;
-  try {
-    const [analyticsRes, affiliateRes] = await Promise.all([
-      fetch('/api/user/analytics?phone=' + encodeURIComponent(phone)),
-      fetch('/api/user/affiliate?phone=' + encodeURIComponent(phone))
-    ]);
-    const analytics = await analyticsRes.json();
-    const affiliate = await affiliateRes.json();
-    if (analytics.success) {
-      document.getElementById('insightDeposits').textContent = analytics.deposits.count || 0;
-      document.getElementById('insightDepositTotal').textContent = Number(analytics.deposits.total_sd || 0).toFixed(2) + ' SD total';
-      document.getElementById('insightServers').textContent = analytics.servers.active_count || 0;
-      document.getElementById('insightChat').textContent = analytics.chat.count || 0;
-    }
-    if (affiliate.success) {
-      document.getElementById('insightReferrals').textContent = affiliate.referrals.referrals || 0;
-      document.getElementById('insightReferralRewards').textContent = Number(affiliate.referrals.rewards_sd || 0).toFixed(2) + ' SD earned';
-    }
-  } catch (_) {
-    showInsightsNotice('Some insights are unavailable until your account finishes loading.');
-  }
-}
-
-async function checkDomainAvailability() {
-  const name = document.getElementById('domainName').value.trim().toLowerCase();
-  if (!name) { showDomainNotice('Enter a subdomain name first.'); return; }
-  showDomainNotice('Checking availability...', 'success');
-  try {
-    const res = await fetch('/api/domains?name=' + encodeURIComponent(name) + '&action=availability');
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Availability check failed.');
-    showDomainNotice(data.available ? `${data.hostname} is available.` : `${data.hostname} is already taken.`, data.available ? 'success' : 'error');
-  } catch (e) {
-    showDomainNotice(e.message);
-  }
-}
-
-async function loadDomains() {
-  const phone = keyPhoneValue();
-  if (!phone) return;
-  try {
-    const res = await fetch('/api/domains?phone=' + encodeURIComponent(phone) + '&action=list');
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Unable to load domains.');
-    const list = document.getElementById('domainsList');
-    list.innerHTML = data.domains.length ? data.domains.map(item => `
-      <div class="list-item">
-        <div><strong style="display:block;color:#fff;">${escapeHtml(item.hostname)}</strong><small style="color:var(--muted);">${escapeHtml(item.status)} · ${Number(item.price_sd || 0).toFixed(2)} SD</small></div>
-        <button class="btn outline" type="button" style="padding:0.4rem 0.75rem;font-size:0.75rem;" onclick="deleteSubdomain(${Number(item.id)})">Delete</button>
-      </div>
-    `).join('') : '<div class="empty">No subdomains registered yet.</div>';
-    if (!data.configured) showDomainNotice('Domain workspace is ready, but Cloudflare is not configured yet.', 'error');
-  } catch (_) {
-    document.getElementById('domainsList').innerHTML = '<div class="empty">Domain workspace is not configured yet.</div>';
-  }
-}
-
-async function registerSubdomain() {
-  const phone = keyPhoneValue();
-  const name = document.getElementById('domainName').value.trim().toLowerCase();
-  if (!phone || !name) { showDomainNotice('Load your account and enter a subdomain name first.'); return; }
-  showDomainNotice('Registering subdomain...', 'success');
-  try {
-    const res = await fetch('/api/domains', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'register', phone, name }) });
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Subdomain registration failed.');
-    showDomainNotice(data.message, 'success');
-    document.getElementById('domainName').value = '';
-    loadDomains();
-    loadDashboard();
-  } catch (e) {
-    showDomainNotice(e.message);
-  }
-}
-
-async function deleteSubdomain(id) {
-  const phone = keyPhoneValue();
-  if (!phone || !confirm('Delete this subdomain?')) return;
-  try {
-    const res = await fetch('/api/domains', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', phone, id }) });
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Unable to delete subdomain.');
-    showDomainNotice(data.message, 'success');
-    loadDomains();
-  } catch (e) {
-    showDomainNotice(e.message);
-  }
-}
-
-async function requestDashboardPairing() {
-  const p = document.getElementById('pairingPhone').value.trim() || document.getElementById('phone').value.trim();
-  if (!p) { showPairingNotice('Enter a WhatsApp number.'); return; }
-  
-  showPairingNotice('Requesting code...', 'success');
-  document.getElementById('pairingCodeBox').style.display = 'none';
-  
-  try {
-    const res = await fetch('/api/user/pairing/start', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ whatsappPhone: p, botType: dashboardBotType })
-    });
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Pairing failed');
-    
-    pollPairingStatus(data.pairing.request_id);
-  } catch (e) {
-    showPairingNotice(e.message);
-  }
-}
-
-async function pollPairingStatus(requestId) {
-  const startedAt = Date.now();
-  const maxWaitMs = 60000;
-  const pollEveryMs = 750;
-  let inFlight = false;
-
-  const check = async () => {
-    if (inFlight) return;
-    if (Date.now() - startedAt >= maxWaitMs) { showPairingNotice('The bot is still processing. Keep the page open and try again shortly.'); return; }
-    inFlight = true;
-    try {
-      const res = await fetch('/api/user/pairing/status?requestId=' + encodeURIComponent(requestId), { cache: 'no-store' });
-      const data = await res.json();
-      if (data.pairing && data.pairing.pairing_code) {
-        showPairingNotice('Pairing code generated!', 'success');
-        const box = document.getElementById('pairingCodeBox');
-        box.textContent = data.pairing.pairing_code;
-        box.style.display = 'block';
-        return;
-      }
-    } catch (e) {
-      // The next poll retries transient network errors.
-    } finally {
-      inFlight = false;
-    }
-    if (Date.now() - startedAt < maxWaitMs) setTimeout(check, pollEveryMs);
-  };
-
-  check();
-}
-
-async function checkDashboardPairingHealth() {
-  try {
-    const res = await fetch('/api/user/pairing/health');
-    const data = await res.json();
-    showPairingNotice('System: ' + (data.bridge?.configured ? 'Online' : 'Offline') + ' | Panel: ' + (data.panel?.status || 'Unknown'), 'success');
-  } catch (e) {
-    showPairingNotice('Unable to check system health.');
-  }
-}
-
-function shareFromMenu() {
-  if (navigator.share) {
-    navigator.share({ title: 'BLACKLORD TECH INC', text: 'Premium WhatsApp Bot Hosting', url: window.location.origin });
-  } else {
-    alert('Copy this link: ' + window.location.origin);
-  }
-}
-</script>
+    menuToggle.addEventListener('click', toggleNav);
+    closeSidebar.addEventListener('click', toggleNav);
+    overlay.addEventListener('click', toggleNav);
+  </script>
 </body>
 </html>
