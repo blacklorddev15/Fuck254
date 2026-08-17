@@ -70,6 +70,7 @@
       justify-content: center;
       color: #facc15;
       font-size: 1.1rem;
+      cursor: pointer;
     }
     .container {
       max-width: 600px;
@@ -115,13 +116,17 @@
       font-weight: 600;
       color: #ffffff;
     }
-    .ksh-badge {
+    .currency-badge {
       display: flex;
       align-items: center;
       gap: 0.4rem;
       font-size: 0.8rem;
       color: #facc15;
       font-weight: 600;
+      background: #161922;
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(250, 204, 21, 0.2);
     }
     .hero-actions-grid {
       display: grid;
@@ -139,7 +144,10 @@
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
     }
+    .hero-action-card:hover { border-color: rgba(250, 204, 21, 0.4); }
     .hero-action-card i {
       color: #facc15;
       font-size: 1.25rem;
@@ -202,6 +210,7 @@
       justify-content: center;
       gap: 0.4rem;
       text-decoration: none;
+      cursor: pointer;
     }
     .b-btn.topup {
       background: #22c55e;
@@ -268,6 +277,7 @@
       color: #f3f4f6;
       transition: transform 0.2s, border-color 0.2s, background 0.2s;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
     }
     .quick-card:active { transform: scale(0.97); }
     .quick-card:hover { border-color: rgba(250, 204, 21, 0.4); background: #181b24; }
@@ -292,6 +302,81 @@
     .quick-sub {
       font-size: 0.75rem;
       color: #9ca3af;
+    }
+    /* Modal / Action Viewer */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: #111318;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      background: #161922; border: none; color: #facc15;
+      width: 32px; height: 32px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+    .modal-sub {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+    .modal-form-group {
+      margin-bottom: 1rem;
+    }
+    .modal-form-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+    .modal-input {
+      width: 100%;
+      background: #161922;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .modal-btn {
+      width: 100%;
+      background: #facc15;
+      color: #000000;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      padding: 0.85rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      box-shadow: 0 4px 20px rgba(250, 204, 21, 0.3);
     }
     /* Sidebar Drawer */
     .sidebar-overlay {
@@ -349,6 +434,7 @@
       font-weight: 500;
       font-size: 0.9rem;
       transition: background 0.2s, color 0.2s;
+      cursor: pointer;
     }
     .nav-item a:hover, .nav-item a.active {
       background: #181b24;
@@ -366,7 +452,7 @@
         <div class="topbar-title">Welcome back, Guest</div>
       </div>
     </div>
-    <div class="crown-btn"><i class="fas fa-crown"></i></div>
+    <div class="crown-btn" id="crownBtn"><i class="fas fa-crown"></i></div>
   </header>
 
   <div class="sidebar-overlay" id="overlay"></div>
@@ -377,18 +463,18 @@
     </div>
     <ul class="nav-list">
       <li class="nav-item"><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-      <li class="nav-item"><a href="#deploy"><i class="fas fa-cloud-upload-alt"></i> Deploy Bot</a></li>
-      <li class="nav-item"><a href="#topup"><i class="fas fa-wallet"></i> Top Up</a></li>
-      <li class="nav-item"><a href="#smm"><i class="fas fa-bullhorn"></i> Boost SMM</a></li>
-      <li class="nav-item"><a href="#referral"><i class="fas fa-users"></i> Referral</a></li>
-      <li class="nav-item"><a href="#panel"><i class="fas fa-shopping-bag"></i> Get Panel</a></li>
-      <li class="nav-item"><a href="#servers"><i class="fas fa-server"></i> My Servers</a></li>
-      <li class="nav-item"><a href="#links"><i class="fas fa-link"></i> Site Links</a></li>
-      <li class="nav-item"><a href="#calculator"><i class="fas fa-calculator"></i> Calculator</a></li>
-      <li class="nav-item"><a href="#earn"><i class="fas fa-dollar-sign"></i> Earn Money</a></li>
-      <li class="nav-item"><a href="#api"><i class="fas fa-code"></i> API</a></li>
-      <li class="nav-item"><a href="#child"><i class="fas fa-network-wired"></i> Child Panel</a></li>
-      <li class="nav-item"><a href="#webdev"><i class="fas fa-laptop-code"></i> Web Dev</a></li>
+      <li class="nav-item"><a onclick="openModal('Deploy Bot', 'Launch your WhatsApp bot instance securely via Pterodactyl bridge.')"><i class="fas fa-cloud-upload-alt"></i> Deploy Bot</a></li>
+      <li class="nav-item"><a onclick="openModal('Top Up USD Balance', 'Deposit USD funds instantly via M-Pesa, card, or crypto.')"><i class="fas fa-wallet"></i> Top Up</a></li>
+      <li class="nav-item"><a onclick="openModal('Boost SMM', 'Automated social media growth for Instagram, WhatsApp channels & TikTok.')"><i class="fas fa-bullhorn"></i> Boost SMM</a></li>
+      <li class="nav-item"><a onclick="openModal('Referral Program', 'Share your referral link and earn lifetime commissions.')"><i class="fas fa-users"></i> Referral</a></li>
+      <li class="nav-item"><a onclick="openModal('Get Panel', 'Setup your own hosting panel with custom domain mapping.')"><i class="fas fa-shopping-bag"></i> Get Panel</a></li>
+      <li class="nav-item"><a onclick="openModal('My Servers', 'View active VPS containers, Pterodactyl nodes, and bridge status.')"><i class="fas fa-server"></i> My Servers</a></li>
+      <li class="nav-item"><a onclick="openModal('Site Links', 'Official channels, WhatsApp group, and community support.')"><i class="fas fa-link"></i> Site Links</a></li>
+      <li class="nav-item"><a onclick="openModal('Calculator', 'Calculate hosting costs, bot resources, and SMM packages.')"><i class="fas fa-calculator"></i> Calculator</a></li>
+      <li class="nav-item"><a onclick="openModal('Earn Money', 'Monetize traffic and partner with Blacklord Tech Inc.')"><i class="fas fa-dollar-sign"></i> Earn Money</a></li>
+      <li class="nav-item"><a onclick="openModal('API Documentation', 'Integrate Blacklord REST APIs into your applications.')"><i class="fas fa-code"></i> API</a></li>
+      <li class="nav-item"><a onclick="openModal('Child Panel', 'Launch your own branded reseller panel instantly.')"><i class="fas fa-network-wired"></i> Child Panel</a></li>
+      <li class="nav-item"><a onclick="openModal('Web Development', 'Request custom website design, mobile apps, or backend bots.')"><i class="fas fa-laptop-code"></i> Web Dev</a></li>
     </ul>
   </aside>
 
@@ -401,22 +487,22 @@
           <div class="name">Welcome back, Guest</div>
         </div>
       </div>
-      <div class="ksh-badge">
-        <i class="fas fa-globe"></i> KSH <i class="fas fa-chevron-down" style="font-size:0.65rem;"></i>
+      <div class="currency-badge">
+        <i class="fas fa-dollar-sign"></i> USD
       </div>
     </div>
 
     <div class="hero-actions-grid">
-      <a href="#deploy" class="hero-action-card">
+      <div class="hero-action-card" onclick="openModal('Deploy Bot', 'Launch your WhatsApp bot instance securely via Pterodactyl bridge.')">
         <i class="fas fa-cloud"></i>
         <div class="title">Deploy Bots</div>
         <div class="sub">Watch tutorials</div>
-      </a>
-      <a href="#smm" class="hero-action-card">
+      </div>
+      <div class="hero-action-card" onclick="openModal('Boost SMM', 'Automated social media growth for Instagram, WhatsApp channels & TikTok.')">
         <i class="fas fa-bullhorn"></i>
         <div class="title">SMM Boost</div>
         <div class="sub">Likes, follows & more</div>
-      </a>
+      </div>
     </div>
 
     <div class="balance-card">
@@ -425,15 +511,15 @@
         <div class="trend-badge"><i class="fas fa-arrow-down"></i> -16.0%</div>
       </div>
       <div class="balance-btn-row">
-        <a href="#app" class="b-btn"><i class="fas fa-mobile-alt"></i> App</a>
-        <a href="#sell" class="b-btn"><i class="fas fa-exchange-alt"></i> Sell XD</a>
-        <a href="#topup" class="b-btn topup"><i class="fas fa-wallet"></i> Top Up</a>
+        <a class="b-btn" onclick="openModal('App Hub', 'Download the Blacklord Tech mobile app and companion utilities.')"><i class="fas fa-mobile-alt"></i> App</a>
+        <a class="b-btn" onclick="openModal('Sell XD', 'Convert or trade your platform credits instantly.')"><i class="fas fa-exchange-alt"></i> Sell XD</a>
+        <a class="b-btn topup" onclick="openModal('Top Up USD Balance', 'Deposit USD funds instantly via M-Pesa, card, or crypto.')"><i class="fas fa-wallet"></i> Top Up</a>
       </div>
       <div class="balance-amount">
         <span class="num">42</span>
-        <span class="currency">XD</span>
+        <span class="currency">USD</span>
       </div>
-      <div class="balance-ksh">58.16 KSH</div>
+      <div class="balance-ksh">Active USD Wallet</div>
       <div class="wave-chart">
         <svg viewBox="0 0 500 50" preserveAspectRatio="none">
           <path d="M0,25 Q125,5 250,25 T500,25 L500,50 L0,50 Z" fill="rgba(239, 68, 68, 0.15)"></path>
@@ -444,68 +530,82 @@
 
     <div class="section-label">QUICK ACCESS & PLATFORM TOOLS</div>
     <div class="quick-grid">
-      <a href="#deploy" class="quick-card">
+      <div class="quick-card" onclick="openModal('Deploy Bot', 'Launch your WhatsApp bot instance securely via Pterodactyl bridge.')">
         <div class="quick-icon"><i class="fas fa-cloud-upload-alt"></i></div>
         <div class="quick-title">Deploy Bot</div>
         <div class="quick-sub">Watch tutorials</div>
-      </a>
-      <a href="#topup" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Top Up USD Balance', 'Deposit USD funds instantly via M-Pesa, card, or crypto.')">
         <div class="quick-icon"><i class="fas fa-wallet"></i></div>
         <div class="quick-title">Top Up</div>
         <div class="quick-sub">Add funds instantly</div>
-      </a>
-      <a href="#smm" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Boost SMM', 'Automated social media growth for Instagram, WhatsApp channels & TikTok.')">
         <div class="quick-icon"><i class="fas fa-bullhorn"></i></div>
         <div class="quick-title">Boost SMM</div>
         <div class="quick-sub">Likes, follows & more</div>
-      </a>
-      <a href="#referral" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Referral Program', 'Share your referral link and earn lifetime commissions.')">
         <div class="quick-icon"><i class="fas fa-users"></i></div>
         <div class="quick-title">Referral</div>
         <div class="quick-sub">Earn commissions</div>
-      </a>
-      <a href="#panel" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Get Panel', 'Setup your own hosting panel with custom domain mapping.')">
         <div class="quick-icon"><i class="fas fa-shopping-bag"></i></div>
         <div class="quick-title">Get Panel</div>
         <div class="quick-sub">Setup hosting</div>
-      </a>
-      <a href="#servers" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('My Servers', 'View active VPS containers, Pterodactyl nodes, and bridge status.')">
         <div class="quick-icon"><i class="fas fa-server"></i></div>
         <div class="quick-title">My Servers</div>
         <div class="quick-sub">Manage active instances</div>
-      </a>
-      <a href="#links" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Site Links', 'Official channels, WhatsApp group, and community support.')">
         <div class="quick-icon"><i class="fas fa-link"></i></div>
         <div class="quick-title">Site Links</div>
         <div class="quick-sub">Official channels</div>
-      </a>
-      <a href="#calculator" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Calculator', 'Calculate hosting costs, bot resources, and SMM packages.')">
         <div class="quick-icon"><i class="fas fa-calculator"></i></div>
         <div class="quick-title">Calculator</div>
         <div class="quick-sub">Cost estimators</div>
-      </a>
-      <a href="#earn" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Earn Money', 'Monetize traffic and partner with Blacklord Tech Inc.')">
         <div class="quick-icon"><i class="fas fa-dollar-sign"></i></div>
         <div class="quick-title">Earn Money</div>
         <div class="quick-sub">Monetize traffic</div>
-      </a>
-      <a href="#api" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('API Documentation', 'Integrate Blacklord REST APIs into your applications.')">
         <div class="quick-icon"><i class="fas fa-code"></i></div>
         <div class="quick-title">API</div>
         <div class="quick-sub">Developer endpoints</div>
-      </a>
-      <a href="#child" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Child Panel', 'Launch your own branded reseller panel instantly.')">
         <div class="quick-icon"><i class="fas fa-network-wired"></i></div>
         <div class="quick-title">Child Panel</div>
         <div class="quick-sub">Reseller panel setup</div>
-      </a>
-      <a href="#webdev" class="quick-card">
+      </div>
+      <div class="quick-card" onclick="openModal('Web Development', 'Request custom website design, mobile apps, or backend bots.')">
         <div class="quick-icon"><i class="fas fa-laptop-code"></i></div>
         <div class="quick-title">Web Dev</div>
         <div class="quick-sub">Custom solutions</div>
-      </a>
+      </div>
     </div>
   </main>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-title" id="modalTitle">Action Center</div>
+      <div class="modal-sub" id="modalSub">Complete your request securely through the Blacklord Tech platform.</div>
+      <div class="modal-form-group">
+        <label id="modalLabel">Enter Details / Amount (USD)</label>
+        <input type="text" class="modal-input" id="modalInput" placeholder="e.g. 10.00 or bot_token">
+      </div>
+      <button class="modal-btn" onclick="submitModal()">Proceed Now</button>
+    </div>
+  </div>
 
   <script>
     const menuToggle = document.getElementById('menuToggle');
@@ -521,6 +621,27 @@
     menuToggle.addEventListener('click', toggleNav);
     closeSidebar.addEventListener('click', toggleNav);
     overlay.addEventListener('click', toggleNav);
+
+    function openModal(title, subtitle) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalSub').innerText = subtitle;
+      document.getElementById('modalOverlay').classList.add('active');
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function submitModal() {
+      alert('Request submitted successfully! Processing via Blacklord Tech bridge.');
+      closeModal();
+    }
+
+    document.getElementById('crownBtn').addEventListener('click', () => {
+      openModal('Blacklord VIP Membership', 'Enjoy zero-fee bot deployments, priority support, and custom server nodes.');
+    });
   </script>
 </body>
 </html>
