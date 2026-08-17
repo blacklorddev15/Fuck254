@@ -254,226 +254,13 @@
       height: 35px;
     }
     .section-label {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-style: italic;
-      font-weight: 700;
-      color: #ffffff;
-      margin: 1.5rem 0 0.25rem;
-      text-align: center;
-    }
-    .section-sub {
-      font-size: 0.8rem;
-      color: #facc15;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 1rem;
-      text-align: center;
-      font-weight: 600;
-    }
-    /* Panel Plans Grid */
-    .plans-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.85rem;
-      margin-bottom: 2rem;
-    }
-    .plan-card {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.15rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .plan-card.full-width {
-      grid-column: span 2;
-      border-color: rgba(250, 204, 21, 0.3);
-    }
-    .plan-icon {
-      width: 40px;
-      height: 40px;
-      background: #161922;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #facc15;
-      font-size: 1.1rem;
-      margin-bottom: 0.75rem;
-    }
-    .plan-name {
-      font-weight: 700;
-      font-size: 1rem;
-      color: #ffffff;
-      margin-bottom: 0.1rem;
-    }
-    .plan-type {
-      font-size: 0.75rem;
-      color: #facc15;
-      font-style: italic;
-      margin-bottom: 0.5rem;
-    }
-    .plan-desc {
-      font-size: 0.72rem;
-      color: #9ca3af;
-      margin-bottom: 1rem;
-      line-height: 1.4;
-    }
-    .plan-price-box {
-      background: #161922;
-      border: 1px solid rgba(250, 204, 21, 0.2);
-      border-radius: 10px;
-      padding: 0.5rem;
-      text-align: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #facc15;
-      margin-bottom: 0.75rem;
-    }
-    .plan-btn {
-      background: #161922;
-      border: 1px solid rgba(250, 204, 21, 0.3);
-      color: #facc15;
-      border-radius: 8px;
-      padding: 0.5rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .plan-btn:hover { background: #facc15; color: #000; }
-
-    /* Bot Pairing Cards Grid */
-    .bots-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.85rem;
-      margin-bottom: 1.5rem;
-    }
-    .bot-card {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.15rem;
-      position: relative;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-    .bot-card.selected {
-      border-color: #facc15;
-      box-shadow: 0 0 15px rgba(250, 204, 21, 0.15);
-    }
-    .bot-badge-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.75rem;
-    }
-    .bot-abbr {
-      width: 36px;
-      height: 36px;
-      background: #161922;
-      border: 1px solid rgba(250, 204, 21, 0.3);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #facc15;
-      font-weight: 700;
-      font-size: 0.85rem;
-    }
-    .bot-check {
-      color: #22c55e;
-      font-size: 1rem;
-      display: none;
-    }
-    .bot-card.selected .bot-check { display: block; }
-    .bot-name {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #ffffff;
-      margin-bottom: 0.1rem;
-    }
-    .bot-type {
-      font-size: 0.75rem;
-      color: #facc15;
-      font-style: italic;
-      margin-bottom: 0.5rem;
-    }
-    .bot-desc {
-      font-size: 0.72rem;
-      color: #9ca3af;
-      line-height: 1.4;
-    }
-
-    /* Pairing Input & Button */
-    .pairing-box {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-    .pairing-label {
       font-size: 0.75rem;
       color: #9ca3af;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
       font-weight: 700;
     }
-    .pairing-input {
-      width: 100%;
-      background: #161922;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 0.85rem 1rem;
-      color: #fff;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    .pairing-hint {
-      font-size: 0.72rem;
-      color: #9ca3af;
-      margin-bottom: 1rem;
-      line-height: 1.4;
-    }
-    .generate-btn {
-      width: 100%;
-      background: #facc15;
-      color: #000000;
-      font-weight: 700;
-      border: none;
-      border-radius: 12px;
-      padding: 0.95rem;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(250, 204, 21, 0.3);
-      text-align: center;
-    }
-    .pairing-status {
-      text-align: center;
-      font-size: 0.8rem;
-      color: #facc15;
-      margin-top: 0.75rem;
-      font-style: italic;
-    }
-    .powered-footer {
-      text-align: center;
-      font-size: 0.75rem;
-      color: #9ca3af;
-      margin-top: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
     .quick-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -591,6 +378,33 @@
       margin-top: 1rem;
       box-shadow: 0 4px 20px rgba(250, 204, 21, 0.3);
     }
+    /* Professional Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #161922;
+      border: 1px solid #facc15;
+      color: #fff;
+      padding: 0.85rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      z-index: 300;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .toast i { color: #22c55e; font-size: 1.1rem; }
+
     /* Sidebar Drawer */
     .sidebar-overlay {
       position: fixed;
@@ -676,11 +490,11 @@
     </div>
     <ul class="nav-list">
       <li class="nav-item"><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-      <li class="nav-item"><a onclick="window.location.href='bots.html'"><i class="fas fa-cloud-upload-alt"></i> Deploy Bot</a></li>
+      <li class="nav-item"><a href="bots.html"><i class="fas fa-cloud-upload-alt"></i> Deploy Bot</a></li>
       <li class="nav-item"><a onclick="openModal('Top Up USD Balance', 'Deposit USD funds instantly via M-Pesa, card, or crypto.')"><i class="fas fa-wallet"></i> Top Up</a></li>
       <li class="nav-item"><a onclick="openModal('Boost SMM', 'Automated social media growth for Instagram, WhatsApp channels & TikTok.')"><i class="fas fa-bullhorn"></i> Boost SMM</a></li>
       <li class="nav-item"><a onclick="openModal('Referral Program', 'Share your referral link and earn lifetime commissions.')"><i class="fas fa-users"></i> Referral</a></li>
-      <li class="nav-item"><a onclick="window.location.href='panels.html'"><i class="fas fa-shopping-bag"></i> Get Panel</a></li>
+      <li class="nav-item"><a href="panels.html"><i class="fas fa-shopping-bag"></i> Get Panel</a></li>
       <li class="nav-item"><a onclick="openModal('My Servers', 'View active VPS containers, Pterodactyl nodes, and bridge status.')"><i class="fas fa-server"></i> My Servers</a></li>
       <li class="nav-item"><a onclick="openModal('Site Links', 'Official channels, WhatsApp group, and community support.')"><i class="fas fa-link"></i> Site Links</a></li>
       <li class="nav-item"><a onclick="openModal('Calculator', 'Calculate hosting costs, bot resources, and SMM packages.')"><i class="fas fa-calculator"></i> Calculator</a></li>
@@ -741,135 +555,8 @@
       </div>
     </div>
 
-    <!-- Panel Plans Section -->
-    <div class="section-sub">Pterodactyl hosting — Pay with SD Balance</div>
-    <div class="section-label">Panel Plans</div>
-    <div class="plans-grid">
-      <div class="plan-card">
-        <div>
-          <div class="plan-icon"><i class="fas fa-database"></i></div>
-          <div class="plan-name">10GB Storage</div>
-          <div class="plan-type">User Panel</div>
-          <div class="plan-desc">1GB RAM, 10GB Disk, 40% CPU. Ideal for small bots.</div>
-        </div>
-        <div>
-          <div class="plan-price-box">10 SD</div>
-          <button class="plan-btn" onclick="openModal('Get Panel: 10GB Storage', 'Confirm hosting activation for 10 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
-        </div>
-      </div>
-
-      <div class="plan-card">
-        <div>
-          <div class="plan-icon"><i class="fas fa-server"></i></div>
-          <div class="plan-name">Bulky 2</div>
-          <div class="plan-type">Power User</div>
-          <div class="plan-desc">Unlimited RAM, Disk, and CPU. Multi-bot support.</div>
-        </div>
-        <div>
-          <div class="plan-price-box">20 SD</div>
-          <button class="plan-btn" onclick="openModal('Get Panel: Bulky 2', 'Confirm hosting activation for 20 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
-        </div>
-      </div>
-
-      <div class="plan-card">
-        <div>
-          <div class="plan-icon"><i class="fas fa-hdd"></i></div>
-          <div class="plan-name">Bulky 3</div>
-          <div class="plan-type">Enterprise</div>
-          <div class="plan-desc">Unlimited RAM, Disk, and CPU. High performance.</div>
-        </div>
-        <div>
-          <div class="plan-price-box">40 SD</div>
-          <button class="plan-btn" onclick="openModal('Get Panel: Bulky 3', 'Confirm hosting activation for 40 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
-        </div>
-      </div>
-
-      <div class="plan-card">
-        <div>
-          <div class="plan-icon"><i class="fas fa-microchip"></i></div>
-          <div class="plan-name">Bulky 4</div>
-          <div class="plan-type">Extreme</div>
-          <div class="plan-desc">Unlimited RAM, Disk, and CPU. Professional use.</div>
-        </div>
-        <div>
-          <div class="plan-price-box">60 SD</div>
-          <button class="plan-btn" onclick="openModal('Get Panel: Bulky 4', 'Confirm hosting activation for 60 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
-        </div>
-      </div>
-
-      <div class="plan-card full-width">
-        <div style="display: flex; gap: 1rem; align-items: center;">
-          <div class="plan-icon" style="margin-bottom:0;"><i class="fas fa-infinity"></i></div>
-          <div>
-            <div class="plan-name">Unlimited Admin</div>
-            <div class="plan-type">Full Control</div>
-            <div class="plan-desc">Unlimited RAM/Disk + Full Panel Admin access.</div>
-          </div>
-        </div>
-        <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
-          <div class="plan-price-box" style="margin-bottom:0; padding: 0.4rem 1.5rem;">100 SD</div>
-          <button class="plan-btn" style="padding: 0.6rem 1.5rem;" onclick="openModal('Get Panel: Unlimited Admin', 'Confirm admin hosting activation for 100 SD balance.')"><i class="fas fa-shopping-cart"></i> Get Panel</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bot Pairing Section -->
-    <div class="section-sub">Select your bot & pair instantly</div>
-    <div class="section-label">WhatsApp Bot Pairing</div>
-    <div class="bots-grid">
-      <div class="bot-card" id="bot-talkless" onclick="selectBot('talkless', 'Talkless Ultra')">
-        <div class="bot-badge-row">
-          <div class="bot-abbr">TU</div>
-          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
-        </div>
-        <div class="bot-name">Talkless Ultra</div>
-        <div class="bot-type">Automation</div>
-        <div class="bot-desc">Streamlined tools, utilities, and group management features.</div>
-      </div>
-
-      <div class="bot-card" id="bot-skylar" onclick="selectBot('skylar', 'Skylar XMD')">
-        <div class="bot-badge-row">
-          <div class="bot-abbr">SK</div>
-          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
-        </div>
-        <div class="bot-name">Skylar XMD</div>
-        <div class="bot-type">Smart Bot</div>
-        <div class="bot-desc">A flexible assistant with social media and AI commands.</div>
-      </div>
-
-      <div class="bot-card" id="bot-rita" onclick="selectBot('rita', 'Rita XMD')">
-        <div class="bot-badge-row">
-          <div class="bot-abbr">RT</div>
-          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
-        </div>
-        <div class="bot-name">Rita XMD</div>
-        <div class="bot-type">Essential</div>
-        <div class="bot-desc">A clean, lightweight bot for essential WhatsApp commands.</div>
-      </div>
-
-      <div class="bot-card selected" id="bot-titan" onclick="selectBot('titan', 'Titan XD')">
-        <div class="bot-badge-row">
-          <div class="bot-abbr">TM</div>
-          <div class="bot-check"><i class="fas fa-check-circle"></i></div>
-        </div>
-        <div class="bot-name">Titan XD</div>
-        <div class="bot-type">Command Suite</div>
-        <div class="bot-desc">Feature-rich games, tools, AI, music, economy, and social commands.</div>
-      </div>
-    </div>
-
-    <div class="pairing-box">
-      <div class="pairing-label">WhatsApp Number</div>
-      <input type="text" class="pairing-input" id="whatsappNumber" value="254712345678" placeholder="254712345678">
-      <div class="pairing-hint">Use the full country code without a plus sign. Example: 254712345678.</div>
-      <button class="generate-btn" onclick="generatePairingCode()">Generate Pairing Code</button>
-      <div class="pairing-status" id="pairingStatus">Bot is ready to generate your pairing code...</div>
-    </div>
-
-    <div class="powered-footer">Powered by BLACKLORD TECH INC</div>
-
-    <div class="section-label" style="margin-top: 2rem;">QUICK ACCESS & PLATFORM TOOLS</div>
-    <div class="quick-grid" style="margin-top: 1rem;">
+    <div class="section-label">QUICK ACCESS & PLATFORM TOOLS</div>
+    <div class="quick-grid">
       <div class="quick-card" onclick="window.location.href='bots.html'">
         <div class="quick-icon"><i class="fas fa-cloud-upload-alt"></i></div>
         <div class="quick-title">Deploy Bot</div>
@@ -920,7 +607,7 @@
         <div class="quick-title">API</div>
         <div class="quick-sub">Developer endpoints</div>
       </div>
-      <div class="quick-card" onclick="openModal('Child Panel', 'Launch your own branded reseller panel instantly.')">
+      <div class="quick-card" onclick="window.location.href='panels.html'">
         <div class="quick-icon"><i class="fas fa-network-wired"></i></div>
         <div class="quick-title">Child Panel</div>
         <div class="quick-sub">Reseller panel setup</div>
@@ -941,10 +628,16 @@
       <div class="modal-sub" id="modalSub">Complete your request securely through the Blacklord Tech platform.</div>
       <div class="modal-form-group">
         <label id="modalLabel">Enter Details / Amount (USD)</label>
-        <input type="text" class="modal-input" id="modalInput" placeholder="e.g. 10.00 or bot_token">
+        <input type="text" class="modal-input" id="modalInput" placeholder="e.g. 10.00 or account_id">
       </div>
       <button class="modal-btn" onclick="submitModal()">Proceed Now</button>
     </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toastBox">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastText">Request processed successfully!</span>
   </div>
 
   <script>
@@ -962,27 +655,6 @@
     closeSidebar.addEventListener('click', toggleNav);
     overlay.addEventListener('click', toggleNav);
 
-    let selectedBotName = 'Titan XD';
-    function selectBot(id, name) {
-      document.querySelectorAll('.bot-card').forEach(c => c.classList.remove('selected'));
-      document.getElementById('bot-' + id).classList.add('selected');
-      selectedBotName = name;
-    }
-
-    function generatePairingCode() {
-      const num = document.getElementById('whatsappNumber').value;
-      const status = document.getElementById('pairingStatus');
-      if (!num || num.length < 10) {
-        alert('Please enter a valid WhatsApp phone number with country code.');
-        return;
-      }
-      status.innerText = 'Connecting to Pterodactyl bridge for ' + selectedBotName + '...';
-      setTimeout(() => {
-        const fakeCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-        status.innerHTML = '<b style="color:#22c55e;">Pairing Code generated successfully for ' + selectedBotName + ': <span style="font-size:1.2rem; color:#fff;">' + fakeCode + '</span></b>';
-      }, 1500);
-    }
-
     function openModal(title, subtitle) {
       document.getElementById('modalTitle').innerText = title;
       document.getElementById('modalSub').innerText = subtitle;
@@ -995,9 +667,18 @@
       document.getElementById('modalOverlay').classList.remove('active');
     }
 
+    function showToast(message) {
+      const toast = document.getElementById('toastBox');
+      document.getElementById('toastText').innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
     function submitModal() {
-      alert('Request submitted successfully! Processing via Blacklord Tech bridge.');
       closeModal();
+      showToast('Request submitted successfully! Processing via Blacklord Tech bridge.');
     }
 
     document.getElementById('crownBtn').addEventListener('click', () => {
