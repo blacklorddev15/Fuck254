@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Next Level Features | BLACKLORD TECH INC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">♛</div>
+      <div>
+        <div class="brand-name">BLACKLORD</div>
+        <div class="brand-sub">TECH INC.</div>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="nav-icon"><i class="fas fa-chart-line"></i></span>Dashboard</a>
+      <a href="index.html"><span class="nav-icon"><i class="fas fa-home"></i></span>Main Site</a>
+      <a href="support.html"><span class="nav-icon"><i class="fas fa-headset"></i></span>Support Center</a>
+      <a href="status.html"><span class="nav-icon"><i class="fas fa-heartbeat"></i></span>System Status</a>
+      <a href="affiliate.html"><span class="nav-icon"><i class="fas fa-users"></i></span>Affiliate</a>
+      <a href="admin.html"><span class="nav-icon"><i class="fas fa-user-shield"></i></span>Admin</a>
+    </nav>
+    <div class="sidebar-footer">
+      <strong>Next Level</strong>
+      Advanced bot management.
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Premium Suite</div>
+        <h1 class="title">Next Level Features</h1>
+        <p class="subtitle">Advanced AI customization, automated giveaways, and bot health insurance.</p>
+      </div>
+      <div class="user-box">
+        <span id="userLabel">Guest user</span>
+        <span class="avatar"><i class="fas fa-level-up-alt"></i></span>
+      </div>
+    </header>
+
+    <section class="card" style="margin-bottom:2rem;">
+      <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic; margin-bottom:1rem;">Member Access</h2>
+      <div class="form-grid">
+        <div class="field">
+          <label>Phone Number</label>
+          <input id="phone" placeholder="e.g. 254712345678" />
+        </div>
+        <div style="display:flex; align-items:end">
+          <button class="btn gold" onclick="refreshAll()"><i class="fas fa-search"></i> Load Workspace</button>
+        </div>
+      </div>
+      <div id="globalMsg" class="notice"></div>
+    </section>
+
+    <div class="grid grid-2">
+      <!-- AI CUSTOMIZER -->
+      <section class="card">
+        <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic; margin-bottom:1rem;"><i class="fas fa-brain"></i> AI Bot Customizer</h2>
+        <p class="stat-note" style="margin-bottom:1.5rem;">Train your bot's personality and define its auto-response tone.</p>
+        <div class="grid" style="gap:1rem">
+          <div class="field">
+            <label>Bot Display Name</label>
+            <input id="botName" placeholder="e.g. Blacklord AI" />
+          </div>
+          <div class="field">
+            <label>Response Tone</label>
+            <select id="tone">
+              <option value="friendly">Friendly tone</option>
+              <option value="professional">Professional tone</option>
+              <option value="funny">Funny tone</option>
+              <option value="minimal">Minimal tone</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn gold" style="margin-top:1.5rem; width:100%" onclick="saveCustomizer()">Save Bot Profile</button>
+        <div id="profiles" class="list" style="margin-top:1.5rem"></div>
+      </section>
+
+      <!-- BOT INSURANCE -->
+      <section class="card">
+        <h2 style="color:var(--green); font-family:'Playfair Display',serif; font-style:italic; margin-bottom:1rem;"><i class="fas fa-shield-alt"></i> Bot Health Insurance</h2>
+        <p class="stat-note" style="margin-bottom:1.5rem;">Protect your bot from bans. If your bot is banned, we provide priority support for re-setup.</p>
+        <div class="field">
+          <label>Server ID (Optional)</label>
+          <input id="insuranceServerId" type="number" placeholder="Enter server ID" />
+        </div>
+        <button class="btn green" style="margin-top:1.5rem; width:100%" onclick="activateInsurance()">Activate (2 SD / Month)</button>
+        <div id="insuranceList" class="list" style="margin-top:1.5rem"></div>
+      </section>
+    </div>
+
+    <!-- GIVEAWAYS -->
+    <section class="card" style="margin-top:2rem;">
+      <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic; margin-bottom:1.5rem;"><i class="fas fa-gift"></i> Scheduled Giveaways</h2>
+      <div id="giveaways" class="list">
+        <div class="empty">Loading active giveaways...</div>
+      </div>
+      <div id="giveawayMsg" class="notice"></div>
+    </section>
+
+    <!-- COMMUNITY CHAT -->
+    <section class="card" style="margin-top:2rem;">
+      <h2 style="color:var(--gold); font-family:'Playfair Display',serif; font-style:italic; margin-bottom:1.5rem;"><i class="fas fa-comments"></i> Community Live Chat</h2>
+      <div id="chatFeed" class="thread" style="height:300px; margin-bottom:1.5rem;">
+        <div class="empty">Loading messages...</div>
+      </div>
+      <div class="field">
+        <textarea id="chatBody" placeholder="Write a community message..."></textarea>
+      </div>
+      <button class="btn gold" style="margin-top:1rem" onclick="sendChat()"><i class="fas fa-paper-plane"></i> Send Message</button>
+      <div id="chatMsg" class="notice"></div>
+    </section>
+
+    <div class="footer-note" style="margin-top: 5rem; color: #71717a; font-size: 0.8rem; text-align: center;">
+      BLACKLORD TECH INC. · Premium features require an active Pro subscription.
+    </div>
+  </main>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const phoneValue = () => $('phone').value.trim();
+  const showNotice = (id, message, type = 'success') => { 
+    const el = $(id);
+    el.textContent = message;
+    el.className = 'notice show ' + type;
+  };
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  async function api(url, options = {}) { 
+    const res = await fetch(url, options); 
+    const data = await res.json(); 
+    if (!res.ok || !data.success) throw new Error(data.error || 'Request failed'); 
+    return data; 
+  }
+
+  async function refreshAll() {
+    const p = phoneValue();
+    if (!p) return showNotice('globalMsg', 'Enter your phone number first.', 'error');
+    localStorage.setItem('samsung_user_phone', p);
+    $('userLabel').textContent = p;
+    try {
+      await Promise.allSettled([loadCustomizer(), loadGiveaways(), loadInsurance(), loadChat()]);
+      showNotice('globalMsg', 'Workspace loaded successfully.');
+    } catch (e) { showNotice('globalMsg', e.message, 'error'); }
+  }
+
+  async function saveCustomizer() {
+    try { 
+      const data = await api('/api/user/customizer', { 
+        method:'POST', 
+        headers:{'Content-Type':'application/json'}, 
+        body:JSON.stringify({ phone: phoneValue(), botName:$('botName').value, tone:$('tone').value }) 
+      }); 
+      alert(data.message); 
+      loadCustomizer(); 
+    } catch (e) { alert(e.message); }
+  }
+
+  async function loadCustomizer() {
+    if (!phoneValue()) return;
+    try { 
+      const data = await api('/api/user/customizer?phone=' + encodeURIComponent(phoneValue())); 
+      $('profiles').innerHTML = data.profiles?.length ? data.profiles.map(p => `
+        <div class="list-item">
+          <div>
+            <strong style="color:#fff;">${esc(p.bot_name || 'Unnamed Bot')}</strong>
+            <small style="color:var(--muted);">${esc(p.tone || 'friendly')} tone</small>
+          </div>
+          <span class="pill">Active</span>
+        </div>
+      `).join('') : '<div class="empty">No bot profiles saved.</div>'; 
+    } catch (e) {}
+  }
+
+  async function loadGiveaways() {
+    try { 
+      const data = await api('/api/user/giveaways'); 
+      $('giveaways').innerHTML = data.giveaways?.length ? data.giveaways.map(item => `
+        <div class="list-item">
+          <div>
+            <strong style="color:#fff;">${esc(item.title)}</strong>
+            <small style="color:var(--muted);">Prize: ${Number(item.prize_sd).toFixed(2)} SD · Fee: ${Number(item.entry_fee_sd).toFixed(2)} SD</small>
+          </div>
+          <button class="btn green" style="padding:0.4rem 1rem; font-size:0.75rem;" onclick="enterGiveaway(${item.id})">Join</button>
+        </div>
+      `).join('') : '<div class="empty">No active giveaways.</div>'; 
+    } catch (e) {}
+  }
+
+  async function enterGiveaway(id) { 
+    try { 
+      const data = await api('/api/user/giveaways', { 
+        method:'POST', 
+        headers:{'Content-Type':'application/json'}, 
+        body:JSON.stringify({ phone: phoneValue(), giveawayId:id }) 
+      }); 
+      showNotice('giveawayMsg', data.message); 
+      loadGiveaways(); 
+    } catch (e) { showNotice('giveawayMsg', e.message, 'error'); } 
+  }
+
+  async function loadInsurance() {
+    if (!phoneValue()) return;
+    try { 
+      const data = await api('/api/user/insurance?phone=' + encodeURIComponent(phoneValue())); 
+      $('insuranceList').innerHTML = data.subscriptions?.length ? data.subscriptions.map(s => `
+        <div class="list-item">
+          <div>
+            <strong style="color:#fff;">Server ${s.server_id || 'Global'}</strong>
+            <small style="color:var(--muted);">Next billing: ${new Date(s.next_billing_date).toLocaleDateString()}</small>
+          </div>
+          <span class="pill online">Active</span>
+        </div>
+      `).join('') : '<div class="empty">No protection plans active.</div>'; 
+    } catch (e) {}
+  }
+
+  async function activateInsurance() { 
+    try { 
+      const serverId = $('insuranceServerId').value ? Number($('insuranceServerId').value) : null; 
+      const data = await api('/api/user/insurance', { 
+        method:'POST', 
+        headers:{'Content-Type':'application/json'}, 
+        body:JSON.stringify({ phone: phoneValue(), action:'subscribe', serverId }) 
+      }); 
+      alert(data.message); 
+      loadInsurance(); 
+    } catch (e) { alert(e.message); } 
+  }
+
+  async function loadChat() { 
+    try { 
+      const data = await api('/api/user/chat'); 
+      $('chatFeed').innerHTML = data.messages?.length ? data.messages.map(m => `
+        <div class="bubble ${m.phone === phoneValue() ? 'user' : ''}">
+          ${esc(m.body)}
+          <small>${esc(m.username || 'Member')} · ${new Date(m.created_at).toLocaleTimeString()}</small>
+        </div>
+      `).join('') : '<div class="empty">No community messages yet.</div>'; 
+      $('chatFeed').scrollTop = $('chatFeed').scrollHeight;
+    } catch (e) {} 
+  }
+
+  async function sendChat() { 
+    try { 
+      const text = $('chatBody').value.trim(); 
+      if (!text) return; 
+      await api('/api/user/chat', { 
+        method:'POST', 
+        headers:{'Content-Type':'application/json'}, 
+        body:JSON.stringify({ phone: phoneValue(), body:text }) 
+      }); 
+      $('chatBody').value = ''; 
+      loadChat(); 
+    } catch (e) { alert(e.message); } 
+  }
+
+  document.addEventListener('DOMContentLoaded', () => { 
+    $('phone').value = localStorage.getItem('samsung_user_phone') || ''; 
+    loadGiveaways(); 
+    loadChat(); 
+    if (phoneValue()) refreshAll(); 
+    setInterval(loadChat, 10000); 
+  });
+</script>
+</body>
+</html>
