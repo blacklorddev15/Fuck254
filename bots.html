@@ -26,6 +26,7 @@
       position: sticky;
       top: 0;
       z-index: 50;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .topbar-left {
       display: flex;
@@ -192,12 +193,35 @@
       box-shadow: 0 4px 20px rgba(250, 204, 21, 0.3);
       text-align: center;
     }
+    .generate-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
     .pairing-status {
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #facc15;
-      margin-top: 0.75rem;
+      margin-top: 1rem;
       font-style: italic;
+      line-height: 1.5;
+    }
+    .pairing-code-display {
+      background: #161922;
+      border: 1px dashed #facc15;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+    }
+    .code-text {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 3px;
+      margin: 0.5rem 0;
+      font-family: monospace;
     }
     .powered-footer {
       text-align: center;
@@ -214,7 +238,7 @@
     <div class="topbar-left">
       <a href="dashboard.html" class="menu-btn"><i class="fas fa-arrow-left"></i></a>
       <div>
-        <div class="topbar-subtitle">BWM XMD SMM</div>
+        <div class="topbar-subtitle">BLACKLORD ELITE</div>
         <div class="topbar-title">Bot Pairing Center</div>
       </div>
     </div>
@@ -278,7 +302,7 @@
         <div class="bot-desc">A clean, lightweight bot for essential WhatsApp commands.</div>
       </div>
 
-      <div class="bot-card selected" id="bot-titan" onclick="selectBot('titan', 'Titan XD')">
+      <div class="bot-card" id="bot-titan" onclick="selectBot('titan', 'Titan XD')">
         <div class="bot-badge-row">
           <div class="bot-abbr">TM</div>
           <div class="bot-check"><i class="fas fa-check-circle"></i></div>
@@ -298,7 +322,7 @@
         <div class="bot-desc">High-performance multitasking bot with advanced API connectors.</div>
       </div>
 
-      <div class="bot-card" id="bot-blacklord" onclick="selectBot('blacklord', 'Blacklord XMD')">
+      <div class="bot-card selected" id="bot-blacklord" onclick="selectBot('blacklord', 'Blacklord XMD')">
         <div class="bot-badge-row">
           <div class="bot-abbr">BL</div>
           <div class="bot-check"><i class="fas fa-check-circle"></i></div>
@@ -313,33 +337,114 @@
       <div class="pairing-label">WhatsApp Number</div>
       <input type="text" class="pairing-input" id="whatsappNumber" value="254712345678" placeholder="254712345678">
       <div class="pairing-hint">Use the full country code without a plus sign. Example: 254712345678.</div>
-      <button class="generate-btn" onclick="generatePairingCode()">Generate Pairing Code</button>
-      <div class="pairing-status" id="pairingStatus">Bot is ready to generate your pairing code...</div>
+      <button class="generate-btn" id="generateBtn" onclick="generatePairingCode()">Generate Pairing Code</button>
+      <div class="pairing-status" id="pairingStatus">Select your bot and enter your phone number above.</div>
+      <div class="pairing-code-display" id="pairingCodeDisplay">
+        <div style="font-size: 0.75rem; color: #9ca3af; text-transform: uppercase;">Your Pairing Code</div>
+        <div class="code-text" id="codeText">------</div>
+        <div style="font-size: 0.72rem; color: #9ca3af;">Open WhatsApp &rarr; Linked Devices &rarr; Link with phone number</div>
+      </div>
     </div>
 
     <div class="powered-footer">Powered by BLACKLORD TECH INC</div>
   </main>
 
   <script>
-    let selectedBotName = 'Titan XD';
-    function selectBot(id, name) {
+    let selectedBotType = 'blacklord';
+    let selectedBotName = 'Blacklord XMD';
+
+    function selectBot(type, name) {
       document.querySelectorAll('.bot-card').forEach(c => c.classList.remove('selected'));
-      document.getElementById('bot-' + id).classList.add('selected');
+      document.getElementById('bot-' + type).classList.add('selected');
+      selectedBotType = type;
       selectedBotName = name;
     }
 
-    function generatePairingCode() {
-      const num = document.getElementById('whatsappNumber').value;
+    async function generatePairingCode() {
+      const numInput = document.getElementById('whatsappNumber').value.trim();
       const status = document.getElementById('pairingStatus');
-      if (!num || num.length < 10) {
-        alert('Please enter a valid WhatsApp phone number with country code.');
+      const codeDisplay = document.getElementById('pairingCodeDisplay');
+      const codeText = document.getElementById('codeText');
+      const btn = document.getElementById('generateBtn');
+
+      const phone = numInput.replace(/\D/g, '');
+      if (!phone || phone.length < 10) {
+        alert('Please enter a valid WhatsApp phone number with country code (e.g., 254712345678).');
         return;
       }
-      status.innerText = 'Connecting to Pterodactyl bridge for ' + selectedBotName + '...';
-      setTimeout(() => {
-        const fakeCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-        status.innerHTML = '<b style="color:#22c55e;">Pairing Code generated successfully for ' + selectedBotName + ': <span style="font-size:1.2rem; color:#fff;">' + fakeCode + '</span></b>';
-      }, 1500);
+
+      btn.disabled = true;
+      btn.innerText = 'Requesting Code...';
+      codeDisplay.style.display = 'none';
+      status.innerText = 'Queuing pairing request for ' + selectedBotName + ' (' + phone + ')...';
+
+      try {
+        const res = await fetch('/api/user/pairing/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ whatsappPhone: phone, botType: selectedBotType })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Failed to start pairing session.');
+        }
+
+        const pairing = data.pairing || {};
+        const requestId = pairing.request_id;
+        if (!requestId) {
+          throw new Error('Invalid response from pairing server.');
+        }
+
+        if (pairing.pairing_code) {
+          codeText.innerText = pairing.pairing_code;
+          codeDisplay.style.display = 'block';
+          status.innerHTML = '<b style="color:#22c55e;">Pairing code generated successfully! Enter it in WhatsApp.</b>';
+          btn.disabled = false;
+          btn.innerText = 'Generate Pairing Code';
+          return;
+        }
+
+        status.innerText = 'Request queued. Waiting for Pterodactyl bridge to generate code...';
+
+        // Poll for status
+        let attempts = 0;
+        const maxAttempts = 30; // 60 seconds
+        const pollInterval = setInterval(async () => {
+          attempts++;
+          try {
+            const statusRes = await fetch('/api/user/pairing/status?requestId=' + encodeURIComponent(requestId));
+            const statusData = await statusRes.json();
+            const p = statusData.pairing;
+            if (p) {
+              if (p.pairing_code) {
+                clearInterval(pollInterval);
+                codeText.innerText = p.pairing_code;
+                codeDisplay.style.display = 'block';
+                status.innerHTML = '<b style="color:#22c55e;">Pairing code ready! Enter it in WhatsApp.</b>';
+                btn.disabled = false;
+                btn.innerText = 'Generate Pairing Code';
+              } else if (p.status === 'failed') {
+                clearInterval(pollInterval);
+                status.innerHTML = '<span style="color:#ef4444;">Pairing failed: ' + (p.message || 'Unknown error') + '</span>';
+                btn.disabled = false;
+                btn.innerText = 'Generate Pairing Code';
+              } else if (attempts >= maxAttempts) {
+                clearInterval(pollInterval);
+                status.innerHTML = '<span style="color:#f59e0b;">Pairing timeout. Ensure your Pterodactyl backend is running and polling /api/user/pairing/poll.</span>';
+                btn.disabled = false;
+                btn.innerText = 'Generate Pairing Code';
+              }
+            }
+          } catch (err) {
+            console.error('Polling error:', err);
+          }
+        }, 2000);
+
+      } catch (err) {
+        status.innerHTML = '<span style="color:#ef4444;">Error: ' + err.message + '</span>';
+        btn.disabled = false;
+        btn.innerText = 'Generate Pairing Code';
+      }
     }
   </script>
 </body>
