@@ -24,18 +24,80 @@
     .topbar-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; font-style: italic; color: #ffffff; line-height: 1.1; }
     .crown-btn { width: 42px; height: 42px; background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1.1rem; cursor: pointer; text-decoration: none; }
     .container { max-width: 600px; margin: 0.5rem auto; padding: 0 1rem; }
-    .welcome-box { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.1rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
-    .welcome-left { display: flex; align-items: center; gap: 1rem; }
-    .bot-avatar { width: 48px; height: 48px; background: #232632; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1.25rem; border: 1px solid rgba(250, 204, 21, 0.2); }
-    .welcome-meta .label { font-size: 0.7rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
-    .welcome-meta .name { font-size: 0.95rem; font-weight: 600; color: #ffffff; }
-    .currency-badge { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #facc15; font-weight: 600; background: #161922; padding: 0.4rem 0.75rem; border-radius: 8px; border: 1px solid rgba(250, 204, 21, 0.2); }
-    .hero-actions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
-    .hero-action-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.1rem; text-decoration: none; color: #ffffff; display: flex; flex-direction: column; gap: 0.3rem; cursor: pointer; transition: border-color 0.2s; }
-    .hero-action-card:hover { border-color: rgba(250, 204, 21, 0.4); }
-    .hero-action-card i { color: #facc15; font-size: 1.25rem; margin-bottom: 0.2rem; }
-    .hero-action-card .title { font-weight: 700; font-size: 0.95rem; }
-    .hero-action-card .sub { font-size: 0.75rem; color: #9ca3af; }
+    
+    /* Portal Hero Card matching reference image */
+    .portal-hero {
+      background: #111318;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 1.5rem 1rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .portal-banner-img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1.25rem;
+      border: 1px solid rgba(250, 204, 21, 0.2);
+    }
+    .portal-subtitle {
+      font-size: 0.75rem;
+      color: #facc15;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .portal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-style: italic;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+    .portal-desc {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 1.25rem;
+    }
+
+    /* 3 Metrics Cards row */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .metric-card {
+      background: #161922;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+    }
+    .metric-card .val {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #facc15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      margin-bottom: 0.15rem;
+    }
+    .metric-card .val .dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; display: inline-block; }
+    .metric-card .lbl {
+      font-size: 0.65rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Balance card */
     .balance-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; }
     .balance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .balance-title { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 0.5rem; }
@@ -49,14 +111,20 @@
     .balance-ksh { font-size: 0.9rem; color: #9ca3af; margin-bottom: 1rem; }
     .wave-chart { width: 100%; height: 50px; background: radial-gradient(circle at center, rgba(239, 68, 68, 0.15) 0%, transparent 70%); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .wave-chart svg { width: 100%; height: 35px; }
-    .section-label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.75rem; font-weight: 700; }
+
+    .section-label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.75rem; font-weight: 700; text-align: left; }
+    
+    /* Quick Access 2-column Grid matching reference bot selection */
     .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; margin-bottom: 1.5rem; }
-    .quick-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.25rem; text-align: center; text-decoration: none; color: #f3f4f6; transition: transform 0.2s, border-color 0.2s, background 0.2s; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .quick-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1rem; text-align: left; text-decoration: none; color: #f3f4f6; transition: transform 0.2s, border-color 0.2s, background 0.2s; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); cursor: pointer; display: flex; flex-direction: column; position: relative; }
     .quick-card:active { transform: scale(0.97); }
     .quick-card:hover { border-color: rgba(250, 204, 21, 0.4); background: #181b24; }
-    .quick-icon { width: 44px; height: 44px; background: #161922; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; color: #facc15; font-size: 1.2rem; }
-    .quick-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; color: #ffffff; }
-    .quick-sub { font-size: 0.75rem; color: #9ca3af; }
+    .quick-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+    .quick-icon-badge { width: 36px; height: 36px; background: #161922; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1rem; border: 1px solid rgba(250, 204, 21, 0.2); }
+    .quick-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.1rem; color: #ffffff; }
+    .quick-sub { font-size: 0.7rem; color: #facc15; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 0.3rem; }
+    .quick-desc { font-size: 0.75rem; color: #9ca3af; line-height: 1.3; }
+
     /* Sidebar Drawer */
     .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 100; display: none; }
     .sidebar-overlay.active { display: block; }
@@ -111,30 +179,27 @@
   </aside>
 
   <main class="container">
-    <div class="welcome-box">
-      <div class="welcome-left">
-        <div class="bot-avatar"><i class="fas fa-robot"></i></div>
-        <div class="welcome-meta">
-          <div class="label">Blacklord Elite Account</div>
-          <div class="name">Welcome back, Guest</div>
+    <!-- Portal Hero matching reference image -->
+    <div class="portal-hero">
+      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg" alt="Blacklord Tech Inc" class="portal-banner-img">
+      <div class="portal-subtitle">BLACKLORD PAIRING PORTAL</div>
+      <div class="portal-title">BLACKLORD PAIRING PORTAL</div>
+      <div class="portal-desc">Choose a bot, enter your WhatsApp number, and connect securely.</div>
+
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="val"><span class="dot"></span> ONLINE</div>
+          <div class="lbl">Active Users</div>
+        </div>
+        <div class="metric-card">
+          <div class="val"><i class="fas fa-shield-alt" style="color: #facc15;"></i> 24/7</div>
+          <div class="lbl">Uptime</div>
+        </div>
+        <div class="metric-card">
+          <div class="val"><i class="fas fa-globe" style="color: #facc15;"></i> GLOBAL</div>
+          <div class="lbl">Access</div>
         </div>
       </div>
-      <div class="currency-badge">
-        <i class="fas fa-dollar-sign"></i> USD
-      </div>
-    </div>
-
-    <div class="hero-actions-grid">
-      <a href="bots.html" class="hero-action-card">
-        <i class="fas fa-robot"></i>
-        <div class="title">Deploy Bots</div>
-        <div class="sub">6 Supported Bots</div>
-      </a>
-      <a href="boost.html" class="hero-action-card">
-        <i class="fas fa-bullhorn"></i>
-        <div class="title">SMM Boost</div>
-        <div class="sub">Marketplace & offers</div>
-      </a>
     </div>
 
     <div class="balance-card">
@@ -160,87 +225,151 @@
       </div>
     </div>
 
-    <div class="section-label">PLATFORM QUICK ACCESS & SUITES</div>
+    <div class="section-label">CHOOSE YOUR PLATFORM SUITE</div>
     <div class="quick-grid">
       <a href="bots.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-robot"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-robot"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">WhatsApp Bots</div>
         <div class="quick-sub">6 Supported Bots</div>
+        <div class="quick-desc">Pair Blacklord, Samsung, & more</div>
       </a>
       <a href="telegram.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-paper-plane"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-paper-plane"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Telegram Bot</div>
         <div class="quick-sub">Key Activation</div>
+        <div class="quick-desc">Generate Telegram activation keys</div>
       </a>
       <a href="topup.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-wallet"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-wallet"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Top Up & Wallet</div>
-        <div class="quick-sub">M-Pesa, Card, Voucher</div>
+        <div class="quick-sub">M-Pesa & Cards</div>
+        <div class="quick-desc">Fund your USD account instantly</div>
       </a>
       <a href="voucher.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-ticket-alt"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-ticket-alt"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Voucher Center</div>
         <div class="quick-sub">Redeem & Generate</div>
+        <div class="quick-desc">Redeem vouchers or admin generator</div>
       </a>
       <a href="boost.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-bullhorn"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-bullhorn"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">SMM Boost</div>
-        <div class="quick-sub">Marketplace & Orders</div>
+        <div class="quick-sub">Marketplace</div>
+        <div class="quick-desc">Likes, follows & social growth</div>
       </a>
       <a href="orders.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-box"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-box"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Order Stacker</div>
-        <div class="quick-sub">Active & Completed</div>
+        <div class="quick-sub">Tracking</div>
+        <div class="quick-desc">Completed & processing orders</div>
       </a>
       <a href="referral.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-users"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-users"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Referral Center</div>
         <div class="quick-sub">Affiliate Earnings</div>
+        <div class="quick-desc">Earn commission on invites</div>
       </a>
       <a href="servers.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-server"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-server"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Hosting & Servers</div>
         <div class="quick-sub">Pterodactyl Panel</div>
+        <div class="quick-desc">Manage hosted server instances</div>
       </a>
       <a href="domains.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-globe"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-globe"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Subdomain Workspace</div>
-        <div class="quick-sub">yourname.blacklord.tech</div>
+        <div class="quick-sub">Domain Management</div>
+        <div class="quick-desc">yourname.blacklord.tech</div>
       </a>
       <a href="analytics.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-chart-bar"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-chart-bar"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Analytics & Insights</div>
-        <div class="quick-sub">Usage & Services</div>
+        <div class="quick-sub">Usage Statistics</div>
+        <div class="quick-desc">Account insights and metrics</div>
       </a>
       <a href="automation.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-bolt"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-bolt"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Webhooks & Events</div>
-        <div class="quick-sub">Signed HMAC Events</div>
+        <div class="quick-sub">Automation</div>
+        <div class="quick-desc">Signed HMAC event delivery</div>
       </a>
       <a href="api.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-code"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-code"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Developer API</div>
         <div class="quick-sub">API Keys & Sandbox</div>
+        <div class="quick-desc">Build custom integrations</div>
       </a>
       <a href="community.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-comments"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-comments"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Community Posts</div>
-        <div class="quick-sub">Announcements & Feed</div>
+        <div class="quick-sub">Announcements</div>
+        <div class="quick-desc">Live activity and leaderboard</div>
       </a>
       <a href="support.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-life-ring"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-life-ring"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Support & Status</div>
         <div class="quick-sub">Tickets & FAQ</div>
+        <div class="quick-desc">24/7 client assistance</div>
       </a>
       <a href="membership.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-id-card"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-id-card"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Membership Plans</div>
         <div class="quick-sub">Elite & Pro Tiers</div>
+        <div class="quick-desc">Upgrade your subscription</div>
       </a>
       <a href="webdev.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-laptop-code"></i></div>
+        <div class="quick-card-header">
+          <div class="quick-icon-badge"><i class="fas fa-laptop-code"></i></div>
+          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
+        </div>
         <div class="quick-title">Web Dev Solutions</div>
-        <div class="quick-sub">Custom development</div>
+        <div class="quick-sub">Custom Software</div>
+        <div class="quick-desc">Professional application dev</div>
       </a>
     </div>
   </main>
