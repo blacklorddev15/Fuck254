@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>API Documentation | BLACKLORD TECH INC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #000000; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 3rem; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem 0.5rem; background: #000000; position: sticky; top: 0; z-index: 50; }
+    .topbar-left { display: flex; align-items: center; gap: 0.75rem; }
+    .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; }
+    .topbar-subtitle { font-size: 0.7rem; color: #facc15; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+    .topbar-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; font-style: italic; color: #ffffff; }
+    .container { max-width: 600px; margin: 0.5rem auto; padding: 0 1rem; }
+    .section-label { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-style: italic; font-weight: 700; color: #ffffff; margin: 1.25rem 0 0.25rem; text-align: center; }
+    .section-sub { font-size: 0.8rem; color: #facc15; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.5rem; text-align: center; font-weight: 600; }
+    .card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .powered-footer { text-align: center; font-size: 0.75rem; color: #9ca3af; margin-top: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="dashboard.html" class="menu-btn"><i class="fas fa-arrow-left"></i></a>
+      <div>
+        <div class="topbar-subtitle">BWM XMD SMM</div>
+        <div class="topbar-title">API Documentation</div>
+      </div>
+    </div>
+  </header>
+  <main class="container">
+    <div class="section-label">REST API</div>
+    <div class="section-sub">Integrate Blacklord Tech services</div>
+    <div class="card">
+      <p style="color:#9ca3af; margin-bottom: 1rem; font-size: 0.9rem;">Use your bearer token to automate bot pairing, panel creation, and SMM orders via our endpoints.</p>
+      <code style="display:block; background:#161922; padding:1rem; border-radius:8px; color:#facc15; font-size:0.85rem;">GET https://api.blacklord.tech/v1/status</code>
+    </div>
+    <div class="powered-footer">Powered by BLACKLORD TECH INC</div>
+  </main>
+</body>
+</html>

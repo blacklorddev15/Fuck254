@@ -10,463 +10,58 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background-color: #000000;
-      color: #f3f4f6;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      padding-bottom: 3rem;
-    }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.25rem 1rem 0.5rem;
-      background: #000000;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .menu-btn {
-      background: #161922;
-      border: 1px solid rgba(250, 204, 21, 0.3);
-      color: #facc15;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.1rem;
-    }
-    .topbar-subtitle {
-      font-size: 0.7rem;
-      color: #facc15;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: 700;
-    }
-    .topbar-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      font-style: italic;
-      color: #ffffff;
-      line-height: 1.1;
-    }
-    .crown-btn {
-      width: 42px;
-      height: 42px;
-      background: #161922;
-      border: 1px solid rgba(250, 204, 21, 0.3);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #facc15;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0.5rem auto;
-      padding: 0 1rem;
-    }
-    .welcome-box {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.1rem 1.25rem;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .welcome-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .bot-avatar {
-      width: 48px;
-      height: 48px;
-      background: #232632;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #facc15;
-      font-size: 1.25rem;
-      border: 1px solid rgba(250, 204, 21, 0.2);
-    }
-    .welcome-meta .label {
-      font-size: 0.7rem;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 2px;
-    }
-    .welcome-meta .name {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #ffffff;
-    }
-    .currency-badge {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.8rem;
-      color: #facc15;
-      font-weight: 600;
-      background: #161922;
-      padding: 0.4rem 0.75rem;
-      border-radius: 8px;
-      border: 1px solid rgba(250, 204, 21, 0.2);
-    }
-    .hero-actions-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-    .hero-action-card {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.1rem;
-      text-decoration: none;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
+    body { background-color: #000000; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 3rem; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem 0.5rem; background: #000000; position: sticky; top: 0; z-index: 50; }
+    .topbar-left { display: flex; align-items: center; gap: 0.75rem; }
+    .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; }
+    .topbar-subtitle { font-size: 0.7rem; color: #facc15; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+    .topbar-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; font-style: italic; color: #ffffff; line-height: 1.1; }
+    .crown-btn { width: 42px; height: 42px; background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1.1rem; cursor: pointer; text-decoration: none; }
+    .container { max-width: 600px; margin: 0.5rem auto; padding: 0 1rem; }
+    .welcome-box { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.1rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .welcome-left { display: flex; align-items: center; gap: 1rem; }
+    .bot-avatar { width: 48px; height: 48px; background: #232632; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1.25rem; border: 1px solid rgba(250, 204, 21, 0.2); }
+    .welcome-meta .label { font-size: 0.7rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .welcome-meta .name { font-size: 0.95rem; font-weight: 600; color: #ffffff; }
+    .currency-badge { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #facc15; font-weight: 600; background: #161922; padding: 0.4rem 0.75rem; border-radius: 8px; border: 1px solid rgba(250, 204, 21, 0.2); }
+    .hero-actions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+    .hero-action-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.1rem; text-decoration: none; color: #ffffff; display: flex; flex-direction: column; gap: 0.3rem; cursor: pointer; transition: border-color 0.2s; }
     .hero-action-card:hover { border-color: rgba(250, 204, 21, 0.4); }
-    .hero-action-card i {
-      color: #facc15;
-      font-size: 1.25rem;
-      margin-bottom: 0.2rem;
-    }
-    .hero-action-card .title {
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-    .hero-action-card .sub {
-      font-size: 0.75rem;
-      color: #9ca3af;
-    }
-    .balance-card {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-    .balance-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .balance-title {
-      font-size: 0.75rem;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .trend-badge {
-      color: #ef4444;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-    }
-    .balance-btn-row {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.25rem;
-    }
-    .b-btn {
-      flex: 1;
-      background: #161922;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 0.6rem;
-      color: #ffffff;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .b-btn.topup {
-      background: #22c55e;
-      border-color: #22c55e;
-      color: #000000;
-      font-weight: 700;
-    }
-    .balance-amount {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin-bottom: 0.2rem;
-    }
-    .balance-amount .num {
-      font-size: 2.25rem;
-      font-weight: 700;
-      color: #ffffff;
-    }
-    .balance-amount .currency {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #facc15;
-    }
-    .balance-ksh {
-      font-size: 0.9rem;
-      color: #9ca3af;
-      margin-bottom: 1rem;
-    }
-    .wave-chart {
-      width: 100%;
-      height: 50px;
-      background: radial-gradient(circle at center, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .wave-chart svg {
-      width: 100%;
-      height: 35px;
-    }
-    .section-label {
-      font-size: 0.75rem;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 0.75rem;
-      font-weight: 700;
-    }
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.85rem;
-      margin-bottom: 1.5rem;
-    }
-    .quick-card {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.25rem;
-      text-align: center;
-      text-decoration: none;
-      color: #f3f4f6;
-      transition: transform 0.2s, border-color 0.2s, background 0.2s;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-      cursor: pointer;
-    }
+    .hero-action-card i { color: #facc15; font-size: 1.25rem; margin-bottom: 0.2rem; }
+    .hero-action-card .title { font-weight: 700; font-size: 0.95rem; }
+    .hero-action-card .sub { font-size: 0.75rem; color: #9ca3af; }
+    .balance-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; }
+    .balance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .balance-title { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 0.5rem; }
+    .trend-badge { color: #ef4444; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.2rem; }
+    .balance-btn-row { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .b-btn { flex: 1; background: #161922; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 0.6rem; color: #ffffff; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.4rem; text-decoration: none; cursor: pointer; }
+    .b-btn.topup { background: #22c55e; border-color: #22c55e; color: #000000; font-weight: 700; }
+    .balance-amount { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.2rem; }
+    .balance-amount .num { font-size: 2.25rem; font-weight: 700; color: #ffffff; }
+    .balance-amount .currency { font-size: 1.25rem; font-weight: 700; color: #facc15; }
+    .balance-ksh { font-size: 0.9rem; color: #9ca3af; margin-bottom: 1rem; }
+    .wave-chart { width: 100%; height: 50px; background: radial-gradient(circle at center, rgba(239, 68, 68, 0.15) 0%, transparent 70%); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .wave-chart svg { width: 100%; height: 35px; }
+    .section-label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.75rem; font-weight: 700; }
+    .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; margin-bottom: 1.5rem; }
+    .quick-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.25rem; text-align: center; text-decoration: none; color: #f3f4f6; transition: transform 0.2s, border-color 0.2s, background 0.2s; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .quick-card:active { transform: scale(0.97); }
     .quick-card:hover { border-color: rgba(250, 204, 21, 0.4); background: #181b24; }
-    .quick-icon {
-      width: 44px;
-      height: 44px;
-      background: #161922;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 0.75rem;
-      color: #facc15;
-      font-size: 1.2rem;
-    }
-    .quick-title {
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 0.2rem;
-      color: #ffffff;
-    }
-    .quick-sub {
-      font-size: 0.75rem;
-      color: #9ca3af;
-    }
-    /* Modal / Action Viewer */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(5px);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .modal-overlay.active { display: flex; }
-    .modal-box {
-      background: #111318;
-      border: 1px solid rgba(250, 204, 21, 0.3);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 480px;
-      padding: 1.5rem;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-      position: relative;
-    }
-    .modal-close {
-      position: absolute;
-      top: 1.25rem; right: 1.25rem;
-      background: #161922; border: none; color: #facc15;
-      width: 32px; height: 32px; border-radius: 50%;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
-    .modal-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.5rem;
-    }
-    .modal-sub {
-      font-size: 0.85rem;
-      color: #9ca3af;
-      margin-bottom: 1.25rem;
-      line-height: 1.5;
-    }
-    .modal-form-group {
-      margin-bottom: 1rem;
-    }
-    .modal-form-group label {
-      display: block;
-      font-size: 0.8rem;
-      color: #d1d5db;
-      margin-bottom: 0.4rem;
-      font-weight: 600;
-    }
-    .modal-input {
-      width: 100%;
-      background: #161922;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      padding: 0.75rem 1rem;
-      color: #fff;
-      font-size: 0.95rem;
-    }
-    .modal-btn {
-      width: 100%;
-      background: #facc15;
-      color: #000000;
-      font-weight: 700;
-      border: none;
-      border-radius: 10px;
-      padding: 0.85rem;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 1rem;
-      box-shadow: 0 4px 20px rgba(250, 204, 21, 0.3);
-    }
-    /* Professional Toast Notification */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #161922;
-      border: 1px solid #facc15;
-      color: #fff;
-      padding: 0.85rem 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      z-index: 300;
-      font-size: 0.9rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      opacity: 0;
-    }
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-    .toast i { color: #22c55e; font-size: 1.1rem; }
-
+    .quick-icon { width: 44px; height: 44px; background: #161922; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; color: #facc15; font-size: 1.2rem; }
+    .quick-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; color: #ffffff; }
+    .quick-sub { font-size: 0.75rem; color: #9ca3af; }
     /* Sidebar Drawer */
-    .sidebar-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-      display: none;
-    }
+    .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 100; display: none; }
     .sidebar-overlay.active { display: block; }
-    .sidebar {
-      position: fixed;
-      top: 0; left: -280px; width: 280px; height: 100%;
-      background: #111318;
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-      z-index: 101;
-      transition: left 0.3s ease;
-      padding: 1.5rem 1rem;
-      display: flex;
-      flex-direction: column;
-    }
+    .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #111318; border-right: 1px solid rgba(255, 255, 255, 0.08); z-index: 101; transition: left 0.3s ease; padding: 1.5rem 1rem; display: flex; flex-direction: column; }
     .sidebar.active { left: 0; }
-    .sidebar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .sidebar-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #ffffff;
-    }
-    .close-sidebar {
-      background: none; border: none; color: #9ca3af; font-size: 1.25rem; cursor: pointer;
-    }
-    .nav-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .nav-item a {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.85rem 1rem;
-      border-radius: 10px;
-      color: #9ca3af;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: background 0.2s, color 0.2s;
-      cursor: pointer;
-    }
-    .nav-item a:hover, .nav-item a.active {
-      background: #181b24;
-      color: #facc15;
-    }
+    .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    .sidebar-brand { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #ffffff; }
+    .close-sidebar { background: none; border: none; color: #9ca3af; font-size: 1.25rem; cursor: pointer; }
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .nav-item a { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; border-radius: 10px; color: #9ca3af; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.2s, color 0.2s; cursor: pointer; }
+    .nav-item a:hover, .nav-item a.active { background: #181b24; color: #facc15; }
     .nav-item i { width: 20px; text-align: center; }
   </style>
 </head>
@@ -479,7 +74,7 @@
         <div class="topbar-title">Welcome back, Guest</div>
       </div>
     </div>
-    <div class="crown-btn" id="crownBtn"><i class="fas fa-crown"></i></div>
+    <a href="topup.html" class="crown-btn"><i class="fas fa-crown"></i></a>
   </header>
 
   <div class="sidebar-overlay" id="overlay"></div>
@@ -491,17 +86,12 @@
     <ul class="nav-list">
       <li class="nav-item"><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
       <li class="nav-item"><a href="bots.html"><i class="fas fa-cloud-upload-alt"></i> Deploy Bot</a></li>
-      <li class="nav-item"><a onclick="openModal('Top Up USD Balance', 'Deposit USD funds instantly via M-Pesa, card, or crypto.')"><i class="fas fa-wallet"></i> Top Up</a></li>
-      <li class="nav-item"><a onclick="openModal('Boost SMM', 'Automated social media growth for Instagram, WhatsApp channels & TikTok.')"><i class="fas fa-bullhorn"></i> Boost SMM</a></li>
-      <li class="nav-item"><a onclick="openModal('Referral Program', 'Share your referral link and earn lifetime commissions.')"><i class="fas fa-users"></i> Referral</a></li>
-      <li class="nav-item"><a href="panels.html"><i class="fas fa-shopping-bag"></i> Get Panel</a></li>
-      <li class="nav-item"><a onclick="openModal('My Servers', 'View active VPS containers, Pterodactyl nodes, and bridge status.')"><i class="fas fa-server"></i> My Servers</a></li>
-      <li class="nav-item"><a onclick="openModal('Site Links', 'Official channels, WhatsApp group, and community support.')"><i class="fas fa-link"></i> Site Links</a></li>
-      <li class="nav-item"><a onclick="openModal('Calculator', 'Calculate hosting costs, bot resources, and SMM packages.')"><i class="fas fa-calculator"></i> Calculator</a></li>
-      <li class="nav-item"><a onclick="openModal('Earn Money', 'Monetize traffic and partner with Blacklord Tech Inc.')"><i class="fas fa-dollar-sign"></i> Earn Money</a></li>
-      <li class="nav-item"><a onclick="openModal('API Documentation', 'Integrate Blacklord REST APIs into your applications.')"><i class="fas fa-code"></i> API</a></li>
-      <li class="nav-item"><a onclick="openModal('Child Panel', 'Launch your own branded reseller panel instantly.')"><i class="fas fa-network-wired"></i> Child Panel</a></li>
-      <li class="nav-item"><a onclick="openModal('Web Development', 'Request custom website design, mobile apps, or backend bots.')"><i class="fas fa-laptop-code"></i> Web Dev</a></li>
+      <li class="nav-item"><a href="topup.html"><i class="fas fa-wallet"></i> Top Up</a></li>
+      <li class="nav-item"><a href="boost.html"><i class="fas fa-bullhorn"></i> Boost SMM</a></li>
+      <li class="nav-item"><a href="referral.html"><i class="fas fa-users"></i> Referral</a></li>
+      <li class="nav-item"><a href="servers.html"><i class="fas fa-server"></i> My Servers</a></li>
+      <li class="nav-item"><a href="api.html"><i class="fas fa-code"></i> API</a></li>
+      <li class="nav-item"><a href="webdev.html"><i class="fas fa-laptop-code"></i> Web Dev</a></li>
     </ul>
   </aside>
 
@@ -520,16 +110,16 @@
     </div>
 
     <div class="hero-actions-grid">
-      <div class="hero-action-card" onclick="window.location.href='bots.html'">
+      <a href="bots.html" class="hero-action-card">
         <i class="fas fa-cloud"></i>
         <div class="title">Deploy Bots</div>
         <div class="sub">Watch tutorials</div>
-      </div>
-      <div class="hero-action-card" onclick="openModal('Boost SMM', 'Automated social media growth for Instagram, WhatsApp channels & TikTok.')">
+      </a>
+      <a href="boost.html" class="hero-action-card">
         <i class="fas fa-bullhorn"></i>
         <div class="title">SMM Boost</div>
         <div class="sub">Likes, follows & more</div>
-      </div>
+      </a>
     </div>
 
     <div class="balance-card">
@@ -538,9 +128,9 @@
         <div class="trend-badge"><i class="fas fa-arrow-down"></i> -16.0%</div>
       </div>
       <div class="balance-btn-row">
-        <a class="b-btn" onclick="openModal('App Hub', 'Download the Blacklord Tech mobile app and companion utilities.')"><i class="fas fa-mobile-alt"></i> App</a>
-        <a class="b-btn" onclick="openModal('Sell XD', 'Convert or trade your platform credits instantly.')"><i class="fas fa-exchange-alt"></i> Sell XD</a>
-        <a class="b-btn topup" onclick="openModal('Top Up USD Balance', 'Deposit USD funds instantly via M-Pesa, card, or crypto.')"><i class="fas fa-wallet"></i> Top Up</a>
+        <a href="topup.html" class="b-btn"><i class="fas fa-mobile-alt"></i> App</a>
+        <a href="topup.html" class="b-btn"><i class="fas fa-exchange-alt"></i> Sell XD</a>
+        <a href="topup.html" class="b-btn topup"><i class="fas fa-wallet"></i> Top Up</a>
       </div>
       <div class="balance-amount">
         <span class="num">42</span>
@@ -557,88 +147,43 @@
 
     <div class="section-label">QUICK ACCESS & PLATFORM TOOLS</div>
     <div class="quick-grid">
-      <div class="quick-card" onclick="window.location.href='bots.html'">
+      <a href="bots.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-cloud-upload-alt"></i></div>
         <div class="quick-title">Deploy Bot</div>
         <div class="quick-sub">Watch tutorials</div>
-      </div>
-      <div class="quick-card" onclick="openModal('Top Up USD Balance', 'Deposit USD funds instantly via M-Pesa, card, or crypto.')">
+      </a>
+      <a href="topup.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-wallet"></i></div>
         <div class="quick-title">Top Up</div>
         <div class="quick-sub">Add funds instantly</div>
-      </div>
-      <div class="quick-card" onclick="openModal('Boost SMM', 'Automated social media growth for Instagram, WhatsApp channels & TikTok.')">
+      </a>
+      <a href="boost.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-bullhorn"></i></div>
         <div class="quick-title">Boost SMM</div>
         <div class="quick-sub">Likes, follows & more</div>
-      </div>
-      <div class="quick-card" onclick="openModal('Referral Program', 'Share your referral link and earn lifetime commissions.')">
+      </a>
+      <a href="referral.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-users"></i></div>
         <div class="quick-title">Referral</div>
         <div class="quick-sub">Earn commissions</div>
-      </div>
-      <div class="quick-card" onclick="window.location.href='panels.html'">
-        <div class="quick-icon"><i class="fas fa-shopping-bag"></i></div>
-        <div class="quick-title">Get Panel</div>
-        <div class="quick-sub">Setup hosting</div>
-      </div>
-      <div class="quick-card" onclick="openModal('My Servers', 'View active VPS containers, Pterodactyl nodes, and bridge status.')">
+      </a>
+      <a href="servers.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-server"></i></div>
         <div class="quick-title">My Servers</div>
         <div class="quick-sub">Manage active instances</div>
-      </div>
-      <div class="quick-card" onclick="openModal('Site Links', 'Official channels, WhatsApp group, and community support.')">
-        <div class="quick-icon"><i class="fas fa-link"></i></div>
-        <div class="quick-title">Site Links</div>
-        <div class="quick-sub">Official channels</div>
-      </div>
-      <div class="quick-card" onclick="openModal('Calculator', 'Calculate hosting costs, bot resources, and SMM packages.')">
-        <div class="quick-icon"><i class="fas fa-calculator"></i></div>
-        <div class="quick-title">Calculator</div>
-        <div class="quick-sub">Cost estimators</div>
-      </div>
-      <div class="quick-card" onclick="openModal('Earn Money', 'Monetize traffic and partner with Blacklord Tech Inc.')">
-        <div class="quick-icon"><i class="fas fa-dollar-sign"></i></div>
-        <div class="quick-title">Earn Money</div>
-        <div class="quick-sub">Monetize traffic</div>
-      </div>
-      <div class="quick-card" onclick="openModal('API Documentation', 'Integrate Blacklord REST APIs into your applications.')">
+      </a>
+      <a href="api.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-code"></i></div>
         <div class="quick-title">API</div>
         <div class="quick-sub">Developer endpoints</div>
-      </div>
-      <div class="quick-card" onclick="window.location.href='panels.html'">
-        <div class="quick-icon"><i class="fas fa-network-wired"></i></div>
-        <div class="quick-title">Child Panel</div>
-        <div class="quick-sub">Reseller panel setup</div>
-      </div>
-      <div class="quick-card" onclick="openModal('Web Development', 'Request custom website design, mobile apps, or backend bots.')">
+      </a>
+      <a href="webdev.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-laptop-code"></i></div>
         <div class="quick-title">Web Dev</div>
         <div class="quick-sub">Custom solutions</div>
-      </div>
+      </a>
     </div>
   </main>
-
-  <!-- Modal -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
-      <div class="modal-title" id="modalTitle">Action Center</div>
-      <div class="modal-sub" id="modalSub">Complete your request securely through the Blacklord Tech platform.</div>
-      <div class="modal-form-group">
-        <label id="modalLabel">Enter Details / Amount (USD)</label>
-        <input type="text" class="modal-input" id="modalInput" placeholder="e.g. 10.00 or account_id">
-      </div>
-      <button class="modal-btn" onclick="submitModal()">Proceed Now</button>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div class="toast" id="toastBox">
-    <i class="fas fa-check-circle"></i>
-    <span id="toastText">Request processed successfully!</span>
-  </div>
 
   <script>
     const menuToggle = document.getElementById('menuToggle');
@@ -654,36 +199,6 @@
     menuToggle.addEventListener('click', toggleNav);
     closeSidebar.addEventListener('click', toggleNav);
     overlay.addEventListener('click', toggleNav);
-
-    function openModal(title, subtitle) {
-      document.getElementById('modalTitle').innerText = title;
-      document.getElementById('modalSub').innerText = subtitle;
-      document.getElementById('modalOverlay').classList.add('active');
-      sidebar.classList.remove('active');
-      overlay.classList.remove('active');
-    }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('active');
-    }
-
-    function showToast(message) {
-      const toast = document.getElementById('toastBox');
-      document.getElementById('toastText').innerText = message;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3500);
-    }
-
-    function submitModal() {
-      closeModal();
-      showToast('Request submitted successfully! Processing via Blacklord Tech bridge.');
-    }
-
-    document.getElementById('crownBtn').addEventListener('click', () => {
-      openModal('Blacklord VIP Membership', 'Enjoy zero-fee bot deployments, priority support, and custom server nodes.');
-    });
   </script>
 </body>
 </html>
