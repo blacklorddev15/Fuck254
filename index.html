@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard | BLACKLORD TECH INC.</title>
+  <title>BLACKLORD TECH INC. | Build, Host & Grow With Us</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
@@ -11,285 +11,399 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.88)), url("https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg") no-repeat center center fixed;
+      background: linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.92)), url("https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg") no-repeat center center fixed;
       background-size: cover;
       color: #f3f4f6;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      padding-bottom: 3rem;
+      line-height: 1.6;
     }
-    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem 0.5rem; background: #000000; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .topbar-left { display: flex; align-items: center; gap: 0.75rem; }
-    .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; }
-    .topbar-subtitle { font-size: 0.7rem; color: #facc15; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
-    .topbar-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; font-style: italic; color: #ffffff; line-height: 1.1; }
-    .crown-btn { width: 42px; height: 42px; background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1.1rem; cursor: pointer; text-decoration: none; }
-    .container { max-width: 600px; margin: 0.5rem auto; padding: 0 1rem; }
+    a { text-decoration: none; color: inherit; }
     
-    /* Balance card */
-    .balance-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; margin-top: 1rem; }
-    .balance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .balance-title { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 0.5rem; }
-    .trend-badge { color: #ef4444; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.2rem; }
-    .balance-btn-row { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
-    .b-btn { flex: 1; background: #161922; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 0.6rem; color: #ffffff; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.4rem; text-decoration: none; cursor: pointer; }
-    .b-btn.topup { background: #22c55e; border-color: #22c55e; color: #000000; font-weight: 700; }
-    .balance-amount { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.2rem; }
-    .balance-amount .num { font-size: 2.25rem; font-weight: 700; color: #ffffff; }
-    .balance-amount .currency { font-size: 1.25rem; font-weight: 700; color: #facc15; }
-    .balance-ksh { font-size: 0.9rem; color: #9ca3af; margin-bottom: 1rem; }
-    .wave-chart { width: 100%; height: 50px; background: radial-gradient(circle at center, rgba(239, 68, 68, 0.15) 0%, transparent 70%); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .wave-chart svg { width: 100%; height: 35px; }
+    /* Navbar */
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; background: rgba(0,0,0,0.9); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(250, 204, 21, 0.15); backdrop-filter: blur(10px); }
+    .nav-brand { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-brand img { width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(250,204,21,0.4); object-fit: cover; }
+    .brand-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; font-style: italic; color: #ffffff; letter-spacing: 0.5px; }
+    .brand-sub { font-size: 0.65rem; color: #facc15; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { font-size: 0.85rem; color: #d1d5db; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #facc15; }
+    .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+    .btn-outline { background: transparent; border: 1px solid rgba(250, 204, 21, 0.4); color: #facc15; padding: 0.5rem 1.2rem; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn-outline:hover { background: rgba(250, 204, 21, 0.1); }
+    .btn-gold { background: #facc15; border: 1px solid #facc15; color: #000000; padding: 0.5rem 1.2rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+    .btn-gold:hover { background: #fde047; transform: translateY(-1px); }
 
-    .section-label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.75rem; font-weight: 700; text-align: left; }
-    
-    /* Quick Access 2-column Grid */
-    .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; margin-bottom: 1.5rem; }
-    .quick-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1rem; text-align: left; text-decoration: none; color: #f3f4f6; transition: transform 0.2s, border-color 0.2s, background 0.2s; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); cursor: pointer; display: flex; flex-direction: column; position: relative; }
-    .quick-card:active { transform: scale(0.97); }
-    .quick-card:hover { border-color: rgba(250, 204, 21, 0.4); background: #181b24; }
-    .quick-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
-    .quick-icon-badge { width: 36px; height: 36px; background: #161922; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1rem; border: 1px solid rgba(250, 204, 21, 0.2); }
-    .quick-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.1rem; color: #ffffff; }
-    .quick-sub { font-size: 0.7rem; color: #facc15; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 0.3rem; }
-    .quick-desc { font-size: 0.75rem; color: #9ca3af; line-height: 1.3; }
+    /* Hero Section */
+    .hero { max-width: 1200px; margin: 3rem auto 4rem; padding: 0 1.5rem; text-align: center; }
+    .welcome-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(250, 204, 21, 0.1); border: 1px solid rgba(250, 204, 21, 0.3); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.8rem; color: #facc15; font-weight: 600; margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; font-style: italic; color: #ffffff; margin-bottom: 1rem; line-height: 1.2; }
+    .hero h1 span { color: #facc15; }
+    .hero p { font-size: 1.05rem; color: #9ca3af; max-width: 700px; margin: 0 auto 2rem; }
+    .hero-buttons { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .btn-hero-primary { background: #facc15; color: #000; padding: 0.8rem 2rem; border-radius: 12px; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 20px rgba(250, 204, 21, 0.3); transition: transform 0.2s; }
+    .btn-hero-primary:hover { transform: translateY(-2px); }
+    .btn-hero-secondary { background: #161922; color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 0.8rem 2rem; border-radius: 12px; font-weight: 600; font-size: 1rem; transition: border-color 0.2s; }
+    .btn-hero-secondary:hover { border-color: #facc15; }
 
-    /* Sidebar Drawer */
-    .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 100; display: none; }
-    .sidebar-overlay.active { display: block; }
-    .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #111318; border-right: 1px solid rgba(255, 255, 255, 0.08); z-index: 101; transition: left 0.3s ease; padding: 1.5rem 1rem; display: flex; flex-direction: column; overflow-y: auto; }
-    .sidebar.active { left: 0; }
-    .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-    .sidebar-brand { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #ffffff; }
-    .close-sidebar { background: none; border: none; color: #9ca3af; font-size: 1.25rem; cursor: pointer; }
-    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
-    .nav-item a { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; border-radius: 10px; color: #9ca3af; text-decoration: none; font-weight: 500; font-size: 0.85rem; transition: background 0.2s, color 0.2s; cursor: pointer; }
-    .nav-item a:hover, .nav-item a.active { background: #181b24; color: #facc15; }
-    .nav-item i { width: 20px; text-align: center; }
+    /* Key Metrics Banner */
+    .metrics-banner { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; max-width: 1000px; margin: 0 auto 5rem; padding: 0 1.5rem; }
+    .metric-box { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.5rem; text-align: center; }
+    .metric-box .num { font-size: 1.75rem; font-weight: 700; color: #facc15; margin-bottom: 0.25rem; }
+    .metric-box .label { font-size: 0.8rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Section Styling */
+    .section { max-width: 1200px; margin: 0 auto 5rem; padding: 0 1.5rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 2.25rem; font-weight: 700; font-style: italic; text-align: center; margin-bottom: 0.75rem; color: #fff; }
+    .section-sub { font-size: 0.95rem; color: #9ca3af; text-align: center; max-width: 600px; margin: 0 auto 3rem; }
+
+    /* Cards Grids */
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .card { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem; transition: transform 0.2s, border-color 0.2s; position: relative; overflow: hidden; }
+    .card:hover { transform: translateY(-3px); border-color: rgba(250, 204, 21, 0.4); }
+    .card-icon { width: 50px; height: 50px; background: rgba(250, 204, 21, 0.1); border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1.25rem; margin-bottom: 1.25rem; }
+    .card h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .card p { font-size: 0.85rem; color: #9ca3af; line-height: 1.5; margin-bottom: 1.5rem; }
+    .card-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: #d1d5db; }
+    .card-list li { display: flex; align-items: center; gap: 0.5rem; }
+    .card-list i { color: #22c55e; }
+
+    /* Pricing Plans */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .pricing-card { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem; text-align: center; position: relative; }
+    .pricing-card.featured { border-color: #facc15; box-shadow: 0 10px 30px rgba(250,204,21,0.15); }
+    .popular-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #facc15; color: #000; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 0.2rem 1rem; border-radius: 20px; }
+    .pricing-card h3 { font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .price { font-size: 2.5rem; font-weight: 700; color: #facc15; margin: 1rem 0; }
+    .price span { font-size: 0.9rem; color: #9ca3af; font-weight: 400; }
+    .pricing-features { list-style: none; text-align: left; margin: 1.5rem 0 2rem; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem; color: #d1d5db; }
+    .pricing-features li { display: flex; align-items: center; gap: 0.5rem; }
+    .pricing-features i { color: #facc15; }
+
+    /* Footer */
+    footer { background: #0b0d12; border-top: 1px solid rgba(255,255,255,0.08); padding: 4rem 1.5rem 2rem; margin-top: 5rem; }
+    .footer-grid { max-width: 1200px; margin: 0 auto 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2.5rem; }
+    .footer-col h4 { font-size: 0.9rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.25rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.85rem; color: #9ca3af; }
+    .footer-col ul a:hover { color: #facc15; }
+    .social-icons { display: flex; gap: 1rem; margin-top: 1rem; }
+    .social-icons a { width: 36px; height: 36px; background: #161922; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #facc15; transition: background 0.2s; }
+    .social-icons a:hover { background: #facc15; color: #000; }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; font-size: 0.8rem; color: #9ca3af; }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-left">
-      <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg" alt="Blacklord Tech">
       <div>
-        <div class="topbar-subtitle">BLACKLORD ELITE</div>
-        <div class="topbar-title">Welcome back, Guest</div>
+        <div class="brand-sub">BLACKLORD TECH INC</div>
+        <div class="brand-title">Fuck254 Platform</div>
       </div>
     </div>
-    <a href="voucher.html" class="crown-btn"><i class="fas fa-crown"></i></a>
+    <div class="nav-links">
+      <a href="#bots">Bots</a>
+      <a href="#infrastructure">Infrastructure</a>
+      <a href="#panels">Panels</a>
+      <a href="#marketplace">Marketplace</a>
+      <a href="#developer">Developer</a>
+      <a href="#community">Community</a>
+    </div>
+    <div class="nav-actions">
+      <a href="dashboard.html" class="btn-outline">Register</a>
+      <a href="dashboard.html" class="btn-gold">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="welcome-badge">
+      <i class="fas fa-gift"></i> Welcome Bonus: $42 USD Credited Instantly Upon Signup
+    </div>
+    <h1>Build, Host & Grow <span>With Us</span></h1>
+    <p>The ultimate automation, hosting, SMM, and WhatsApp bot pairing powerhouse. Experience instant deployments, secure Pterodactyl servers, and lightning-fast connectivity.</p>
+    <div class="hero-buttons">
+      <a href="dashboard.html" class="btn-hero-primary"><i class="fas fa-rocket"></i> Get Started Now</a>
+      <a href="dashboard.html" class="btn-hero-secondary"><i class="fas fa-user-plus"></i> Register Account</a>
+    </div>
   </header>
 
-  <div class="sidebar-overlay" id="overlay"></div>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-brand">BLACKLORD TECH</div>
-      <button class="close-sidebar" id="closeSidebar"><i class="fas fa-times"></i></button>
+  <!-- Metrics Banner -->
+  <section class="metrics-banner">
+    <div class="metric-box">
+      <div class="num">6+</div>
+      <div class="label">Active Bot Engines</div>
     </div>
-    <ul class="nav-list">
-      <li class="nav-item"><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard Home</a></li>
-      <li class="nav-item"><a href="bots.html"><i class="fas fa-robot"></i> WhatsApp Pairing (6 Bots)</a></li>
-      <li class="nav-item"><a href="telegram.html"><i class="fas fa-paper-plane"></i> Telegram Activation</a></li>
-      <li class="nav-item"><a href="topup.html"><i class="fas fa-wallet"></i> Wallet & Top Up</a></li>
-      <li class="nav-item"><a href="voucher.html"><i class="fas fa-ticket-alt"></i> Voucher Center</a></li>
-      <li class="nav-item"><a href="boost.html"><i class="fas fa-bullhorn"></i> SMM Boost</a></li>
-      <li class="nav-item"><a href="orders.html"><i class="fas fa-box"></i> Order Stacker</a></li>
-      <li class="nav-item"><a href="referral.html"><i class="fas fa-users"></i> Referral Center</a></li>
-      <li class="nav-item"><a href="servers.html"><i class="fas fa-server"></i> Hosting & Servers</a></li>
-      <li class="nav-item"><a href="domains.html"><i class="fas fa-globe"></i> Subdomain Workspace</a></li>
-      <li class="nav-item"><a href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics & Insights</a></li>
-      <li class="nav-item"><a href="automation.html"><i class="fas fa-bolt"></i> Webhooks & Automation</a></li>
-      <li class="nav-item"><a href="api.html"><i class="fas fa-code"></i> Developer API</a></li>
-      <li class="nav-item"><a href="community.html"><i class="fas fa-comments"></i> Community & Posts</a></li>
-      <li class="nav-item"><a href="support.html"><i class="fas fa-life-ring"></i> Support & Status</a></li>
-      <li class="nav-item"><a href="membership.html"><i class="fas fa-id-card"></i> Membership Plans</a></li>
-      <li class="nav-item"><a href="webdev.html"><i class="fas fa-laptop-code"></i> Web Dev Solutions</a></li>
-    </ul>
-  </aside>
+    <div class="metric-box">
+      <div class="num">2 Sec</div>
+      <div class="label">Fast Setup Indicator</div>
+    </div>
+    <div class="metric-box">
+      <div class="num">99.9%</div>
+      <div class="label">Unlimited Connections</div>
+    </div>
+    <div class="metric-box">
+      <div class="num">24/7</div>
+      <div class="label">Pterodactyl Uptime</div>
+    </div>
+  </section>
 
-  <main class="container">
-    <div class="balance-card">
-      <div class="balance-header">
-        <div class="balance-title"><i class="fas fa-wallet"></i> TOTAL BALANCE</div>
-        <div class="trend-badge"><i class="fas fa-arrow-down"></i> -16.0%</div>
+  <!-- Bot Showcase Section -->
+  <section class="section" id="bots">
+    <div class="section-title">Public Bot Showcase</div>
+    <div class="section-sub">Deploy high-performance WhatsApp bot engines with online status monitoring and instant one-click pairing.</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-robot"></i></div>
+        <h3>Blacklord XMD</h3>
+        <p>Flagship multi-device bot engine featuring advanced command extensions, auto-bio, and anti-call protection.</p>
+        <ul class="card-list">
+          <li><i class="fas fa-check-circle"></i> Online Status Active</li>
+          <li><i class="fas fa-check-circle"></i> Instant Pairing Code</li>
+          <li><i class="fas fa-check-circle"></i> Premium Command Suite</li>
+        </ul>
+        <a href="bots.html" class="btn-gold" style="display: block; text-align: center;">Connect Bot</a>
       </div>
-      <div class="balance-btn-row">
-        <a href="topup.html" class="b-btn"><i class="fas fa-wallet"></i> Wallet</a>
-        <a href="voucher.html" class="b-btn"><i class="fas fa-ticket-alt"></i> Voucher</a>
-        <a href="topup.html" class="b-btn topup"><i class="fas fa-plus-circle"></i> Top Up</a>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-mobile-alt"></i></div>
+        <h3>Samsung XMD</h3>
+        <p>Sleek, reliable multi-purpose bot designed for daily automated group management, media download, and interactive polls.</p>
+        <ul class="card-list">
+          <li><i class="fas fa-check-circle"></i> Online Status Active</li>
+          <li><i class="fas fa-check-circle"></i> Instant Pairing Code</li>
+          <li><i class="fas fa-check-circle"></i> Group Moderation Tools</li>
+        </ul>
+        <a href="bots.html" class="btn-gold" style="display: block; text-align: center;">Connect Bot</a>
       </div>
-      <div class="balance-amount">
-        <span class="num">42</span>
-        <span class="currency">USD</span>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-bolt"></i></div>
+        <h3>Talkless Ultra</h3>
+        <p>Ultra-fast response engine optimized for high-volume automated messaging, CCTV alerts, and wifi status integrations.</p>
+        <ul class="card-list">
+          <li><i class="fas fa-check-circle"></i> Online Status Active</li>
+          <li><i class="fas fa-check-circle"></i> Instant Pairing Code</li>
+          <li><i class="fas fa-check-circle"></i> High-Speed Delivery</li>
+        </ul>
+        <a href="bots.html" class="btn-gold" style="display: block; text-align: center;">Connect Bot</a>
       </div>
-      <div class="balance-ksh">Active USD Wallet Balance</div>
-      <div class="wave-chart">
-        <svg viewBox="0 0 500 50" preserveAspectRatio="none">
-          <path d="M0,25 Q125,5 250,25 T500,25 L500,50 L0,50 Z" fill="rgba(239, 68, 68, 0.15)"></path>
-          <path d="M0,25 Q125,5 250,25 T500,25" fill="none" stroke="#ef4444" stroke-width="2.5"></path>
-        </svg>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Skylar XMD</h3>
+        <p>Security-first automation framework equipped with threat detection, anti-link filters, and automated ban protocols.</p>
+        <ul class="card-list">
+          <li><i class="fas fa-check-circle"></i> Online Status Active</li>
+          <li><i class="fas fa-check-circle"></i> Instant Pairing Code</li>
+          <li><i class="fas fa-check-circle"></i> Security Shield</li>
+        </ul>
+        <a href="bots.html" class="btn-gold" style="display: block; text-align: center;">Connect Bot</a>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-star"></i></div>
+        <h3>Rita XMD</h3>
+        <p>Entertainment and AI-integrated bot suite featuring image generation, games, trivia, and custom plugin support.</p>
+        <ul class="card-list">
+          <li><i class="fas fa-check-circle"></i> Online Status Active</li>
+          <li><i class="fas fa-check-circle"></i> Instant Pairing Code</li>
+          <li><i class="fas fa-check-circle"></i> AI Integrations</li>
+        </ul>
+        <a href="bots.html" class="btn-gold" style="display: block; text-align: center;">Connect Bot</a>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-crown"></i></div>
+        <h3>Titan XD</h3>
+        <p>Enterprise-grade server backbone bot built for heavy-duty multi-session handling and custom webhook dispatching.</p>
+        <ul class="card-list">
+          <li><i class="fas fa-check-circle"></i> Online Status Active</li>
+          <li><i class="fas fa-check-circle"></i> Instant Pairing Code</li>
+          <li><i class="fas fa-check-circle"></i> Enterprise Backbone</li>
+        </ul>
+        <a href="bots.html" class="btn-gold" style="display: block; text-align: center;">Connect Bot</a>
       </div>
     </div>
+  </section>
 
-    <div class="section-label">CHOOSE YOUR PLATFORM SUITE</div>
-    <div class="quick-grid">
-      <a href="bots.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-robot"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">WhatsApp Bots</div>
-        <div class="quick-sub">6 Supported Bots</div>
-        <div class="quick-desc">Pair Blacklord, Samsung, & more</div>
-      </a>
-      <a href="telegram.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-paper-plane"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Telegram Bot</div>
-        <div class="quick-sub">Key Activation</div>
-        <div class="quick-desc">Generate Telegram activation keys</div>
-      </a>
-      <a href="topup.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-wallet"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Top Up & Wallet</div>
-        <div class="quick-sub">M-Pesa & Cards</div>
-        <div class="quick-desc">Fund your USD account instantly</div>
-      </a>
-      <a href="voucher.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-ticket-alt"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Voucher Center</div>
-        <div class="quick-sub">Redeem & Generate</div>
-        <div class="quick-desc">Redeem vouchers or admin generator</div>
-      </a>
-      <a href="boost.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-bullhorn"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">SMM Boost</div>
-        <div class="quick-sub">Marketplace</div>
-        <div class="quick-desc">Likes, follows & social growth</div>
-      </a>
-      <a href="orders.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-box"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Order Stacker</div>
-        <div class="quick-sub">Tracking</div>
-        <div class="quick-desc">Completed & processing orders</div>
-      </a>
-      <a href="referral.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-users"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Referral Center</div>
-        <div class="quick-sub">Affiliate Earnings</div>
-        <div class="quick-desc">Earn commission on invites</div>
-      </a>
-      <a href="servers.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-server"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Hosting & Servers</div>
-        <div class="quick-sub">Pterodactyl Panel</div>
-        <div class="quick-desc">Manage hosted server instances</div>
-      </a>
-      <a href="domains.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-globe"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Subdomain Workspace</div>
-        <div class="quick-sub">Domain Management</div>
-        <div class="quick-desc">yourname.blacklord.tech</div>
-      </a>
-      <a href="analytics.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-chart-bar"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Analytics & Insights</div>
-        <div class="quick-sub">Usage Statistics</div>
-        <div class="quick-desc">Account insights and metrics</div>
-      </a>
-      <a href="automation.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-bolt"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Webhooks & Events</div>
-        <div class="quick-sub">Automation</div>
-        <div class="quick-desc">Signed HMAC event delivery</div>
-      </a>
-      <a href="api.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-code"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Developer API</div>
-        <div class="quick-sub">API Keys & Sandbox</div>
-        <div class="quick-desc">Build custom integrations</div>
-      </a>
-      <a href="community.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-comments"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Community Posts</div>
-        <div class="quick-sub">Announcements</div>
-        <div class="quick-desc">Live activity and leaderboard</div>
-      </a>
-      <a href="support.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-life-ring"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Support & Status</div>
-        <div class="quick-sub">Tickets & FAQ</div>
-        <div class="quick-desc">24/7 client assistance</div>
-      </a>
-      <a href="membership.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-id-card"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Membership Plans</div>
-        <div class="quick-sub">Elite & Pro Tiers</div>
-        <div class="quick-desc">Upgrade your subscription</div>
-      </a>
-      <a href="webdev.html" class="quick-card">
-        <div class="quick-card-header">
-          <div class="quick-icon-badge"><i class="fas fa-laptop-code"></i></div>
-          <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.8rem;"></i>
-        </div>
-        <div class="quick-title">Web Dev Solutions</div>
-        <div class="quick-sub">Custom Software</div>
-        <div class="quick-desc">Professional application dev</div>
-      </a>
+  <!-- Infrastructure Section -->
+  <section class="section" id="infrastructure">
+    <div class="section-title">Robust Enterprise Infrastructure</div>
+    <div class="section-sub">Powered by high-availability Pterodactyl hosting nodes and secure, automated payment gateways.</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-server"></i></div>
+        <h3>Pterodactyl Hosting</h3>
+        <p>Enterprise daemon management with automated backups, live console streaming, and 99.9% uptime SLA.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-qrcode"></i></div>
+        <h3>WhatsApp Pairing Bridge</h3>
+        <p>Baileys-backed secure session pairing with auto-cleanup, 3-minute timeout protection, and quiet logging.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-wallet"></i></div>
+        <h3>M-Pesa & Paystack</h3>
+        <p>Instant wallet funding via M-Pesa C2B/STK push integration alongside secure global Paystack card checkout.</p>
+      </div>
     </div>
-  </main>
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const closeSidebar = document.getElementById('closeSidebar');
-    function toggleNav() {
-      sidebar.classList.toggle('active');
-      overlay.classList.toggle('active');
-    }
-    menuToggle.addEventListener('click', toggleNav);
-    closeSidebar.addEventListener('click', toggleNav);
-    overlay.addEventListener('click', toggleNav);
-  </script>
+  </section>
+
+  <!-- Hosting Plans Section -->
+  <section class="section" id="panels">
+    <div class="section-title">Pterodactyl Panel Plans</div>
+    <div class="section-sub">Choose your dedicated server and bot hosting tier with instant automated provisioning.</div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>10GB Storage Plan</h3>
+        <div class="price">$5 <span>/ mo</span></div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> 10GB High-Speed SSD</li>
+          <li><i class="fas fa-check"></i> 2GB Dedicated RAM</li>
+          <li><i class="fas fa-check"></i> 1 Pterodactyl Server Instance</li>
+          <li><i class="fas fa-check"></i> 24/7 Uptime Monitoring</li>
+        </ul>
+        <a href="panels.html" class="btn-outline" style="display: block; text-align: center;">Select Plan</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="popular-tag">Most Popular</div>
+        <h3>Bulky 2 Plan</h3>
+        <div class="price">$12 <span>/ mo</span></div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> 50GB NVMe Storage</li>
+          <li><i class="fas fa-check"></i> 6GB Dedicated RAM</li>
+          <li><i class="fas fa-check"></i> Up to 5 Bot Instances</li>
+          <li><i class="fas fa-check"></i> Priority Node Routing</li>
+        </ul>
+        <a href="panels.html" class="btn-gold" style="display: block; text-align: center;">Select Plan</a>
+      </div>
+      <div class="pricing-card">
+        <h3>Bulky 3 & 4 Plans</h3>
+        <div class="price">$25 <span>/ mo</span></div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> 150GB NVMe Storage</li>
+          <li><i class="fas fa-check"></i> 16GB Dedicated RAM</li>
+          <li><i class="fas fa-check"></i> Unlimited Bot Instances</li>
+          <li><i class="fas fa-check"></i> Dedicated IP & Support</li>
+        </ul>
+        <a href="panels.html" class="btn-outline" style="display: block; text-align: center;">Select Plan</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marketplace & Platform Tools -->
+  <section class="section" id="marketplace">
+    <div class="section-title">Marketplace & Platform Tools</div>
+    <div class="section-sub">Supercharge your bots with pre-built modules, moderation suites, and developer APIs.</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-puzzle-piece"></i></div>
+        <h3>Plugin Marketplace</h3>
+        <p>Ready-made bot upgrades, moderation tools, welcome tools, auto-reply tools, and community games.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-globe"></i></div>
+        <h3>Custom Subdomains</h3>
+        <p>Deploy your workspace instantly on custom subdomains like <code>yourname.blacklord.tech</code>.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Referral Growth & SMM</h3>
+        <p>Earn commissions on affiliate invites and boost social presence with automated SMM marketplace orders.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Developer Platform -->
+  <section class="section" id="developer">
+    <div class="section-title">Developer API & Webhooks</div>
+    <div class="section-sub">Build custom integrations backed by secure HMAC-SHA256 webhooks and robust API keys.</div>
+    <div class="card" style="max-width: 800px; margin: 0 auto; text-align: left;">
+      <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
+        <div class="card-icon" style="margin-bottom:0;"><i class="fas fa-code"></i></div>
+        <div>
+          <h3 style="margin-bottom:0.2rem;">blacklord_ API Key System</h3>
+          <p style="margin-bottom:0; font-size: 0.8rem;">Secure programmatic access with live analytics and signed event delivery logs.</p>
+        </div>
+      </div>
+      <ul class="card-list" style="margin-bottom: 1.5rem;">
+        <li><i class="fas fa-check-circle"></i> Signed Webhooks with HMAC-SHA256 signature headers</li>
+        <li><i class="fas fa-check-circle"></i> Comprehensive delivery logs and retry mechanisms</li>
+        <li><i class="fas fa-check-circle"></i> Interactive API Sandbox for endpoint testing</li>
+      </ul>
+      <a href="api.html" class="btn-gold" style="display: inline-block;">Explore Developer Docs</a>
+    </div>
+  </section>
+
+  <!-- Community Section -->
+  <section class="section" id="community">
+    <div class="section-title">Community & Builders Leaderboard</div>
+    <div class="section-sub">Join thousands of developers and entrepreneurs building on Blacklord Tech Inc.</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-users"></i></div>
+        <h3>Live Community Pulse</h3>
+        <p>Engage with active builders, share bot scripts, and get 24/7 technical assistance in our community channels.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-trophy"></i></div>
+        <h3>Builders Leaderboard</h3>
+        <p>Top referrers and top-performing bot developers compete monthly for cash prizes and elite status.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-share-alt"></i></div>
+        <h3>Affiliate Program</h3>
+        <p>Share your referral link and earn recurring passive commission on every user who joins and tops up.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Blacklord Tech Inc</h4>
+        <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 1rem;">The premier hosting, bot pairing, and automation platform for modern digital creators.</p>
+        <div class="social-icons">
+          <a href="https://whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://telegram.org" target="_blank"><i class="fab fa-telegram"></i></a>
+          <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://x.com" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="bots.html">WhatsApp Bots</a></li>
+          <li><a href="panels.html">Hosting Panels</a></li>
+          <li><a href="topup.html">Wallet Top Up</a></li>
+          <li><a href="voucher.html">Voucher Center</a></li>
+          <li><a href="boost.html">SMM Boost</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Developers</h4>
+        <ul>
+          <li><a href="api.html">API Documentation</a></li>
+          <li><a href="automation.html">Webhooks & Events</a></li>
+          <li><a href="servers.html">Pterodactyl Nodes</a></li>
+          <li><a href="domains.html">Subdomains</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="support.html">Support & FAQ</a></li>
+          <li><a href="support.html">Privacy Policy</a></li>
+          <li><a href="support.html">Terms of Service</a></li>
+          <li><a href="support.html">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 BLACKLORD TECH INC (Fuck254). All rights reserved. Powered by Pterodactyl & Baileys.
+    </div>
+  </footer>
+
 </body>
 </html>
