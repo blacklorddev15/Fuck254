@@ -660,7 +660,7 @@ module.exports = async function handler(req, res) {
       const requestedServerId = body.serverId ? Number(body.serverId) : null;
       const rawBotType = body.botType || body.type;
       const requestedBotType = String(rawBotType || 'blacklord').trim().toLowerCase().replace(/[\s_-]+/g, '');
-      const allowedBots = ['blacklord', 'samsung', 'talkless', 'skylar', 'rita'];
+      const allowedBots = ['blacklord', 'samsung', 'talkless', 'skylar', 'rita', 'titan'];
       if (!allowedBots.includes(requestedBotType)) { client.release(); return res.status(400).json({ error: 'Please select a valid bot type.' }); }
       
       let serverId = requestedServerId;
