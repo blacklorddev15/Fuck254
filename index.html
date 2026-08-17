@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard | BLACKLORD TECH INC</title>
+  <title>Dashboard | BLACKLORD TECH INC.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       padding-bottom: 3rem;
     }
-    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem 0.5rem; background: #000000; position: sticky; top: 0; z-index: 50; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem 0.5rem; background: #000000; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(255,255,255,0.08); }
     .topbar-left { display: flex; align-items: center; gap: 0.75rem; }
     .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; }
     .topbar-subtitle { font-size: 0.7rem; color: #facc15; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
@@ -60,13 +60,13 @@
     /* Sidebar Drawer */
     .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 100; display: none; }
     .sidebar-overlay.active { display: block; }
-    .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #111318; border-right: 1px solid rgba(255, 255, 255, 0.08); z-index: 101; transition: left 0.3s ease; padding: 1.5rem 1rem; display: flex; flex-direction: column; }
+    .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #111318; border-right: 1px solid rgba(255, 255, 255, 0.08); z-index: 101; transition: left 0.3s ease; padding: 1.5rem 1rem; display: flex; flex-direction: column; overflow-y: auto; }
     .sidebar.active { left: 0; }
     .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
     .sidebar-brand { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #ffffff; }
     .close-sidebar { background: none; border: none; color: #9ca3af; font-size: 1.25rem; cursor: pointer; }
-    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-    .nav-item a { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; border-radius: 10px; color: #9ca3af; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.2s, color 0.2s; cursor: pointer; }
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .nav-item a { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; border-radius: 10px; color: #9ca3af; text-decoration: none; font-weight: 500; font-size: 0.85rem; transition: background 0.2s, color 0.2s; cursor: pointer; }
     .nav-item a:hover, .nav-item a.active { background: #181b24; color: #facc15; }
     .nav-item i { width: 20px; text-align: center; }
   </style>
@@ -76,11 +76,11 @@
     <div class="topbar-left">
       <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
       <div>
-        <div class="topbar-subtitle">BWM XMD SMM</div>
+        <div class="topbar-subtitle">BLACKLORD ELITE</div>
         <div class="topbar-title">Welcome back, Guest</div>
       </div>
     </div>
-    <a href="topup.html" class="crown-btn"><i class="fas fa-crown"></i></a>
+    <a href="voucher.html" class="crown-btn"><i class="fas fa-crown"></i></a>
   </header>
 
   <div class="sidebar-overlay" id="overlay"></div>
@@ -90,14 +90,23 @@
       <button class="close-sidebar" id="closeSidebar"><i class="fas fa-times"></i></button>
     </div>
     <ul class="nav-list">
-      <li class="nav-item"><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-      <li class="nav-item"><a href="bots.html"><i class="fas fa-cloud-upload-alt"></i> Deploy Bot</a></li>
-      <li class="nav-item"><a href="topup.html"><i class="fas fa-wallet"></i> Top Up</a></li>
-      <li class="nav-item"><a href="boost.html"><i class="fas fa-bullhorn"></i> Boost SMM</a></li>
-      <li class="nav-item"><a href="referral.html"><i class="fas fa-users"></i> Referral</a></li>
-      <li class="nav-item"><a href="servers.html"><i class="fas fa-server"></i> My Servers</a></li>
-      <li class="nav-item"><a href="api.html"><i class="fas fa-code"></i> API</a></li>
-      <li class="nav-item"><a href="webdev.html"><i class="fas fa-laptop-code"></i> Web Dev</a></li>
+      <li class="nav-item"><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard Home</a></li>
+      <li class="nav-item"><a href="bots.html"><i class="fas fa-robot"></i> WhatsApp Pairing (6 Bots)</a></li>
+      <li class="nav-item"><a href="telegram.html"><i class="fas fa-paper-plane"></i> Telegram Activation</a></li>
+      <li class="nav-item"><a href="topup.html"><i class="fas fa-wallet"></i> Wallet & Top Up</a></li>
+      <li class="nav-item"><a href="voucher.html"><i class="fas fa-ticket-alt"></i> Voucher Center</a></li>
+      <li class="nav-item"><a href="boost.html"><i class="fas fa-bullhorn"></i> SMM Boost</a></li>
+      <li class="nav-item"><a href="orders.html"><i class="fas fa-box"></i> Order Stacker</a></li>
+      <li class="nav-item"><a href="referral.html"><i class="fas fa-users"></i> Referral Center</a></li>
+      <li class="nav-item"><a href="servers.html"><i class="fas fa-server"></i> Hosting & Servers</a></li>
+      <li class="nav-item"><a href="domains.html"><i class="fas fa-globe"></i> Subdomain Workspace</a></li>
+      <li class="nav-item"><a href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics & Insights</a></li>
+      <li class="nav-item"><a href="automation.html"><i class="fas fa-bolt"></i> Webhooks & Automation</a></li>
+      <li class="nav-item"><a href="api.html"><i class="fas fa-code"></i> Developer API</a></li>
+      <li class="nav-item"><a href="community.html"><i class="fas fa-comments"></i> Community & Posts</a></li>
+      <li class="nav-item"><a href="support.html"><i class="fas fa-life-ring"></i> Support & Status</a></li>
+      <li class="nav-item"><a href="membership.html"><i class="fas fa-id-card"></i> Membership Plans</a></li>
+      <li class="nav-item"><a href="webdev.html"><i class="fas fa-laptop-code"></i> Web Dev Solutions</a></li>
     </ul>
   </aside>
 
@@ -106,7 +115,7 @@
       <div class="welcome-left">
         <div class="bot-avatar"><i class="fas fa-robot"></i></div>
         <div class="welcome-meta">
-          <div class="label">Dashboard</div>
+          <div class="label">Blacklord Elite Account</div>
           <div class="name">Welcome back, Guest</div>
         </div>
       </div>
@@ -117,14 +126,14 @@
 
     <div class="hero-actions-grid">
       <a href="bots.html" class="hero-action-card">
-        <i class="fas fa-cloud"></i>
+        <i class="fas fa-robot"></i>
         <div class="title">Deploy Bots</div>
-        <div class="sub">Watch tutorials</div>
+        <div class="sub">6 Supported Bots</div>
       </a>
       <a href="boost.html" class="hero-action-card">
         <i class="fas fa-bullhorn"></i>
         <div class="title">SMM Boost</div>
-        <div class="sub">Likes, follows & more</div>
+        <div class="sub">Marketplace & offers</div>
       </a>
     </div>
 
@@ -134,15 +143,15 @@
         <div class="trend-badge"><i class="fas fa-arrow-down"></i> -16.0%</div>
       </div>
       <div class="balance-btn-row">
-        <a href="topup.html" class="b-btn"><i class="fas fa-mobile-alt"></i> App</a>
-        <a href="topup.html" class="b-btn"><i class="fas fa-exchange-alt"></i> Sell XD</a>
-        <a href="topup.html" class="b-btn topup"><i class="fas fa-wallet"></i> Top Up</a>
+        <a href="topup.html" class="b-btn"><i class="fas fa-wallet"></i> Wallet</a>
+        <a href="voucher.html" class="b-btn"><i class="fas fa-ticket-alt"></i> Voucher</a>
+        <a href="topup.html" class="b-btn topup"><i class="fas fa-plus-circle"></i> Top Up</a>
       </div>
       <div class="balance-amount">
         <span class="num">42</span>
         <span class="currency">USD</span>
       </div>
-      <div class="balance-ksh">Active USD Wallet</div>
+      <div class="balance-ksh">Active USD Wallet Balance</div>
       <div class="wave-chart">
         <svg viewBox="0 0 500 50" preserveAspectRatio="none">
           <path d="M0,25 Q125,5 250,25 T500,25 L500,50 L0,50 Z" fill="rgba(239, 68, 68, 0.15)"></path>
@@ -151,42 +160,87 @@
       </div>
     </div>
 
-    <div class="section-label">QUICK ACCESS & PLATFORM TOOLS</div>
+    <div class="section-label">PLATFORM QUICK ACCESS & SUITES</div>
     <div class="quick-grid">
       <a href="bots.html" class="quick-card">
-        <div class="quick-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-        <div class="quick-title">Deploy Bot</div>
-        <div class="quick-sub">Watch tutorials</div>
+        <div class="quick-icon"><i class="fas fa-robot"></i></div>
+        <div class="quick-title">WhatsApp Bots</div>
+        <div class="quick-sub">6 Supported Bots</div>
+      </a>
+      <a href="telegram.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-paper-plane"></i></div>
+        <div class="quick-title">Telegram Bot</div>
+        <div class="quick-sub">Key Activation</div>
       </a>
       <a href="topup.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-wallet"></i></div>
-        <div class="quick-title">Top Up</div>
-        <div class="quick-sub">Add funds instantly</div>
+        <div class="quick-title">Top Up & Wallet</div>
+        <div class="quick-sub">M-Pesa, Card, Voucher</div>
+      </a>
+      <a href="voucher.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-ticket-alt"></i></div>
+        <div class="quick-title">Voucher Center</div>
+        <div class="quick-sub">Redeem & Generate</div>
       </a>
       <a href="boost.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-bullhorn"></i></div>
-        <div class="quick-title">Boost SMM</div>
-        <div class="quick-sub">Likes, follows & more</div>
+        <div class="quick-title">SMM Boost</div>
+        <div class="quick-sub">Marketplace & Orders</div>
+      </a>
+      <a href="orders.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-box"></i></div>
+        <div class="quick-title">Order Stacker</div>
+        <div class="quick-sub">Active & Completed</div>
       </a>
       <a href="referral.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-users"></i></div>
-        <div class="quick-title">Referral</div>
-        <div class="quick-sub">Earn commissions</div>
+        <div class="quick-title">Referral Center</div>
+        <div class="quick-sub">Affiliate Earnings</div>
       </a>
       <a href="servers.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-server"></i></div>
-        <div class="quick-title">My Servers</div>
-        <div class="quick-sub">Manage active instances</div>
+        <div class="quick-title">Hosting & Servers</div>
+        <div class="quick-sub">Pterodactyl Panel</div>
+      </a>
+      <a href="domains.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-globe"></i></div>
+        <div class="quick-title">Subdomain Workspace</div>
+        <div class="quick-sub">yourname.blacklord.tech</div>
+      </a>
+      <a href="analytics.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-chart-bar"></i></div>
+        <div class="quick-title">Analytics & Insights</div>
+        <div class="quick-sub">Usage & Services</div>
+      </a>
+      <a href="automation.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-bolt"></i></div>
+        <div class="quick-title">Webhooks & Events</div>
+        <div class="quick-sub">Signed HMAC Events</div>
       </a>
       <a href="api.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-code"></i></div>
-        <div class="quick-title">API</div>
-        <div class="quick-sub">Developer endpoints</div>
+        <div class="quick-title">Developer API</div>
+        <div class="quick-sub">API Keys & Sandbox</div>
+      </a>
+      <a href="community.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-comments"></i></div>
+        <div class="quick-title">Community Posts</div>
+        <div class="quick-sub">Announcements & Feed</div>
+      </a>
+      <a href="support.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-life-ring"></i></div>
+        <div class="quick-title">Support & Status</div>
+        <div class="quick-sub">Tickets & FAQ</div>
+      </a>
+      <a href="membership.html" class="quick-card">
+        <div class="quick-icon"><i class="fas fa-id-card"></i></div>
+        <div class="quick-title">Membership Plans</div>
+        <div class="quick-sub">Elite & Pro Tiers</div>
       </a>
       <a href="webdev.html" class="quick-card">
         <div class="quick-icon"><i class="fas fa-laptop-code"></i></div>
-        <div class="quick-title">Web Dev</div>
-        <div class="quick-sub">Custom solutions</div>
+        <div class="quick-title">Web Dev Solutions</div>
+        <div class="quick-sub">Custom development</div>
       </a>
     </div>
   </main>
