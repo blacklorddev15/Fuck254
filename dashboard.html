@@ -25,80 +25,8 @@
     .crown-btn { width: 42px; height: 42px; background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1.1rem; cursor: pointer; text-decoration: none; }
     .container { max-width: 600px; margin: 0.5rem auto; padding: 0 1rem; }
     
-    /* Portal Hero Card matching reference image */
-    .portal-hero {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 1.5rem 1rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    }
-    .portal-banner-img {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 1.25rem;
-      border: 1px solid rgba(250, 204, 21, 0.2);
-    }
-    .portal-subtitle {
-      font-size: 0.75rem;
-      color: #facc15;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-weight: 700;
-      margin-bottom: 0.3rem;
-    }
-    .portal-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      font-style: italic;
-      color: #ffffff;
-      margin-bottom: 0.4rem;
-    }
-    .portal-desc {
-      font-size: 0.85rem;
-      color: #9ca3af;
-      margin-bottom: 1.25rem;
-    }
-
-    /* 3 Metrics Cards row */
-    .metrics-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .metric-card {
-      background: #161922;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 0.75rem 0.5rem;
-      text-align: center;
-    }
-    .metric-card .val {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #facc15;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3rem;
-      margin-bottom: 0.15rem;
-    }
-    .metric-card .val .dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; display: inline-block; }
-    .metric-card .lbl {
-      font-size: 0.65rem;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
     /* Balance card */
-    .balance-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; }
+    .balance-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; margin-top: 1rem; }
     .balance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .balance-title { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 0.5rem; }
     .trend-badge { color: #ef4444; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.2rem; }
@@ -114,7 +42,7 @@
 
     .section-label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.75rem; font-weight: 700; text-align: left; }
     
-    /* Quick Access 2-column Grid matching reference bot selection */
+    /* Quick Access 2-column Grid */
     .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; margin-bottom: 1.5rem; }
     .quick-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1rem; text-align: left; text-decoration: none; color: #f3f4f6; transition: transform 0.2s, border-color 0.2s, background 0.2s; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); cursor: pointer; display: flex; flex-direction: column; position: relative; }
     .quick-card:active { transform: scale(0.97); }
@@ -179,29 +107,6 @@
   </aside>
 
   <main class="container">
-    <!-- Portal Hero matching reference image -->
-    <div class="portal-hero">
-      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg" alt="Blacklord Tech Inc" class="portal-banner-img">
-      <div class="portal-subtitle">BLACKLORD PAIRING PORTAL</div>
-      <div class="portal-title">BLACKLORD PAIRING PORTAL</div>
-      <div class="portal-desc">Choose a bot, enter your WhatsApp number, and connect securely.</div>
-
-      <div class="metrics-row">
-        <div class="metric-card">
-          <div class="val"><span class="dot"></span> ONLINE</div>
-          <div class="lbl">Active Users</div>
-        </div>
-        <div class="metric-card">
-          <div class="val"><i class="fas fa-shield-alt" style="color: #facc15;"></i> 24/7</div>
-          <div class="lbl">Uptime</div>
-        </div>
-        <div class="metric-card">
-          <div class="val"><i class="fas fa-globe" style="color: #facc15;"></i> GLOBAL</div>
-          <div class="lbl">Access</div>
-        </div>
-      </div>
-    </div>
-
     <div class="balance-card">
       <div class="balance-header">
         <div class="balance-title"><i class="fas fa-wallet"></i> TOTAL BALANCE</div>
@@ -373,18 +278,15 @@
       </a>
     </div>
   </main>
-
   <script>
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     const closeSidebar = document.getElementById('closeSidebar');
-
     function toggleNav() {
       sidebar.classList.toggle('active');
       overlay.classList.toggle('active');
     }
-
     menuToggle.addEventListener('click', toggleNav);
     closeSidebar.addEventListener('click', toggleNav);
     overlay.addEventListener('click', toggleNav);
