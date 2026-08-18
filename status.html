@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>System Status | BLACKLORD TECH INC</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 3rem; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem; background: #000; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+    .title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: #fff; }
+    .container { max-width: 600px; margin: 1rem auto; padding: 0 1rem; }
+    .card { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.15rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="dashboard.html" class="menu-btn"><i class="fas fa-arrow-left"></i></a>
+    <div class="title">System Status</div>
+    <div style="width: 42px;"></div>
+  </div>
+  <div class="container">
+    <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; text-align: center;">
+      <i class="fas fa-check-circle" style="color: #22c55e; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+      <div style="font-weight: 700; color: #fff; font-size: 1.1rem;">All Systems Operational</div>
+      <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.2rem;">100% uptime across all Blacklord regions</div>
+    </div>
+    <div class="card">
+      <div><div style="font-weight: 700; color: #fff;">Website Frontend</div><div style="font-size: 0.75rem; color: #9ca3af;">Vercel Global Edge Network</div></div>
+      <div style="color: #22c55e; font-weight: 700; font-size: 0.85rem;"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> Operational</div>
+    </div>
+    <div class="card">
+      <div><div style="font-weight: 700; color: #fff;">WhatsApp Pairing Bridge</div><div style="font-size: 0.75rem; color: #9ca3af;">Node.js Baileys Core</div></div>
+      <div style="color: #22c55e; font-weight: 700; font-size: 0.85rem;"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> Operational</div>
+    </div>
+    <div class="card">
+      <div><div style="font-weight: 700; color: #fff;">Pterodactyl Panel API</div><div style="font-size: 0.75rem; color: #9ca3af;">Server Management Daemon</div></div>
+      <div style="color: #22c55e; font-weight: 700; font-size: 0.85rem;"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> Operational</div>
+    </div>
+    <div class="card">
+      <div><div style="font-weight: 700; color: #fff;">Neon PostgreSQL Database</div><div style="font-size: 0.75rem; color: #9ca3af;">User Sessions & Transactions</div></div>
+      <div style="color: #22c55e; font-weight: 700; font-size: 0.85rem;"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> Operational</div>
+    </div>
+  </div>
+</body>
+</html>
