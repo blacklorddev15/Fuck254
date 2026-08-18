@@ -1,0 +1,59 @@
+const { Pool } = require('pg');
+
+const connectionString = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_7qSEZpOcw2rm@ep-blue-mode-ansl4ioi-pooler.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
+
+const pool = new Pool({
+  connectionString,
+  ssl: { rejectUnauthorized: false },
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
+});
+
+async function initDb() {
+  const client = await pool.connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS pairing_requests (
+        id SERIAL PRIMARY KEY,
+        request_id VARCHAR(64) UNIQUE NOT NULL,
+        phone VARCHAR(32),
+        whatsapp_phone VARCHAR(32) NOT NULL,
+        server_id BIGINT,
+        bot_type VARCHAR(64) DEFAULT 'blacklord',
+        status VARCHAR(32) DEFAULT 'pending',
+        pairing_code VARCHAR(64),
+        pairing_expires_at TIMESTAMP,
+        bot_session_id VARCHAR(255),
+        message TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+  } finally {
+    client.release();
+  }
+}
+
+async function logActivity(phone, action, details) {
+  try {
+    await pool.query('INSERT INTO activity_logs (phone, action, details) VALUES ($1, $2, $3)', [phone, action, details]);
+  } catch (e) {
+    // ignore logging failure
+  }
+}
+
+async function sendTelegramNotification(text) {
+  try {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+    if (token && chatId) {
+      const axios = require('axios');
+      await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, { chat_id: chatId, text }, { timeout: 5000 });
+    }
+  } catch (e) {
+    // ignore
+  }
+}
+
+module.exports = { pool, initDb, logActivity, sendTelegramNotification };
