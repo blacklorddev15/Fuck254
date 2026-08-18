@@ -1255,6 +1255,113 @@ module.exports = async function handler(req, res) {
       }
     }
 
+
+    if (path === 'servers/provision') {
+      if (method !== 'POST') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
+      const user = await sessionUser(client, req);
+      if (!user?.registered_at) { client.release(); return res.status(401).json({ error: 'Authentication required. Please log in before purchasing a hosting panel.' }); }
+
+      const { planId, planName, priceSD } = body;
+      const cost = Number(priceSD || 10);
+
+      // Check balance
+      const userRes = await client.query('SELECT balance FROM users WHERE phone = $1', [user.phone]);
+      const currentBalance = Number(userRes.rows[0]?.balance || 0);
+      if (currentBalance < cost) {
+        client.release();
+        return res.status(400).json({ error: `Insufficient wallet balance (${currentBalance} SD). You need ${cost} SD for ${planName || 'this panel'}. Please top up your wallet.` });
+      }
+
+      const config = getPairingConfig();
+      if (!config.panelUrl || !config.applicationApiKey) {
+        client.release();
+        return res.status(503).json({ error: 'Pterodactyl panel application API is not configured on this server.' });
+      }
+
+      try {
+        // Deduct balance
+        await client.query('UPDATE users SET balance = balance - $1 WHERE phone = $2', [cost, user.phone]);
+
+        // Provision on Pterodactyl Application API
+        // Find default node and egg
+        const nodeRes = await axios.get(`${config.panelUrl}/api/application/nodes`, {
+          headers: { Authorization: `Bearer ${config.applicationApiKey}`, Accept: 'Application/vnd.pterodactyl.v1+json' },
+          timeout: 10000
+        });
+        const nodeId = config.nodeId || nodeRes.data.data?.[0]?.attributes?.id || 1;
+
+        // Create or find user on Pterodactyl
+        let pteroUserId;
+        try {
+          const userSearch = await axios.get(`${config.panelUrl}/api/application/users?filter[email]=${encodeURIComponent(user.phone + '@blacklord.tech')}`, {
+            headers: { Authorization: `Bearer ${config.applicationApiKey}`, Accept: 'Application/vnd.pterodactyl.v1+json' },
+            timeout: 10000
+          });
+          if (userSearch.data.data && userSearch.data.data.length > 0) {
+            pteroUserId = userSearch.data.data[0].attributes.id;
+          } else {
+            const newUserRes = await axios.post(`${config.panelUrl}/api/application/users`, {
+              email: `${user.phone}@blacklord.tech`,
+              username: `user_${user.phone.slice(-6)}_${Date.now().toString().slice(-4)}`,
+              first_name: 'Blacklord',
+              last_name: 'User',
+              password: crypto.randomBytes(10).toString('hex') + 'A1!'
+            }, {
+              headers: { Authorization: `Bearer ${config.applicationApiKey}`, Accept: 'Application/vnd.pterodactyl.v1+json', 'Content-Type': 'application/json' },
+              timeout: 10000
+            });
+            pteroUserId = newUserRes.data.attributes.id;
+          }
+        } catch (uErr) {
+          pteroUserId = 1; // fallback
+        }
+
+        // Server specs
+        let memory = 1024, disk = 10240, cpu = 40;
+        if (cost >= 100) { memory = 0; disk = 0; cpu = 0; } // unlimited
+        else if (cost >= 60) { memory = 8192; disk = 80000; cpu = 400; }
+        else if (cost >= 40) { memory = 4096; disk = 40000; cpu = 200; }
+        else if (cost >= 20) { memory = 2048; disk = 20000; cpu = 100; }
+
+        const serverRes = await axios.post(`${config.panelUrl}/api/application/servers`, {
+          name: `${planName || 'Blacklord Server'} - ${user.phone.slice(-4)}`,
+          user: pteroUserId,
+          egg: Number(config.eggId || 1),
+          docker_image: 'ghcr.io/parkervcp/yolks:nodejs_18',
+          startup: 'npm start',
+          environment: { INST: 'npm', USER_UPLOAD: '0', AUTO_UPDATE: '0', CPANEL: '0' },
+          limits: { memory, swap: 0, disk, io: 500, cpu },
+          feature_limits: { databases: 2, backups: 2, allocations: 1 },
+          allocation: { default: Number(config.allocationId || 1) }
+        }, {
+          headers: { Authorization: `Bearer ${config.applicationApiKey}`, Accept: 'Application/vnd.pterodactyl.v1+json', 'Content-Type': 'application/json' },
+          timeout: 15000
+        });
+
+        const serverData = serverRes.data.attributes;
+        const serverId = serverData.id;
+        const identifier = serverData.identifier;
+
+        // Record in database
+        await client.query(`
+          INSERT INTO servers (phone, server_id, identifier, bot_type, status, name, memory, disk, cpu)
+          VALUES ($1, $2, $3, $4, 'active', $5, $6, $7, $8)
+        `, [user.phone, serverId, identifier, 'blacklord', planName || 'Hosting Panel', memory, disk, cpu]);
+
+        client.release();
+        return res.status(200).json({
+          success: true,
+          message: `Successfully provisioned ${planName || 'Hosting Panel'}!`,
+          server: { serverId, identifier, name: planName, status: 'active' }
+        });
+      } catch (provErr) {
+        // Refund if failed
+        await client.query('UPDATE users SET balance = balance + $1 WHERE phone = $2', [cost, user.phone]);
+        client.release();
+        return res.status(502).json({ error: provErr.response?.data?.errors?.[0]?.detail || provErr.message || 'Pterodactyl panel provisioning failed.' });
+      }
+    }
+
     client.release();
     return res.status(404).json({ error: 'User route not found' });
   } catch (error) {
