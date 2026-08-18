@@ -50,8 +50,8 @@
     </div>
     <div class="pairing-box">
       <div class="pairing-label">WhatsApp Number</div>
-      <input type="text" class="pairing-input" id="whatsappNumber" value="254712345678" placeholder="254712345678">
-      <div class="pairing-hint">Enter your full phone number with country code (e.g. 254712345678).</div>
+      <input type="text" class="pairing-input" id="whatsappNumber" placeholder="Enter WhatsApp number with country code" autocomplete="tel" inputmode="numeric">
+      <div class="pairing-hint">Enter the paired WhatsApp number with country code. Do not include spaces or the plus sign.</div>
       <button class="generate-btn" id="generateBtn" onclick="generatePairingCode()">Generate Pairing Code</button>
       <div class="pairing-status" id="pairingStatus">Ready to generate pairing code for Rita XMD.</div>
       <div class="pairing-code-display" id="pairingCodeDisplay">
