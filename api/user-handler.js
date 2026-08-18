@@ -156,8 +156,8 @@ function getPairingConfig() {
     clientApiKey: process.env.PTERODACTYL_CLIENT_API_KEY || '',
     serverIdentifier: process.env.PTERODACTYL_SERVER_IDENTIFIER || '',
     botEndpoint: (process.env.BOT_PAIRING_ENDPOINT || '').replace(/\/$/, ''),
-    botSecret: process.env.BOT_PAIRING_SECRET || '',
-    webhookSecret: process.env.PAIRING_WEBHOOK_SECRET || ''
+    botSecret: process.env.BOT_PAIRING_SECRET || process.env.PAIRING_WEBHOOK_SECRET || '',
+    webhookSecret: process.env.PAIRING_WEBHOOK_SECRET || process.env.BOT_PAIRING_SECRET || ''
   };
 }
 
@@ -177,7 +177,7 @@ function normalizeKeyType(value) {
 
 function normalizePairingStatus(value) {
   const status = String(value || 'pending').toLowerCase();
-  return ['pending', 'waiting', 'paired', 'connected', 'completed', 'failed', 'expired', 'cancelled'].includes(status) ? status : 'pending';
+  return ['pending', 'processing', 'waiting', 'paired', 'connected', 'completed', 'failed', 'expired', 'cancelled'].includes(status) ? status : 'pending';
 }
 
 function secretMatches(supplied, expected) {
@@ -738,7 +738,7 @@ module.exports = async function handler(req, res) {
     if (path === 'pairing/callback') {
       if (method !== 'POST') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
       const config = getPairingConfig();
-      const suppliedSecret = headers['x-blacklord-pairing-secret'] || headers['X-Blacklord-Pairing-Secret'] || headers.authorization?.replace(/^Bearer\s+/i, '');
+      const suppliedSecret = headers['x-blacklord-pairing-secret'] || headers['X-Blacklord-Pairing-Secret'] || headers['x-bot-secret'] || headers['X-Bot-Secret'] || headers.authorization?.replace(/^Bearer\s+/i, '');
       if (!config.webhookSecret) { client.release(); return res.status(503).json({ error: 'Pairing webhook secret is not configured.' }); }
       if (!secretMatches(suppliedSecret, config.webhookSecret)) { client.release(); return res.status(401).json({ error: 'Invalid pairing callback signature.' }); }
       const requestId = String(body.requestId || body.request_id || '').trim();
@@ -756,17 +756,33 @@ module.exports = async function handler(req, res) {
     if (path === 'pairing/poll') {
       if (method !== 'GET') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
       const config = getPairingConfig();
-      const suppliedSecret = headers['x-blacklord-pairing-secret'] || headers['X-Blacklord-Pairing-Secret'] || headers.authorization?.replace(/^Bearer\s+/i, '');
+      const suppliedSecret = headers['x-blacklord-pairing-secret'] || headers['X-Blacklord-Pairing-Secret'] || headers['x-bot-secret'] || headers['X-Bot-Secret'] || headers.authorization?.replace(/^Bearer\s+/i, '');
       if (!config.botSecret) { client.release(); return res.status(503).json({ error: 'Pairing secret is not configured.' }); }
       if (!secretMatches(suppliedSecret, config.botSecret)) { client.release(); return res.status(401).json({ error: 'Invalid pairing secret.' }); }
       
+      const requestedBotType = String(query.bot_type || query.botType || '').trim().toLowerCase().replace(/[\s_-]+/g, '');
+      const requestedServerIdRaw = query.server_id ?? query.serverId;
+      const requestedServerIdNumber = requestedServerIdRaw === undefined || requestedServerIdRaw === '' ? null : Number(requestedServerIdRaw);
+      const requestedServerId = Number.isInteger(requestedServerIdNumber) ? requestedServerIdNumber : null;
+
+      // Atomically claim one request so six bot workers cannot process the same request.
+      // The processing state is also visible to the website while Baileys creates the code.
       const result = await client.query(`
-        SELECT request_id, phone, whatsapp_phone, server_id, bot_type, status, created_at 
-        FROM pairing_requests 
-        WHERE status = 'pending' 
-        ORDER BY created_at ASC 
-        LIMIT 1
-      `);
+        UPDATE pairing_requests
+        SET status = 'processing', updated_at = CURRENT_TIMESTAMP,
+            message = COALESCE(message, 'Pairing request claimed by the bot bridge.')
+        WHERE request_id = (
+          SELECT request_id
+          FROM pairing_requests
+          WHERE status = 'pending'
+            AND ($1 = '' OR LOWER(bot_type) = $1)
+            AND ($2::bigint IS NULL OR server_id = $2)
+          ORDER BY created_at ASC
+          FOR UPDATE SKIP LOCKED
+          LIMIT 1
+        )
+        RETURNING request_id, phone, whatsapp_phone, server_id, bot_type, status, created_at
+      `, [requestedBotType, requestedServerId]);
       client.release();
       return res.status(200).json({ success: true, pending: result.rows[0] || null });
     }
