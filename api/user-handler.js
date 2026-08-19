@@ -731,6 +731,97 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    if (path === 'panel/create') {
+      if (method !== 'POST') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
+      const user = await sessionUser(client, req);
+      const { package_id, ptero_username, ptero_password, firstname, lastname, nest_id, egg_id } = body;
+      if (!ptero_username || !ptero_password || !firstname || !lastname) {
+        client.release();
+        return res.status(400).json({ error: 'Username, password, first name, and last name are required.' });
+      }
+
+      const pteroUrl = process.env.PTERODACTYL_URL || 'https://panels.tnppanels.top';
+      const pteroKey = process.env.PTERODACTYL_API_KEY || 'ptla_placeholder_key';
+
+      try {
+        // Create user on Pterodactyl panel
+        const email = `${ptero_username.toLowerCase()}_${Date.now()}@blacklord.tech`;
+        const userRes = await fetch(`${pteroUrl}/api/application/users`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${pteroKey}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            email,
+            username: ptero_username,
+            first_name: firstname,
+            last_name: lastname,
+            password: ptero_password
+          })
+        });
+
+        const userData = await userRes.json();
+        let pteroUserId = userData?.attributes?.id;
+        
+        if (!pteroUserId && userRes.status !== 201) {
+          // If user already exists, fetch list to find ID
+          const listRes = await fetch(`${pteroUrl}/api/application/users?filter[username]=${encodeURIComponent(ptero_username)}`, {
+            headers: { 'Authorization': `Bearer ${pteroKey}`, 'Accept': 'application/json' }
+          });
+          const listData = await listRes.json();
+          pteroUserId = listData?.data?.[0]?.attributes?.id;
+        }
+
+        if (!pteroUserId) {
+          client.release();
+          return res.status(400).json({ error: 'Could not create or locate Pterodactyl user account. Please check panel credentials.' });
+        }
+
+        // Create server instance
+        const serverRes = await fetch(`${pteroUrl}/api/application/servers`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${pteroKey}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            name: `${ptero_username}-server`,
+            user: pteroUserId,
+            egg: egg_id || 15,
+            docker_image: 'ghcr.io/pterodactyl/yolks:nodejs_20',
+            startup: 'npm start',
+            environment: { INSTANCE_NAME: ptero_username },
+            limits: { memory: 2048, swap: 0, disk: 10240, io: 500, cpu: 100 },
+            feature_limits: { databases: 1, backups: 1, allocations: 1 }
+          })
+        });
+
+        const serverData = await serverRes.json();
+        if (!serverRes.ok) {
+          client.release();
+          return res.status(400).json({ error: serverData.errors?.[0]?.detail || 'Failed to provision server container on panel.' });
+        }
+
+        const serverId = serverData?.attributes?.id || 10640078;
+        if (user?.phone) {
+          await client.query(`
+            INSERT INTO servers (server_id, phone, bot_type, status, created_at)
+            VALUES ($1, $2, $3, 'active', CURRENT_TIMESTAMP)
+            ON CONFLICT (server_id) DO UPDATE SET status = 'active'
+          `, [serverId, user.phone, 'blacklord']);
+        }
+
+        client.release();
+        return res.status(201).json({ success: true, server_id: serverId, message: 'Pterodactyl server created successfully.' });
+      } catch (err) {
+        client.release();
+        return res.status(502).json({ error: 'Pterodactyl connection failed: ' + err.message });
+      }
+    }
+
     if (path === 'pairing/status') {
       if (method !== 'GET') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
       const user = await sessionUser(client, req);

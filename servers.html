@@ -43,10 +43,94 @@
   <main class="container">
     <div class="section-label">Pterodactyl Panel</div>
     <div class="section-sub">Active hosting containers and nodes</div>
-    <div class="card">
-      <p style="color:#9ca3af; margin-bottom: 1rem; font-size: 0.9rem;">Access your Pterodactyl hosting panel to manage containers, startup commands, and logs.</p>
-      <a href="https://panels.tnppanels.top" target="_blank" class="action-btn"><i class="fas fa-external-link-alt"></i> Open Pterodactyl Panel</a>
+    <div class="card" style="text-align: left; margin-bottom: 1.5rem;">
+      <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem;"><i class="fas fa-server" style="color: #facc15;"></i> Create New Pterodactyl Server</h3>
+      <p style="color:#9ca3af; font-size: 0.8rem; margin-bottom: 1.25rem;">Deploy an isolated container instantly on Pterodactyl panels with custom username and password.</p>
+      <form id="panelForm" onsubmit="createPanel(event)">
+        <div style="margin-bottom: 1rem;">
+          <label style="font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Select Hosting Plan</label>
+          <select id="packageId" class="pairing-input" style="width:100%; background:#161922; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:0.75rem; color:#fff; font-size:0.9rem;">
+            <option value="1">10GB Storage Plan ($5 / mo - 1GB RAM)</option>
+            <option value="2" selected>Bulky 2 Plan ($12 / mo - 6GB RAM)</option>
+            <option value="3">Bulky 3 Enterprise ($25 / mo - 16GB RAM)</option>
+            <option value="5">Unlimited Admin Plan ($100 / mo - Full Control)</option>
+          </select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+          <div>
+            <label style="font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">First Name</label>
+            <input type="text" id="firstName" placeholder="John" required class="pairing-input" style="width:100%; background:#161922; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:0.75rem; color:#fff; font-size:0.9rem;">
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Last Name</label>
+            <input type="text" id="lastName" placeholder="Doe" required class="pairing-input" style="width:100%; background:#161922; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:0.75rem; color:#fff; font-size:0.9rem;">
+          </div>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label style="font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Panel Username</label>
+          <input type="text" id="pteroUsername" placeholder="johndoe_bot" required class="pairing-input" style="width:100%; background:#161922; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:0.75rem; color:#fff; font-size:0.9rem;">
+        </div>
+        <div style="margin-bottom: 1.25rem;">
+          <label style="font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Panel Password</label>
+          <input type="password" id="pteroPassword" placeholder="SecurePassword123" required class="pairing-input" style="width:100%; background:#161922; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:0.75rem; color:#fff; font-size:0.9rem;">
+        </div>
+        <button type="submit" id="createBtn" class="action-btn" style="margin-top:0;">Provision Pterodactyl Server</button>
+      </form>
+      <div id="panelStatus" style="margin-top: 1rem; font-size: 0.85rem; text-align: center; color: #facc15;"></div>
+      <div id="credentialsBox" style="display:none; background:#161922; border:1px solid #22c55e; border-radius:12px; padding:1rem; margin-top:1rem; text-align:left;">
+        <div style="color:#22c55e; font-weight:700; margin-bottom:0.5rem;"><i class="fas fa-check-circle"></i> Server Provisioned Successfully!</div>
+        <div style="font-size:0.8rem; color:#d1d5db; line-height:1.5;" id="credDetails"></div>
+      </div>
     </div>
+    <div class="card">
+      <h3 style="color: #fff; font-size: 1rem; margin-bottom: 0.5rem;"><i class="fas fa-external-link-alt" style="color: #facc15;"></i> Open Master Panel</h3>
+      <p style="color:#9ca3af; margin-bottom: 1rem; font-size: 0.85rem;">Access your Pterodactyl hosting panel to manage containers and view logs.</p>
+      <a href="https://panels.tnppanels.top" target="_blank" class="action-btn" style="background:#161922; color:#facc15; border:1px solid rgba(250,204,21,0.4);">Open Pterodactyl Panel</a>
+    </div>
+    <script>
+      async function createPanel(e) {
+        e.preventDefault();
+        const btn = document.getElementById('createBtn');
+        const status = document.getElementById('panelStatus');
+        const credBox = document.getElementById('credentialsBox');
+        const credDetails = document.getElementById('credDetails');
+        
+        btn.disabled = true; btn.innerText = 'Provisioning Container...';
+        status.innerText = 'Contacting Pterodactyl daemon & allocating resources...';
+        credBox.style.display = 'none';
+
+        const payload = {
+          package_id: document.getElementById('packageId').value,
+          firstname: document.getElementById('firstName').value.trim(),
+          lastname: document.getElementById('lastName').value.trim(),
+          ptero_username: document.getElementById('pteroUsername').value.trim(),
+          ptero_password: document.getElementById('pteroPassword').value.trim(),
+          nest_id: 5,
+          egg_id: 15
+        };
+
+        try {
+          const res = await fetch('/api/user/panel/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to create panel server.');
+
+          status.innerHTML = '<b style="color:#22c55e;">Panel server created successfully!</b>';
+          credDetails.innerHTML = `<b>Panel URL:</b> <a href="https://panels.tnppanels.top" target="_blank" style="color:#facc15;">https://panels.tnppanels.top</a><br>` +
+                                  `<b>Username:</b> ${payload.ptero_username}<br>` +
+                                  `<b>Password:</b> ${payload.ptero_password}<br>` +
+                                  `<b>Server ID:</b> ${data.server_id || 'Allocated'}`;
+          credBox.style.display = 'block';
+          btn.disabled = false; btn.innerText = 'Provision Pterodactyl Server';
+        } catch (err) {
+          status.innerHTML = '<span style="color:#ef4444;">Error: ' + err.message + '</span>';
+          btn.disabled = false; btn.innerText = 'Provision Pterodactyl Server';
+        }
+      }
+    </script>
     <div class="powered-footer">Powered by BLACKLORD TECH INC</div>
   </main>
 </body>
