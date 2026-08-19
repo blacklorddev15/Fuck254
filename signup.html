@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | BLACKLORD TECH INC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.88)), url("https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem;
+    }
+    .auth-card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 2rem; width: 100%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+    .brand { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; font-style: italic; text-align: center; margin-bottom: 0.5rem; color: #fff; }
+    .sub { font-size: 0.75rem; color: #facc15; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-bottom: 2rem; font-weight: 700; }
+    .input-group { margin-bottom: 1.25rem; }
+    .label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.5rem; font-weight: 600; }
+    .input { width: 100%; background: #161922; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem 1rem; color: #fff; font-size: 0.95rem; }
+    .btn { width: 100%; background: #facc15; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 0.95rem; font-size: 1rem; cursor: pointer; margin-top: 1rem; box-shadow: 0 4px 20px rgba(250,204,21,0.3); }
+    .footer-text { text-align: center; font-size: 0.85rem; color: #9ca3af; margin-top: 1.5rem; }
+    .footer-text a { color: #facc15; text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <div class="brand">Blacklord Tech</div>
+    <div class="sub">Create Account</div>
+    <form onsubmit="handleSignup(event)">
+      <div class="input-group">
+        <label class="label">Full Name</label>
+        <input type="text" id="name" class="input" placeholder="John Doe" required>
+      </div>
+      <div class="input-group">
+        <label class="label">Phone Number (WhatsApp)</label>
+        <input type="text" id="phone" class="input" placeholder="2547XXXXXXXX" required>
+      </div>
+      <div class="input-group">
+        <label class="label">Password</label>
+        <input type="password" id="password" class="input" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn">Create Account & Get Started</button>
+    </form>
+    <div class="footer-text">
+      Already have an account? <a href="login.html">Sign In</a>
+    </div>
+  </div>
+  <script>
+    function handleSignup(e) {
+      e.preventDefault();
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>
