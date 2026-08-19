@@ -62,49 +62,26 @@
     </div>
   </main>
   <script>
+    const BOT_LABEL = 'Titan XD';
+    let pollTimer = null;
+    let expiryTimer = null;
+    function resetPairingButton(label = 'Generate Pairing Code') { const btn = document.getElementById('generateBtn'); btn.style.display = 'block'; btn.disabled = false; btn.innerText = label; }
+    function stopTimers() { if (pollTimer) { clearInterval(pollTimer); pollTimer = null; } if (expiryTimer) { clearInterval(expiryTimer); expiryTimer = null; } }
+    function startExpiryCountdown(pairing, status, codeDisplay) {
+      if (expiryTimer) clearInterval(expiryTimer);
+      const createdAt = Date.parse(pairing.created_at || new Date().toISOString()); const reportedExpiry = Date.parse(pairing.pairing_expires_at || ''); const hardExpiry = createdAt + 2 * 60 * 1000; const expiresAt = Number.isFinite(reportedExpiry) ? Math.min(reportedExpiry, hardExpiry) : hardExpiry;
+      expiryTimer = setInterval(() => { const seconds = Math.max(0, Math.ceil((expiresAt - Date.now()) / 1000)); if (seconds <= 0) { stopTimers(); codeDisplay.style.display = 'none'; status.innerHTML = '<span style="color:#f59e0b;">Pairing request expired after 2 minutes. You can request a fresh code now.</span>'; resetPairingButton('Try Again'); return; } status.innerHTML = '<b style="color:#22c55e;">Pairing code ready.</b> Expires in ' + seconds + 's.'; }, 1000);
+    }
+    function showPairingCode(pairing, status, codeDisplay, codeText) { stopTimers(); codeText.innerText = pairing.pairing_code; codeDisplay.style.display = 'block'; resetPairingButton(); startExpiryCountdown(pairing, status, codeDisplay); }
     async function generatePairingCode() {
-      const numInput = document.getElementById('whatsappNumber').value.trim();
-      const status = document.getElementById('pairingStatus');
-      const codeDisplay = document.getElementById('pairingCodeDisplay');
-      const codeText = document.getElementById('codeText');
-      const btn = document.getElementById('generateBtn');
-      const phone = numInput.replace(/\D/g, '');
+      stopTimers(); const numInput = document.getElementById('whatsappNumber').value.trim(); const status = document.getElementById('pairingStatus'); const codeDisplay = document.getElementById('pairingCodeDisplay'); const codeText = document.getElementById('codeText'); const btn = document.getElementById('generateBtn'); const phone = numInput.replace(/\D/g, '');
       if (!phone || phone.length < 10) { alert('Please enter a valid WhatsApp phone number.'); return; }
-      btn.disabled = true; btn.innerText = 'Requesting Code...'; codeDisplay.style.display = 'none';
-      status.innerText = 'Queuing pairing request for Titan XD...';
+      btn.style.display = 'none'; btn.disabled = true; codeDisplay.style.display = 'none'; status.innerText = 'Requesting a fresh ' + BOT_LABEL + ' pairing code...';
       try {
-        const res = await fetch('/api/user/pairing/start', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ whatsappPhone: phone, botType: 'titan' })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to start pairing.');
-        const pairing = data.pairing || {};
-        if (pairing.pairing_code) {
-          codeText.innerText = pairing.pairing_code; codeDisplay.style.display = 'block';
-          status.innerHTML = '<b style="color:#22c55e;">Pairing code generated!</b>';
-          btn.disabled = false; btn.innerText = 'Generate Pairing Code'; return;
-        }
-        let attempts = 0;
-        const pollInterval = setInterval(async () => {
-          attempts++;
-          const statusRes = await fetch('/api/user/pairing/status?requestId=' + encodeURIComponent(pairing.request_id));
-          const statusData = await statusRes.json();
-          const p = statusData.pairing;
-          if (p && p.pairing_code) {
-            clearInterval(pollInterval); codeText.innerText = p.pairing_code; codeDisplay.style.display = 'block';
-            status.innerHTML = '<b style="color:#22c55e;">Pairing code ready!</b>';
-            btn.disabled = false; btn.innerText = 'Generate Pairing Code';
-          } else if (attempts >= 30) {
-            clearInterval(pollInterval);
-            status.innerHTML = '<span style="color:#f59e0b;">Timeout waiting for server bridge. Ensure Pterodactyl bot is running.</span>';
-            btn.disabled = false; btn.innerText = 'Generate Pairing Code';
-          }
-        }, 2000);
-      } catch (err) {
-        status.innerHTML = '<span style="color:#ef4444;">Error: ' + err.message + '</span>';
-        btn.disabled = false; btn.innerText = 'Generate Pairing Code';
-      }
+        const res = await fetch('/api/user/pairing/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ whatsappPhone: phone, botType: 'titan' }) });
+        const data = await res.json().catch(() => ({})); if (!res.ok) throw new Error(data.error || 'Failed to start pairing.'); const pairing = data.pairing || {}; if (!pairing.request_id) throw new Error('Pairing request was not created.'); if (pairing.pairing_code) { showPairingCode(pairing, status, codeDisplay, codeText); return; }
+        let attempts = 0; pollTimer = setInterval(async () => { attempts++; try { const statusRes = await fetch('/api/user/pairing/status?requestId=' + encodeURIComponent(pairing.request_id), { cache: 'no-store' }); const statusData = await statusRes.json().catch(() => ({})); const p = statusData.pairing; if (p && p.pairing_code && !['expired', 'failed', 'cancelled'].includes(p.status)) showPairingCode(p, status, codeDisplay, codeText); else if (p && ['expired', 'failed', 'cancelled'].includes(p.status)) { stopTimers(); status.innerHTML = '<span style="color:#f59e0b;">Pairing request expired or failed. Request a new code.</span>'; resetPairingButton('Try Again'); } else if (attempts >= 60) { stopTimers(); status.innerHTML = '<span style="color:#f59e0b;">No code arrived within two minutes. Request a new code.</span>'; resetPairingButton('Try Again'); } } catch (pollError) { if (attempts >= 60) { stopTimers(); status.innerHTML = '<span style="color:#ef4444;">Unable to check pairing status. Request a new code.</span>'; resetPairingButton('Try Again'); } } }, 2000);
+      } catch (err) { stopTimers(); status.innerHTML = '<span style="color:#ef4444;">Error: ' + err.message + '</span>'; resetPairingButton('Try Again'); }
     }
   </script>
 </body>

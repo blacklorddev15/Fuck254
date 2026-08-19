@@ -668,21 +668,45 @@ module.exports = async function handler(req, res) {
       const whatsappPhone = normalizeKenyanPhone(body.whatsappPhone || body.phone || user?.phone);
       if (!whatsappPhone) { client.release(); return res.status(400).json({ error: 'Enter a valid WhatsApp phone number.' }); }
 
-      // Check if this whatsappPhone already has an active session or unexpired pending/processing pairing request
+      // Every unlinked request follows the Telegram-style two-minute lifetime.
+      // This cleanup also clears legacy rows that were incorrectly left as active
+      // without a confirmed linked session.
+      await client.query(`
+        UPDATE pairing_requests
+        SET status = 'expired',
+            pairing_code = NULL,
+            message = 'Pairing request expired after two minutes. Please request a new code.',
+            updated_at = CURRENT_TIMESTAMP
+        WHERE whatsapp_phone = $1
+          AND (
+            (linked_at IS NULL AND status IN ('paired', 'connected', 'active', 'completed'))
+            OR (linked_at IS NULL AND status IN ('pending', 'processing', 'waiting'))
+          )
+          AND created_at <= NOW() - INTERVAL '2 minutes'
+      `, [whatsappPhone]);
+
+      // A linked session is the only permanent block. Pending requests are
+      // blocked only during their two-minute lifetime so users can retry after
+      // an abandoned or unsuccessful attempt.
       const activeCheck = await client.query(`
         SELECT request_id, status FROM pairing_requests
         WHERE whatsapp_phone = $1
           AND (
-            status IN ('paired', 'connected', 'active')
-            OR (status IN ('pending', 'processing') AND created_at > NOW() - INTERVAL '60 seconds')
+            (status IN ('paired', 'connected', 'active', 'completed') AND linked_at IS NOT NULL)
+            OR (status IN ('pending', 'processing', 'waiting') AND linked_at IS NULL AND created_at > NOW() - INTERVAL '2 minutes')
           )
+        ORDER BY created_at DESC
         LIMIT 1
       `, [whatsappPhone]);
 
       if (activeCheck.rows[0]) {
         client.release();
-        return res.status(400).json({ 
-          error: 'This number already has an active session or pending pairing request. Please link it first or wait for the current request to expire.' 
+        return res.status(409).json({
+          error: activeCheck.rows[0].status === 'pending' || activeCheck.rows[0].status === 'processing' || activeCheck.rows[0].status === 'waiting'
+            ? 'A pairing request is already in progress. It expires in two minutes; please wait or retry after it expires.'
+            : 'This number already has a linked active session. Unlink it before requesting another code.',
+          requestId: activeCheck.rows[0].request_id,
+          status: activeCheck.rows[0].status
         });
       }
       
@@ -711,7 +735,7 @@ module.exports = async function handler(req, res) {
 
       const config = getPairingConfig();
       const requestId = pairingRequestId();
-      await client.query('INSERT INTO pairing_requests (request_id, phone, whatsapp_phone, server_id, bot_type, status, message) VALUES ($1, $2, $3, $4, $5, $6, $7)', [requestId, user?.phone || null, whatsappPhone, serverId || null, botType, 'pending', 'Pairing request sent to the bot.']);
+      await client.query("INSERT INTO pairing_requests (request_id, phone, whatsapp_phone, server_id, bot_type, status, pairing_expires_at, message) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP + INTERVAL '2 minutes', $7)", [requestId, user?.phone || null, whatsappPhone, serverId || null, botType, 'pending', 'Pairing request sent to the bot.']);
       try {
         const callbackBase = process.env.PUBLIC_APP_URL || (headers.host ? `https://${headers.host}` : '');
         const botData = await dispatchPairingRequest(config, {
@@ -726,7 +750,8 @@ module.exports = async function handler(req, res) {
         const pairingCode = String(botData.pairingCode || botData.pairing_code || botData.code || '').trim().slice(0, 64) || null;
         const expiresAt = botData.expiresAt || botData.expires_at || null;
         const botMessage = String(botData.message || (pairingCode ? 'Pairing code ready.' : 'Pairing request accepted.')).slice(0, 500);
-        const result = await client.query('UPDATE pairing_requests SET status = $1, pairing_code = $2, pairing_expires_at = $3, bot_session_id = $4, message = $5, updated_at = CURRENT_TIMESTAMP WHERE request_id = $6 RETURNING request_id, whatsapp_phone, server_id, bot_type, status, pairing_code, pairing_expires_at, bot_session_id, message, created_at, updated_at', [status, pairingCode, expiresAt ? new Date(expiresAt) : null, String(botData.sessionId || botData.session_id || '').slice(0, 200) || null, botMessage, requestId]);
+        const bridgeSessionId = String(botData.sessionId || botData.session_id || '').slice(0, 200) || null;
+        const result = await client.query("UPDATE pairing_requests SET status = $1, pairing_code = $2, pairing_expires_at = LEAST(COALESCE(pairing_expires_at, created_at + INTERVAL '2 minutes'), COALESCE($3::timestamp, created_at + INTERVAL '2 minutes')), bot_session_id = $4, linked_at = CASE WHEN $1 IN ('paired', 'connected', 'active', 'completed') THEN COALESCE(linked_at, CURRENT_TIMESTAMP) ELSE linked_at END, message = $5, updated_at = CURRENT_TIMESTAMP WHERE request_id = $6 RETURNING request_id, whatsapp_phone, server_id, bot_type, status, pairing_code, pairing_expires_at, bot_session_id, linked_at, message, created_at, updated_at", [status, pairingCode, expiresAt ? new Date(expiresAt) : null, bridgeSessionId, botMessage, requestId]);
         client.release();
         return res.status(202).json({ success: true, pairing: result.rows[0], message: botMessage });
       } catch (pairingError) {
@@ -839,16 +864,22 @@ module.exports = async function handler(req, res) {
       const requestId = String(query.requestId || '').trim();
       if (!requestId) { client.release(); return res.status(400).json({ error: 'requestId is required.' }); }
 
-      // Check if a pending or processing request has exceeded 60 seconds without a code; mark as failed so user can retry cleanly.
+      // Every unlinked pairing request expires after two minutes, even if the
+      // bridge never responds. This makes retry behavior deterministic.
       await client.query(`
         UPDATE pairing_requests
-        SET status = 'failed', message = 'Pairing timed out waiting for bot bridge response. Please try again.', updated_at = CURRENT_TIMESTAMP
+        SET status = 'expired', pairing_code = NULL,
+            message = 'Pairing request expired after two minutes. Please request a new code.',
+            updated_at = CURRENT_TIMESTAMP
         WHERE request_id = $1
-          AND status IN ('pending', 'processing')
-          AND created_at < NOW() - INTERVAL '60 seconds'
+          AND (
+            (linked_at IS NULL AND status IN ('pending', 'processing', 'waiting'))
+            OR (linked_at IS NULL AND bot_session_id IS NULL AND status IN ('paired', 'connected', 'active', 'completed'))
+          )
+          AND (created_at <= NOW() - INTERVAL '2 minutes' OR pairing_expires_at <= CURRENT_TIMESTAMP)
       `, [requestId]);
 
-      const requestRes = await client.query('SELECT request_id, whatsapp_phone, server_id, bot_type, status, pairing_code, pairing_expires_at, bot_session_id, message, created_at, updated_at FROM pairing_requests WHERE request_id = $1 LIMIT 1', [requestId]);
+      const requestRes = await client.query('SELECT request_id, whatsapp_phone, server_id, bot_type, status, pairing_code, pairing_expires_at, bot_session_id, linked_at, message, created_at, updated_at FROM pairing_requests WHERE request_id = $1 LIMIT 1', [requestId]);
       client.release();
       if (!requestRes.rows[0]) return res.status(404).json({ error: 'No pairing request found.' });
       return res.status(200).json({ success: true, pairing: requestRes.rows[0] });
@@ -876,7 +907,7 @@ module.exports = async function handler(req, res) {
       const pairingCode = String(body.pairingCode || body.pairing_code || body.code || '').trim().slice(0, 64) || null;
       const expiresAt = body.expiresAt || body.expires_at || null;
       const message = String(body.message || '').trim().slice(0, 500) || null;
-      const result = await client.query('UPDATE pairing_requests SET status = $1, pairing_code = COALESCE($2, pairing_code), pairing_expires_at = COALESCE($3, pairing_expires_at), bot_session_id = COALESCE($4, bot_session_id), message = COALESCE($5, message), updated_at = CURRENT_TIMESTAMP WHERE request_id = $6 RETURNING request_id, status, pairing_code, pairing_expires_at, bot_session_id, message, updated_at', [status, pairingCode, expiresAt ? new Date(expiresAt) : null, String(body.sessionId || body.session_id || '').slice(0, 200) || null, message, requestId]);
+      const result = await client.query("UPDATE pairing_requests SET status = $1, pairing_code = CASE WHEN $1 IN ('expired', 'failed', 'cancelled') THEN NULL ELSE COALESCE($2, pairing_code) END, pairing_expires_at = CASE WHEN $1 IN ('expired', 'failed', 'cancelled') THEN CURRENT_TIMESTAMP ELSE LEAST(COALESCE(pairing_expires_at, created_at + INTERVAL '2 minutes'), COALESCE($3::timestamp, created_at + INTERVAL '2 minutes')) END, bot_session_id = COALESCE($4, bot_session_id), linked_at = CASE WHEN $1 IN ('paired', 'connected', 'active', 'completed') THEN COALESCE(linked_at, CURRENT_TIMESTAMP) ELSE linked_at END, message = COALESCE($5, message), updated_at = CURRENT_TIMESTAMP WHERE request_id = $6 RETURNING request_id, status, pairing_code, pairing_expires_at, bot_session_id, linked_at, message, updated_at", [status, pairingCode, expiresAt ? new Date(expiresAt) : null, String(body.sessionId || body.session_id || '').slice(0, 200) || null, message, requestId]);
       client.release();
       if (!result.rows[0]) return res.status(404).json({ error: 'Pairing request not found.' });
       return res.status(200).json({ success: true, pairing: result.rows[0] });
@@ -894,6 +925,17 @@ module.exports = async function handler(req, res) {
       const requestedServerIdNumber = requestedServerIdRaw === undefined || requestedServerIdRaw === '' ? null : Number(requestedServerIdRaw);
       const requestedServerId = Number.isInteger(requestedServerIdNumber) ? requestedServerIdNumber : null;
 
+      // Expire old pending work before claiming the next request.
+      await client.query(`
+        UPDATE pairing_requests
+        SET status = 'expired', pairing_code = NULL,
+            message = 'Pairing request expired after two minutes. Please request a new code.',
+            updated_at = CURRENT_TIMESTAMP
+          WHERE status = 'pending'
+          AND linked_at IS NULL
+          AND (created_at <= NOW() - INTERVAL '2 minutes' OR pairing_expires_at <= CURRENT_TIMESTAMP)
+      `);
+
       // Atomically claim one request so six bot workers cannot process the same request.
       // The processing state is also visible to the website while Baileys creates the code.
       const result = await client.query(`
@@ -904,13 +946,16 @@ module.exports = async function handler(req, res) {
           SELECT request_id
           FROM pairing_requests
           WHERE status = 'pending'
+            AND linked_at IS NULL
+            AND created_at > NOW() - INTERVAL '2 minutes'
+            AND (pairing_expires_at IS NULL OR pairing_expires_at > CURRENT_TIMESTAMP)
             AND ($1 = '' OR LOWER(bot_type) = $1)
             AND ($2::bigint IS NULL OR server_id = $2)
           ORDER BY created_at ASC
           FOR UPDATE SKIP LOCKED
           LIMIT 1
         )
-        RETURNING request_id, phone, whatsapp_phone, server_id, bot_type, status, created_at
+        RETURNING request_id, phone, whatsapp_phone, server_id, bot_type, status, created_at, pairing_expires_at
       `, [requestedBotType, requestedServerId]);
       client.release();
       return res.status(200).json({ success: true, pending: result.rows[0] || null });

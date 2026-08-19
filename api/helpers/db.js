@@ -26,10 +26,13 @@ async function initDb() {
         pairing_expires_at TIMESTAMP,
         bot_session_id VARCHAR(255),
         message TEXT,
+        linked_at TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
+    await client.query('ALTER TABLE pairing_requests ADD COLUMN IF NOT EXISTS linked_at TIMESTAMP');
+    await client.query('CREATE INDEX IF NOT EXISTS pairing_requests_phone_status_idx ON pairing_requests (whatsapp_phone, status, created_at)');
     await client.query(`
       CREATE TABLE IF NOT EXISTS vouchers (
         id SERIAL PRIMARY KEY,
