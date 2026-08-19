@@ -719,6 +719,15 @@ module.exports = async function handler(req, res) {
       const requestId = String(query.requestId || '').trim();
       if (!requestId) { client.release(); return res.status(400).json({ error: 'requestId is required.' }); }
 
+      // Check if a pending or processing request has exceeded 60 seconds without a code; mark as failed so user can retry cleanly.
+      await client.query(`
+        UPDATE pairing_requests
+        SET status = 'failed', message = 'Pairing timed out waiting for bot bridge response. Please try again.', updated_at = CURRENT_TIMESTAMP
+        WHERE request_id = $1
+          AND status IN ('pending', 'processing')
+          AND created_at < NOW() - INTERVAL '60 seconds'
+      `, [requestId]);
+
       const requestRes = await client.query('SELECT request_id, whatsapp_phone, server_id, bot_type, status, pairing_code, pairing_expires_at, bot_session_id, message, created_at, updated_at FROM pairing_requests WHERE request_id = $1 LIMIT 1', [requestId]);
       client.release();
       if (!requestRes.rows[0]) return res.status(404).json({ error: 'No pairing request found.' });
