@@ -70,7 +70,7 @@
       const btn = document.getElementById('generateBtn');
       const phone = numInput.replace(/\D/g, '');
       if (!phone || phone.length < 10) { alert('Please enter a valid WhatsApp phone number.'); return; }
-      btn.disabled = true; btn.innerText = 'Requesting Code...'; codeDisplay.style.display = 'none';
+      btn.style.display = 'none'; codeDisplay.style.display = 'none';
       status.innerText = 'Queuing pairing request for Rita XMD...';
       try {
         const res = await fetch('/api/user/pairing/start', {
@@ -83,7 +83,7 @@
         if (pairing.pairing_code) {
           codeText.innerText = pairing.pairing_code; codeDisplay.style.display = 'block';
           status.innerHTML = '<b style="color:#22c55e;">Pairing code generated!</b>';
-          btn.disabled = false; btn.innerText = 'Generate Pairing Code'; return;
+          btn.style.display = 'block'; btn.disabled = false; btn.innerText = 'Generate Pairing Code'; return;
         }
         let attempts = 0;
         const pollInterval = setInterval(async () => {
@@ -94,16 +94,20 @@
           if (p && p.pairing_code) {
             clearInterval(pollInterval); codeText.innerText = p.pairing_code; codeDisplay.style.display = 'block';
             status.innerHTML = '<b style="color:#22c55e;">Pairing code ready!</b>';
-            btn.disabled = false; btn.innerText = 'Generate Pairing Code';
+            btn.style.display = 'block'; btn.disabled = false; btn.innerText = 'Generate Pairing Code';
+          } else if (p && p.status === 'failed') {
+            clearInterval(pollInterval);
+            status.innerHTML = '<span style="color:#ef4444;">Pairing failed or timed out. Please refresh and try again.</span>';
+            btn.style.display = 'block'; btn.disabled = false; btn.innerText = 'Generate Pairing Code';
           } else if (attempts >= 30) {
             clearInterval(pollInterval);
             status.innerHTML = '<span style="color:#f59e0b;">Timeout waiting for server bridge. Ensure Pterodactyl bot is running.</span>';
-            btn.disabled = false; btn.innerText = 'Generate Pairing Code';
+            btn.style.display = 'block'; btn.disabled = false; btn.innerText = 'Generate Pairing Code';
           }
         }, 2000);
       } catch (err) {
         status.innerHTML = '<span style="color:#ef4444;">Error: ' + err.message + '</span>';
-        btn.disabled = false; btn.innerText = 'Generate Pairing Code';
+        btn.style.display = 'block'; btn.disabled = false; btn.innerText = 'Generate Pairing Code';
       }
     }
   </script>
