@@ -920,8 +920,8 @@ module.exports = async function handler(req, res) {
       if (!config.botSecret) { client.release(); return res.status(503).json({ error: 'Pairing secret is not configured.' }); }
       if (!secretMatches(suppliedSecret, config.botSecret)) { client.release(); return res.status(401).json({ error: 'Invalid pairing secret.' }); }
       
-      const requestedBotType = String(query.bot_type || query.botType || '').trim().toLowerCase().replace(/[\s_-]+/g, '');
-      const requestedServerIdRaw = query.server_id ?? query.serverId;
+      const requestedBotType = String(query.bot_type || query.botType || headers['x-bot-type'] || headers['X-Bot-Type'] || '').trim().toLowerCase().replace(/[\s_-]+/g, '');
+      const requestedServerIdRaw = query.server_id ?? query.serverId ?? headers['x-server-id'] ?? headers['X-Server-Id'];
       const requestedServerIdNumber = requestedServerIdRaw === undefined || requestedServerIdRaw === '' ? null : Number(requestedServerIdRaw);
       const requestedServerId = Number.isInteger(requestedServerIdNumber) ? requestedServerIdNumber : null;
 
