@@ -30,6 +30,17 @@ async function initDb() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS vouchers (
+        id SERIAL PRIMARY KEY,
+        code VARCHAR(64) UNIQUE NOT NULL,
+        amount NUMERIC(10, 2) NOT NULL DEFAULT 10.00,
+        is_used BOOLEAN DEFAULT FALSE,
+        used_by VARCHAR(32),
+        created_by VARCHAR(64),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
   } finally {
     client.release();
   }

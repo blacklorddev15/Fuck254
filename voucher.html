@@ -1,4 +1,3 @@
-<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -91,26 +90,62 @@
       setTimeout(() => t.classList.remove('show'), 3500);
     }
 
-    document.getElementById('redeemBtn').addEventListener('click', () => {
+    document.getElementById('redeemBtn').addEventListener('click', async () => {
       const code = document.getElementById('voucherCodeInput').value.trim();
       if (!code) {
         showToast('Please enter a valid voucher code.');
         return;
       }
-      showToast('Voucher redeemed successfully! USD balance updated.');
-      document.getElementById('voucherCodeInput').value = '';
+      try {
+        const sessionRes = await fetch('/api/user/session');
+        const sessionData = await sessionRes.json();
+        if (!sessionData.success || !sessionData.user) {
+          showToast('Please sign in first to redeem vouchers.');
+          setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+          return;
+        }
+        const phone = sessionData.user.phone;
+        const res = await fetch('/api/user/wallet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, action: 'redeem', code })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast('Voucher redeemed successfully! New balance: $' + data.newBalance);
+          document.getElementById('voucherCodeInput').value = '';
+        } else {
+          showToast(data.error || 'Invalid or already used voucher code.');
+        }
+      } catch (err) {
+        showToast('Network error while redeeming voucher.');
+      }
     });
 
-    document.getElementById('generateBtn').addEventListener('click', () => {
-      const key = document.getElementById('adminKeyInput').value.trim();
-      const amt = document.getElementById('voucherAmountInput').value;
-      if (key !== 'blacklord254admin') {
-        showToast('Unauthorized: Invalid administrator key.');
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+      const adminKey = document.getElementById('adminKeyInput').value.trim();
+      const amount = parseFloat(document.getElementById('voucherAmountInput').value) || 10;
+      if (!adminKey) {
+        showToast('Please enter the admin security key.');
         return;
       }
-      const randomCode = 'BLK-' + Math.random().toString(36).substring(2, 8).toUpperCase() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
-      document.getElementById('generatedResult').innerText = 'Generated Voucher (' + amt + ' USD): ' + randomCode;
-      showToast('Voucher code generated successfully.');
+      try {
+        const res = await fetch('/api/user/admin/vouchers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adminKey, amount })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          document.getElementById('generatedResult').innerText = 'Generated Voucher (' + amount + ' USD): ' + data.code;
+          showToast('Voucher code generated successfully.');
+          document.getElementById('adminKeyInput').value = '';
+        } else {
+          showToast(data.error || 'Unauthorized: Invalid admin key.');
+        }
+      } catch (err) {
+        showToast('Network error while generating voucher.');
+      }
     });
   </script>
 </body>

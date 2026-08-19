@@ -25,13 +25,21 @@
     .btn { width: 100%; background: #facc15; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 0.95rem; font-size: 1rem; cursor: pointer; margin-top: 1rem; box-shadow: 0 4px 20px rgba(250,204,21,0.3); }
     .footer-text { text-align: center; font-size: 0.85rem; color: #9ca3af; margin-top: 1.5rem; }
     .footer-text a { color: #facc15; text-decoration: none; font-weight: 600; }
+    .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; padding: 0.75rem; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
+    .success-msg { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); color: #22c55e; padding: 0.75rem; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
   </style>
 </head>
 <body>
   <div class="auth-card">
     <div class="brand">Blacklord Tech</div>
-    <div class="sub">Create Account</div>
+    <div class="sub">Create Account & Get $10 USD Bonus</div>
+    <div id="errorAlert" class="error-msg"></div>
+    <div id="successAlert" class="success-msg"></div>
     <form onsubmit="handleSignup(event)">
+      <div class="input-group">
+        <label class="label">WhatsApp / Phone Number</label>
+        <input type="text" id="phone" class="input" placeholder="2547XXXXXXXX or 07XXXXXXXX" required>
+      </div>
       <div class="input-group">
         <label class="label">Username</label>
         <input type="text" id="username" class="input" placeholder="johndoe" required>
@@ -41,19 +49,54 @@
         <input type="email" id="email" class="input" placeholder="john@blacklord.tech" required>
       </div>
       <div class="input-group">
-        <label class="label">Password</label>
+        <label class="label">Password (Min 8 chars, 1 letter, 1 number)</label>
         <input type="password" id="password" class="input" placeholder="••••••••" required>
       </div>
-      <button type="submit" class="btn">Create Account & Get Started</button>
+      <button type="submit" id="submitBtn" class="btn">Create Account & Claim $10 Bonus</button>
     </form>
     <div class="footer-text">
       Already have an account? <a href="login.html">Sign In</a>
     </div>
   </div>
   <script>
-    function handleSignup(e) {
+    async function handleSignup(e) {
       e.preventDefault();
-      window.location.href = 'dashboard.html';
+      const phone = document.getElementById('phone').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errBox = document.getElementById('errorAlert');
+      const succBox = document.getElementById('successAlert');
+      const btn = document.getElementById('submitBtn');
+
+      errBox.style.display = 'none';
+      succBox.style.display = 'none';
+      btn.innerText = 'Creating account...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/user/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, username, email, password })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          succBox.innerText = 'Account created successfully! $10 USD welcome bonus credited. Redirecting...';
+          succBox.style.display = 'block';
+          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+        } else {
+          errBox.innerText = data.error || 'Registration failed.';
+          errBox.style.display = 'block';
+          btn.innerText = 'Create Account & Claim $10 Bonus';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        errBox.innerText = 'Network error. Please check your connection and try again.';
+        errBox.style.display = 'block';
+        btn.innerText = 'Create Account & Claim $10 Bonus';
+        btn.disabled = false;
+      }
     }
   </script>
 </body>

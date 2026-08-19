@@ -21,16 +21,20 @@
     .sub { font-size: 0.75rem; color: #facc15; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-bottom: 2rem; font-weight: 700; }
     .input-group { margin-bottom: 1.25rem; }
     .label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.5rem; font-weight: 600; }
-    .input { width: 100%; background: #161922; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem 1rem; color: #fff; font-size: 0.95rem; }
+    .input { width: 100%; background: $161922; background: #161922; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem 1rem; color: #fff; font-size: 0.95rem; }
     .btn { width: 100%; background: #facc15; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 0.95rem; font-size: 1rem; cursor: pointer; margin-top: 1rem; box-shadow: 0 4px 20px rgba(250,204,21,0.3); }
     .footer-text { text-align: center; font-size: 0.85rem; color: #9ca3af; margin-top: 1.5rem; }
     .footer-text a { color: #facc15; text-decoration: none; font-weight: 600; }
+    .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; padding: 0.75rem; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
+    .success-msg { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); color: #22c55e; padding: 0.75rem; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
   </style>
 </head>
 <body>
   <div class="auth-card">
     <div class="brand">Blacklord Tech</div>
     <div class="sub">Secure Authentication Portal</div>
+    <div id="errorAlert" class="error-msg"></div>
+    <div id="successAlert" class="success-msg"></div>
     <form onsubmit="handleLogin(event)">
       <div class="input-group">
         <label class="label">Username or Email</label>
@@ -40,16 +44,49 @@
         <label class="label">Password</label>
         <input type="password" id="password" class="input" placeholder="••••••••" required>
       </div>
-      <button type="submit" class="btn">Sign In to Dashboard</button>
+      <button type="submit" id="submitBtn" class="btn">Sign In to Dashboard</button>
     </form>
     <div class="footer-text">
       Don't have an account? <a href="signup.html">Register here</a>
     </div>
   </div>
   <script>
-    function handleLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
-      window.location.href = 'dashboard.html';
+      const identifier = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errBox = document.getElementById('errorAlert');
+      const succBox = document.getElementById('successAlert');
+      const btn = document.getElementById('submitBtn');
+      
+      errBox.style.display = 'none';
+      succBox.style.display = 'none';
+      btn.innerText = 'Signing in...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/user/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          succBox.innerText = 'Login successful! Welcome bonus $10 USD credited if first login. Redirecting...';
+          succBox.style.display = 'block';
+          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+        } else {
+          errBox.innerText = data.error || 'Invalid login details.';
+          errBox.style.display = 'block';
+          btn.innerText = 'Sign In to Dashboard';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        errBox.innerText = 'Network error. Please check your connection and try again.';
+        errBox.style.display = 'block';
+        btn.innerText = 'Sign In to Dashboard';
+        btn.disabled = false;
+      }
     }
   </script>
 </body>
