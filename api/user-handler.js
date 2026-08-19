@@ -656,8 +656,26 @@ module.exports = async function handler(req, res) {
       const user = await sessionUser(client, req);
       const whatsappPhone = normalizeKenyanPhone(body.whatsappPhone || body.phone || user?.phone);
       if (!whatsappPhone) { client.release(); return res.status(400).json({ error: 'Enter a valid WhatsApp phone number.' }); }
+
+      // Check if this whatsappPhone already has an active session or unexpired pending/processing pairing request
+      const activeCheck = await client.query(`
+        SELECT request_id, status FROM pairing_requests
+        WHERE whatsapp_phone = $1
+          AND (
+            status IN ('paired', 'connected', 'active')
+            OR (status IN ('pending', 'processing') AND created_at > NOW() - INTERVAL '60 seconds')
+          )
+        LIMIT 1
+      `, [whatsappPhone]);
+
+      if (activeCheck.rows[0]) {
+        client.release();
+        return res.status(400).json({ 
+          error: 'This number already has an active session or pending pairing request. Please link it first or wait for the current request to expire.' 
+        });
+      }
       
-      const requestedServerId = body.serverId ? Number(body.serverId) : null;
+      const requestedServerId = body.serverId ? Number(body.serverId) : 10640078;
       const rawBotType = body.botType || body.type;
       const requestedBotType = String(rawBotType || 'blacklord').trim().toLowerCase().replace(/[\s_-]+/g, '');
       const allowedBots = ['blacklord', 'samsung', 'talkless', 'skylar', 'rita', 'titan'];
