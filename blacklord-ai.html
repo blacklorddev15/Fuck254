@@ -106,7 +106,7 @@
   </div>
 
   <script>
-    const catalog = [
+    let catalog = [
       { id: 1, title: 'Inception', category: 'Sci-Fi', year: 2010, rating: 8.8, poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=60', summary: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.' },
       { id: 2, title: 'Breaking Bad', category: 'Drama', year: 2008, rating: 9.5, poster: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500&auto=format&fit=crop&q=60', summary: 'A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine with a former student.' },
       { id: 3, title: 'Interstellar', category: 'Sci-Fi', year: 2014, rating: 8.7, poster: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60', summary: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanitys survival.' },
@@ -119,6 +119,30 @@
 
     let currentCategory = 'all';
     let activeMovie = null;
+
+    async function loadLiveCatalog() {
+      try {
+        const res = await fetch('/api/user/movies');
+        const json = await res.json();
+        if (json.success && json.data) {
+          const results = json.data.results || json.data.movies || json.data.data;
+          if (Array.isArray(results) && results.length > 0) {
+            catalog = results.map((item, idx) => ({
+              id: item.id || idx + 1,
+              title: item.title || item.name || 'Untitled',
+              category: item.category || (idx % 2 === 0 ? 'Trending' : 'Sci-Fi'),
+              year: item.year || 2024,
+              rating: item.rating || 8.5,
+              poster: item.poster || item.image || item.thumbnail || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=60',
+              summary: item.summary || item.description || 'Acclaimed title powered by Dave Tech Movie API.'
+            }));
+            filterCatalog();
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load Dave Tech API, using built-in catalog:', err);
+      }
+    }
 
     function renderCatalog(items) {
       const grid = document.getElementById('movieGrid');
@@ -208,8 +232,9 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // Initial render
+    // Initial render & load live catalog from Dave Tech API
     renderCatalog(catalog);
+    loadLiveCatalog();
   </script>
 </body>
 </html>

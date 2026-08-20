@@ -1296,6 +1296,31 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    if (path === 'movies') {
+      if (method !== 'GET') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
+      const searchQuery = String(query.q || query.search || '').trim();
+      client.release();
+      try {
+        const targetUrl = searchQuery ? `https://davexmovieapi.zone.id/search?q=${encodeURIComponent(searchQuery)}` : 'https://davexmovieapi.zone.id/';
+        const resp = await axios.get(targetUrl, { timeout: 8000 });
+        return res.status(200).json({ success: true, data: resp.data });
+      } catch (err) {
+        return res.status(200).json({
+          success: true,
+          source: 'fallback',
+          data: {
+            service: 'Dave Tech Movie API (Fallback)',
+            results: [
+              { title: 'Inception', year: 2010, rating: 8.8, poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=60', summary: 'A thief who steals corporate secrets through dream-sharing.' },
+              { title: 'Breaking Bad', year: 2008, rating: 9.5, poster: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500&auto=format&fit=crop&q=60', summary: 'Chemistry teacher turned methamphetamine kingpin.' },
+              { title: 'Interstellar', year: 2014, rating: 8.7, poster: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60', summary: 'Explorers travel through a wormhole in space.' },
+              { title: 'The Dark Knight', year: 2008, rating: 9.0, poster: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=60', summary: 'Batman faces the Joker in Gotham City.' }
+            ]
+          }
+        });
+      }
+    }
+
     if (path === 'foxy') {
       if (method !== 'POST') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
       const prompt = String(body.prompt || body.message || '').trim();
