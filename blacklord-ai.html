@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BLACKLORD AI - Movie & TV Expert | BLACKLORD TECH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.92)), url("https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding-bottom: 3rem;
+    }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem; background: #000; border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 50; }
+    .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+    .container { max-width: 900px; margin: 1.5rem auto; padding: 0 1rem; }
+    .hero-banner { background: #111318; border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-style: italic; color: #fff; margin-bottom: 0.5rem; }
+    .hero-sub { font-size: 0.75rem; color: #facc15; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 1rem; }
+    .search-row { display: flex; gap: 0.75rem; margin-top: 1rem; }
+    .search-input { flex: 1; background: #161922; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem 1rem; color: #fff; font-size: 0.95rem; }
+    .filter-tabs { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+    .tab-btn { background: #161922; border: 1px solid rgba(255,255,255,0.1); color: #9ca3af; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .tab-btn.active { background: #facc15; border-color: #facc15; color: #000; font-weight: 700; }
+    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .movie-card { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+    .movie-card:hover { transform: translateY(-3px); border-color: rgba(250,204,21,0.5); }
+    .movie-poster { width: 100%; height: 220px; background: #161922; object-fit: cover; }
+    .movie-info { padding: 0.75rem; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    .movie-title { font-weight: 700; font-size: 0.85rem; color: #fff; margin-bottom: 0.25rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .movie-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #9ca3af; margin-bottom: 0.5rem; }
+    .rating { color: #facc15; font-weight: 700; }
+    .ai-ask-btn { background: #161922; border: 1px solid rgba(250,204,21,0.3); color: #facc15; width: 100%; border-radius: 8px; padding: 0.4rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-align: center; }
+    .ai-ask-btn:hover { background: #facc15; color: #000; }
+    /* Modal / AI Chat Drawer */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-card { background: #111318; border: 1px solid rgba(250,204,21,0.4); border-radius: 20px; width: 100%; max-width: 500px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; }
+    .modal-header { padding: 1.25rem; background: #000; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
+    .modal-body { padding: 1.25rem; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 1rem; }
+    .chat-bubble { background: #161922; border: 1px solid rgba(250,204,21,0.2); padding: 0.85rem 1rem; border-radius: 12px; font-size: 0.88rem; line-height: 1.4; color: #fff; }
+    .chat-bubble.user { background: #facc15; color: #000; font-weight: 600; align-self: flex-end; max-width: 85%; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <a href="dashboard.html" class="menu-btn"><i class="fas fa-arrow-left"></i></a>
+      <div>
+        <div style="font-size:0.7rem; color:#facc15; font-weight:700;">BLACKLORD AI</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-style:italic;">Movie & TV Expert</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero-banner">
+      <div class="hero-sub">CINEMATIC DISCOVERY SUITE</div>
+      <div class="hero-title">Explore Movies & TV Series</div>
+      <p style="color:#9ca3af; font-size:0.85rem; margin-bottom:0.75rem;">Browse trending titles or tap any movie to ask Blacklord AI for summaries, reviews, and personalized recommendations.</p>
+      <div class="search-row">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search movies, tv shows, actors..." oninput="filterCatalog()">
+        <button class="ai-ask-btn" style="width:auto; padding:0 1.25rem; background:#facc15; color:#000;" onclick="filterCatalog()">Search</button>
+      </div>
+    </div>
+
+    <div class="filter-tabs" id="filterTabs">
+      <button class="tab-btn active" onclick="setCategory('all', this)">All Titles</button>
+      <button class="tab-btn" onclick="setCategory('Trending', this)">Trending Now</button>
+      <button class="tab-btn" onclick="setCategory('Sci-Fi', this)">Sci-Fi & Action</button>
+      <button class="tab-btn" onclick="setCategory('Drama', this)">Masterclass Drama</button>
+      <button class="tab-btn" onclick="setCategory('Anime', this)">Anime Hits</button>
+    </div>
+
+    <div class="movie-grid" id="movieGrid">
+      <!-- Populated dynamically -->
+    </div>
+  </main>
+
+  <!-- AI Modal -->
+  <div class="modal-overlay" id="aiModal" onclick="if(event.target === this) closeModal()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <div style="width:32px; height:32px; background:#facc15; color:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700;"><i class="fas fa-robot"></i></div>
+          <div>
+            <div style="font-size:0.65rem; color:#facc15; text-transform:uppercase;">Blacklord AI Expert</div>
+            <div style="font-weight:700; font-size:0.95rem;" id="modalTitle">Title Analysis</div>
+          </div>
+        </div>
+        <button onclick="closeModal()" style="background:none; border:none; color:#9ca3af; font-size:1.1rem; cursor:pointer;"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Chat history -->
+      </div>
+      <div style="padding:1rem; background:#000; border-top:1px solid rgba(255,255,255,0.08); display:flex; gap:0.5rem;">
+        <input type="text" id="modalInput" class="search-input" placeholder="Ask Blacklord AI about this title..." onkeydown="if(event.key==='Enter') sendModalPrompt()">
+        <button class="ai-ask-btn" style="width:auto; padding:0 1rem; background:#facc15; color:#000;" onclick="sendModalPrompt()">Ask</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const catalog = [
+      { id: 1, title: 'Inception', category: 'Sci-Fi', year: 2010, rating: 8.8, poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=60', summary: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.' },
+      { id: 2, title: 'Breaking Bad', category: 'Drama', year: 2008, rating: 9.5, poster: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500&auto=format&fit=crop&q=60', summary: 'A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine with a former student.' },
+      { id: 3, title: 'Interstellar', category: 'Sci-Fi', year: 2014, rating: 8.7, poster: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60', summary: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanitys survival.' },
+      { id: 4, title: 'Attack on Titan', category: 'Anime', year: 2013, rating: 9.1, poster: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=60', summary: 'After his hometown is destroyed and is mother is killed, young Eren Jaeger vows to cleanse the earth of the giant humanoid Titans.' },
+      { id: 5, title: 'Stranger Things', category: 'Trending', year: 2016, rating: 8.7, poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=60', summary: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.' },
+      { id: 6, title: 'The Dark Knight', category: 'Trending', year: 2008, rating: 9.0, poster: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=60', summary: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological tests.' },
+      { id: 7, title: 'Cyberpunk: Edgerunners', category: 'Anime', year: 2022, rating: 8.3, poster: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=500&auto=format&fit=crop&q=60', summary: 'A street kid trying to survive in a technology and body modification-obsessed city of the future.' },
+      { id: 8, title: 'Succession', category: 'Drama', year: 2018, rating: 8.9, poster: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&auto=format&fit=crop&q=60', summary: 'The Roy family is known for controlling Waystar RoyCo, a massive media and entertainment conglomerate, while questioning their future.' }
+    ];
+
+    let currentCategory = 'all';
+    let activeMovie = null;
+
+    function renderCatalog(items) {
+      const grid = document.getElementById('movieGrid');
+      if (!items.length) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#9ca3af; padding:2rem;">No matching titles found.</div>';
+        return;
+      }
+      grid.innerHTML = items.map(m => `
+        <div class="movie-card" onclick="openAiForMovie('${m.title.replace(/'/g, "\\'")}')">
+          <img src="${m.poster}" class="movie-poster" alt="${m.title}">
+          <div class="movie-info">
+            <div>
+              <div class="movie-title">${m.title}</div>
+              <div class="movie-meta">
+                <span>${m.year} • ${m.category}</span>
+                <span class="rating"><i class="fas fa-star"></i> ${m.rating}</span>
+              </div>
+            </div>
+            <button class="ai-ask-btn" onclick="event.stopPropagation(); openAiForMovie('${m.title.replace(/'/g, "\\'")}')">Ask Blacklord AI</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setCategory(cat, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = cat;
+      filterCatalog();
+    }
+
+    function filterCatalog() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = catalog.filter(m => {
+        const matchesCat = currentCategory === 'all' || m.category === currentCategory;
+        const matchesQuery = m.title.toLowerCase().includes(query) || m.summary.toLowerCase().includes(query);
+        return matchesCat && matchesQuery;
+      });
+      renderCatalog(filtered);
+    }
+
+    function openAiForMovie(title) {
+      const movie = catalog.find(m => m.title === title) || { title, summary: 'An acclaimed masterpiece with incredible depth.' };
+      activeMovie = movie;
+      document.getElementById('modalTitle').innerText = movie.title;
+      document.getElementById('aiModal').style.display = 'flex';
+      document.getElementById('modalBody').innerHTML = `
+        <div class="chat-bubble"><strong>Blacklord AI:</strong> Let's talk about <em>${movie.title}</em> (${movie.year})! Rating: ⭐ ${movie.rating}/10.<br><br>${movie.summary}<br><br>Would you like to know about its best scenes, cast gems, or similar recommendations?</div>
+      `;
+      document.getElementById('modalInput').value = '';
+    }
+
+    function closeModal() {
+      document.getElementById('aiModal').style.display = 'none';
+    }
+
+    async function sendModalPrompt() {
+      const input = document.getElementById('modalInput');
+      const body = document.getElementById('modalBody');
+      const text = input.value.trim();
+      if (!text) return;
+
+      body.innerHTML += `<div class="chat-bubble user">${escapeHtml(text)}</div>`;
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+
+      const loadingId = 'resp_' + Date.now();
+      body.innerHTML += `<div class="chat-bubble" id="${loadingId}"><em>Blacklord AI is analyzing ${activeMovie ? activeMovie.title : 'this title'}...</em></div>`;
+      body.scrollTop = body.scrollHeight;
+
+      try {
+        const res = await fetch('/api/user/foxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: `About movie "${activeMovie ? activeMovie.title : ''}": ${text}` })
+        });
+        const data = await res.json().catch(() => ({}));
+        const reply = data.reply || `That's a fascinating perspective on ${activeMovie ? activeMovie.title : 'this title'}! The direction and pacing make it truly unforgettable.`;
+        document.getElementById(loadingId).innerHTML = `<strong>Blacklord AI:</strong> ${escapeHtml(reply)}`;
+      } catch (err) {
+        document.getElementById(loadingId).innerHTML = `<strong>Blacklord AI:</strong> ${activeMovie ? activeMovie.title : 'This title'} is widely celebrated for its remarkable storytelling and character depth!`;
+      }
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // Initial render
+    renderCatalog(catalog);
+  </script>
+</body>
+</html>
