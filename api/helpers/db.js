@@ -58,6 +58,36 @@ async function initDb() {
     `);
 
     await client.query(`
+      CREATE TABLE IF NOT EXISTS bot_deployments (
+        id SERIAL PRIMARY KEY,
+        deployment_id VARCHAR(64) UNIQUE NOT NULL,
+        phone VARCHAR(32) NOT NULL,
+        bot_type VARCHAR(64) NOT NULL,
+        instance_name VARCHAR(120),
+        status VARCHAR(32) DEFAULT 'provisioning',
+        git_branch VARCHAR(128),
+        node_id INT DEFAULT 3,
+        memory_usage_pct NUMERIC(5,2) DEFAULT 12.5,
+        cpu_usage_pct NUMERIC(5,2) DEFAULT 5.0,
+        daily_burn_sd NUMERIC(10,2) DEFAULT 1.00,
+        logs TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS audit_governance (
+        id SERIAL PRIMARY KEY,
+        admin_user VARCHAR(80),
+        action VARCHAR(64) NOT NULL,
+        target_entity VARCHAR(120),
+        details TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await client.query(`
       CREATE TABLE IF NOT EXISTS pairing_requests (
         id SERIAL PRIMARY KEY,
         request_id VARCHAR(64) UNIQUE NOT NULL,
