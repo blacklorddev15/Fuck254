@@ -201,5 +201,76 @@
     renderCatalog(catalog);
     loadLiveCatalog();
   </script>
+
+  <!-- Floating AI Assistant Button & Modal -->
+  <button onclick="openAiChatModal()" style="position: fixed; bottom: 2rem; right: 2rem; background: #22c55e; color: #000; border: none; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; z-index: 99; box-shadow: 0 4px 20px rgba(34,197,94,0.4);"><i class="fas fa-robot"></i></button>
+
+  <div id="aiChatModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem;">
+    <div style="background: #111318; border: 1px solid rgba(34,197,94,0.4); border-radius: 20px; width: 100%; max-width: 500px; height: 85vh; max-height: 600px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.9);">
+      <div style="padding: 1rem 1.25rem; background: #000; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 36px; height: 36px; background: #22c55e20; border: 1px solid #22c55e50; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #22c55e;"><i class="fas fa-robot"></i></div>
+          <div>
+            <div style="font-size: 0.65rem; color: #22c55e; text-transform: uppercase; font-weight: 700;">Manus AI Powered</div>
+            <div style="font-weight: 700; font-size: 1rem; color: #fff;">Blacklord AI Assistant</div>
+          </div>
+        </div>
+        <button onclick="closeAiChatModal()" style="background: none; border: none; color: #9ca3af; font-size: 1.25rem; cursor: pointer;"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="aiChatMessages" style="flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; background: #0b0d12;">
+        <div style="background: #161922; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem 1rem; max-width: 85%; font-size: 0.85rem; color: #f3f4f6; align-self: flex-start;">
+          Hello! I am your Blacklord AI assistant. Ask me about movie recommendations, streaming, or platform features!
+        </div>
+      </div>
+      <div style="padding: 1rem; background: #000; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 0.5rem;">
+        <input type="text" id="aiChatInput" placeholder="Ask AI a question..." style="flex: 1; background: #161922; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.75rem 1rem; color: #fff; font-size: 0.9rem;" onkeydown="if(event.key==='Enter') sendAiMessage()">
+        <button onclick="sendAiMessage()" style="background: #22c55e; border: none; color: #000; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer;"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openAiChatModal() {
+      document.getElementById('aiChatModal').style.display = 'flex';
+      document.getElementById('aiChatInput').focus();
+    }
+    function closeAiChatModal() {
+      document.getElementById('aiChatModal').style.display = 'none';
+    }
+    async function sendAiMessage() {
+      const input = document.getElementById('aiChatInput');
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = '';
+
+      const container = document.getElementById('aiChatMessages');
+      container.innerHTML += \`<div style="background: #22c55e; color: #000; border-radius: 12px; padding: 0.75rem 1rem; max-width: 85%; font-size: 0.85rem; font-weight: 600; align-self: flex-end;">\${escapeHtml(msg)}</div>\`;
+      container.scrollTop = container.scrollHeight;
+
+      const loadingId = 'loading-' + Date.now();
+      container.innerHTML += \`<div id="\${loadingId}" style="background: #161922; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem 1rem; max-width: 85%; font-size: 0.85rem; color: #9ca3af; align-self: flex-start;"><i class="fas fa-spinner fa-spin"></i> AI is thinking...</div>\`;
+      container.scrollTop = container.scrollHeight;
+
+      try {
+        const res = await fetch('/api/user/ai-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+        document.getElementById(loadingId).remove();
+        const reply = data.reply || data.message || 'I am ready to assist you with Blacklord Movies.';
+        container.innerHTML += \`<div style="background: #161922; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem 1rem; max-width: 85%; font-size: 0.85rem; color: #f3f4f6; align-self: flex-start;">\${escapeHtml(reply)}</div>\`;
+      } catch (err) {
+        document.getElementById(loadingId).remove();
+        container.innerHTML += \`<div style="background: #161922; border: 1px solid rgba(239,68,68,0.3); border-radius: 12px; padding: 0.75rem 1rem; max-width: 85%; font-size: 0.85rem; color: #fca5a5; align-self: flex-start;">Failed to reach AI service. Please try again.</div>\`;
+      }
+      container.scrollTop = container.scrollHeight;
+    }
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+  </script>
 </body>
 </html>
