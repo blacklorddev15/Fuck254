@@ -363,7 +363,7 @@ module.exports = async function handler(req, res) {
       if (!phone) { client.release(); return res.status(400).json({ error: 'Enter a valid Kenyan phone number.' }); }
       if (!username || username.length > 80) { client.release(); return res.status(400).json({ error: 'Username must be between 1 and 80 characters.' }); }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { client.release(); return res.status(400).json({ error: 'Enter a valid email address.' }); }
-      if (password.length < 8 || password.length > 128 || !/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) { client.release(); return res.status(400).json({ error: 'Password must be 8–128 characters and include at least one letter and one number.' }); }
+      if (password.length < 8 || password.length > 128) { client.release(); return res.status(400).json({ error: 'Password must be between 8 and 128 characters.' }); }
       const passwordHash = await hashPassword(password);
       await client.query('BEGIN');
       try {
