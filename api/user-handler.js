@@ -1257,6 +1257,33 @@ module.exports = async function handler(req, res) {
       return res.status(201).json({ success: true, key: created, message: 'Telegram activation key generated. Send it to the Telegram bot exactly as shown.' });
     }
 
+    if (path === 'admin/sessions') {
+      if (method !== 'GET') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
+      const adminSecret = headers['x-admin-secret'] || headers['X-Admin-Secret'] || query.adminSecret || '';
+      const expectedAdminSecret = process.env.ADMIN_SECRET || 'blacklord254admin';
+      if (!secretMatches(adminSecret, expectedAdminSecret)) {
+        client.release();
+        return res.status(401).json({ error: 'Unauthorized: Admin secret key required.' });
+      }
+      const sessionsRes = await client.query(`
+        SELECT request_id, whatsapp_phone, bot_type, status, bot_session_id, linked_at, created_at, updated_at
+        FROM pairing_requests
+        WHERE status IN ('connected', 'active', 'completed', 'paired', 'waiting')
+        ORDER BY updated_at DESC
+        LIMIT 50
+      `);
+      const usersRes = await client.query('SELECT COUNT(*) as total_users FROM users');
+      const pairingsCountRes = await client.query('SELECT COUNT(*) as total_pairings FROM pairing_requests');
+      client.release();
+      return res.status(200).json({
+        success: true,
+        uptimeSeconds: Math.floor(process.uptime()),
+        totalUsers: Number(usersRes.rows[0]?.total_users || 0),
+        totalPairings: Number(pairingsCountRes.rows[0]?.total_pairings || 0),
+        sessions: sessionsRes.rows
+      });
+    }
+
     if (path === 'dashboard') {
       const phone = String(method === 'GET' ? query.phone : body.phone || '').trim();
       if (!phone) { client.release(); return res.status(400).json({ error: 'Phone required' }); }

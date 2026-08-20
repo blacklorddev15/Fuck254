@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -11,18 +12,20 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.92)), url("https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color: #f3f4f6;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      padding-bottom: 3rem;
+      background-size: cover; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 3rem;
     }
-    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem; background: #000000; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem; background: #000; border-bottom: 1px solid rgba(255,255,255,0.08); }
     .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
-    .container { max-width: 650px; margin: 1.5rem auto; padding: 0 1rem; }
+    .container { max-width: 720px; margin: 1.5rem auto; padding: 0 1rem; }
     .card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
-    .title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem; font-style: italic; }
-    .sub { font-size: 0.75rem; color: #facc15; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.5rem; font-weight: 700; }
+    .title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem; font-style: italic; }
+    .sub { font-size: 0.72rem; color: #facc15; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.25rem; font-weight: 700; }
+    .input-field { width: 100%; background: #161922; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 0.75rem 1rem; color: #fff; font-size: 0.9rem; margin-bottom: 0.75rem; }
     .btn { background: #facc15; color: #000; font-weight: 700; border: none; border-radius: 10px; padding: 0.75rem 1rem; cursor: pointer; text-decoration: none; display: inline-block; font-size: 0.85rem; }
+    .table-wrap { overflow-x: auto; margin-top: 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+    th { color: #facc15; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0.6rem; font-size: 0.7rem; text-transform: uppercase; }
+    td { padding: 0.7rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db; }
   </style>
 </head>
 <body>
@@ -36,23 +39,91 @@
     </div>
   </header>
   <main class="container">
-    <div class="card">
-      <div class="sub">PLATFORM OVERVIEW</div>
-      <div class="title">System Queue & Workers</div>
-      <p style="color:#9ca3af; font-size:0.85rem; margin-bottom:1.25rem;">Monitor live pairing queues, active Pterodactyl containers, bridge status, and system logs.</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem;">
-        <div style="background:#161922; padding:1rem; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-          <div style="font-size:0.7rem; color:#9ca3af; text-transform:uppercase;">Pending Pairing</div>
-          <div style="font-size:1.5rem; font-weight:700; color:#facc15;">0 Requests</div>
+    <div class="card" id="authCard">
+      <div class="sub">ADMIN AUTHENTICATION</div>
+      <div class="title">Enter Admin Key</div>
+      <p style="color:#9ca3af; font-size:0.82rem; margin-bottom:1rem;">Authorized administrator credentials are required to view active pairing sessions and platform uptime.</p>
+      <input type="password" class="input-field" id="adminSecretInput" placeholder="Enter admin security key (e.g. blacklord254admin)">
+      <button class="btn" onclick="loadAdminSessions()">Authenticate & Load Sessions</button>
+    </div>
+
+    <div class="card" id="adminDashboardCard" style="display:none;">
+      <div class="sub">LIVE SYSTEM STATUS</div>
+      <div class="title">Platform Overview & Uptime</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.75rem; margin-bottom:1.25rem;">
+        <div style="background:#161922; padding:0.85rem; border-radius:10px; border:1px solid rgba(255,255,255,0.08); text-align:center;">
+          <div style="font-size:0.65rem; color:#9ca3af; text-transform:uppercase;">Server Uptime</div>
+          <div style="font-size:1.1rem; font-weight:700; color:#facc15;" id="uptimeDisplay">0s</div>
         </div>
-        <div style="background:#161922; padding:1rem; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-          <div style="font-size:0.7rem; color:#9ca3af; text-transform:uppercase;">Bridge Status</div>
-          <div style="font-size:1.5rem; font-weight:700; color:#22c55e;">Online (SLA 99.9%)</div>
+        <div style="background:#161922; padding:0.85rem; border-radius:10px; border:1px solid rgba(255,255,255,0.08); text-align:center;">
+          <div style="font-size:0.65rem; color:#9ca3af; text-transform:uppercase;">Total Users</div>
+          <div style="font-size:1.1rem; font-weight:700; color:#fff;" id="totalUsersDisplay">0</div>
+        </div>
+        <div style="background:#161922; padding:0.85rem; border-radius:10px; border:1px solid rgba(255,255,255,0.08); text-align:center;">
+          <div style="font-size:0.65rem; color:#9ca3af; text-transform:uppercase;">Total Pairings</div>
+          <div style="font-size:1.1rem; font-weight:700; color:#22c55e;" id="totalPairingsDisplay">0</div>
         </div>
       </div>
-      <button class="btn" onclick="alert('Queue flushed and cache cleared successfully.')">Flush Pending Queue</button>
+
+      <div class="sub" style="margin-top:1.5rem;">ACTIVE PAIRED SESSIONS</div>
+      <div class="title">Connected Bot Instances</div>
+      <p style="color:#9ca3af; font-size:0.82rem; margin-bottom:0.75rem;">Real-time list of numbers currently linked or waiting across all bot instances.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>WhatsApp Number</th>
+              <th>Bot Type</th>
+              <th>Status</th>
+              <th>Linked At</th>
+            </tr>
+          </thead>
+          <tbody id="sessionsTableBody">
+            <tr><td colspan="4" style="text-align:center; color:#9ca3af;">Loading active sessions...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn" style="margin-top:1rem;" onclick="loadAdminSessions()">Refresh Sessions</button>
     </div>
+
     <div style="text-align:center; font-size:0.75rem; color:#9ca3af; text-transform:uppercase; letter-spacing:1px;">Powered by BLACKLORD TECH INC</div>
   </main>
+  <script>
+    async function loadAdminSessions() {
+      const secret = document.getElementById('adminSecretInput').value.trim() || 'blacklord254admin';
+      try {
+        const res = await fetch('/api/user/admin/sessions?adminSecret=' + encodeURIComponent(secret), { cache: 'no-store' });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Authentication failed.');
+        
+        document.getElementById('authCard').style.display = 'none';
+        document.getElementById('adminDashboardCard').style.display = 'block';
+
+        const hours = Math.floor(data.uptimeSeconds / 3600);
+        const mins = Math.floor((data.uptimeSeconds % 3600) / 60);
+        const secs = data.uptimeSeconds % 60;
+        document.getElementById('uptimeDisplay').innerText = (hours > 0 ? hours + 'h ' : '') + mins + 'm ' + secs + 's';
+        document.getElementById('totalUsersDisplay').innerText = data.totalUsers;
+        document.getElementById('totalPairingsDisplay').innerText = data.totalPairings;
+
+        const tbody = document.getElementById('sessionsTableBody');
+        if (!data.sessions || data.sessions.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#9ca3af;">No active paired sessions found.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = data.sessions.map(s => `
+          <tr>
+            <td>+${s.whatsapp_phone}</td>
+            <td style="text-transform:uppercase; font-weight:600; color:#facc15;">${s.bot_type || 'blacklord'}</td>
+            <td><span style="color:${['connected','active','completed','paired'].includes(s.status) ? '#22c55e' : '#f59e0b'};">${s.status}</span></td>
+            <td>${s.linked_at ? new Date(s.linked_at).toLocaleTimeString() : 'Pending'}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+  </script>
 </body>
 </html>
