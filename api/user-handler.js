@@ -1258,13 +1258,25 @@ module.exports = async function handler(req, res) {
     }
 
     if (path === 'admin/sessions') {
-      if (method !== 'GET') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
-      const adminSecret = headers['x-admin-secret'] || headers['X-Admin-Secret'] || query.adminSecret || '';
+      const adminSecret = headers['x-admin-secret'] || headers['X-Admin-Secret'] || query.adminSecret || body.adminSecret || '';
       const expectedAdminSecret = process.env.ADMIN_SECRET || 'blacklord254admin';
       if (!secretMatches(adminSecret, expectedAdminSecret)) {
         client.release();
         return res.status(401).json({ error: 'Unauthorized: Admin secret key required.' });
       }
+
+      if (method === 'POST') {
+        const message = String(body.message || '').trim();
+        if (!message) {
+          client.release();
+          return res.status(400).json({ error: 'Broadcast message is required.' });
+        }
+        await client.query('INSERT INTO activity_logs (action, details) VALUES ($1, $2)', ['ADMIN_BROADCAST', message]);
+        client.release();
+        return res.status(200).json({ success: true, message: 'Broadcast sent successfully to all active sessions and platform users.' });
+      }
+
+      if (method !== 'GET') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
       const sessionsRes = await client.query(`
         SELECT request_id, whatsapp_phone, bot_type, status, bot_session_id, linked_at, created_at, updated_at
         FROM pairing_requests
