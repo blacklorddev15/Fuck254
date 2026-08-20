@@ -98,9 +98,16 @@
       <div class="modal-body" id="modalBody">
         <!-- Chat history -->
       </div>
-      <div style="padding:1rem; background:#000; border-top:1px solid rgba(255,255,255,0.08); display:flex; gap:0.5rem;">
+      <div id="playerContainer" style="display:none; padding:0 1.25rem 1rem 1.25rem;">
+        <div style="font-size:0.75rem; color:#facc15; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;"><i class="fas fa-play-circle"></i> Live Video Player</div>
+        <div style="position:relative; width:100%; padding-bottom:56.25%; background:#000; border-radius:12px; overflow:hidden; border:1px solid rgba(250,204,21,0.3);">
+          <iframe id="moviePlayer" src="" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div style="padding:1rem; background:#000; border-top:1px solid rgba(255,255,255,0.08); display:flex; gap:0.5rem; flex-wrap:wrap;">
         <input type="text" id="modalInput" class="search-input" placeholder="Ask Blacklord AI about this title..." onkeydown="if(event.key==='Enter') sendModalPrompt()">
         <button class="ai-ask-btn" style="width:auto; padding:0 1rem; background:#facc15; color:#000;" onclick="sendModalPrompt()">Ask</button>
+        <button class="ai-ask-btn" id="watchBtn" style="width:auto; padding:0 1rem; background:#22c55e; color:#000; display:none;" onclick="toggleWatchPlayer()"><i class="fas fa-play"></i> Watch Now</button>
       </div>
     </div>
   </div>
@@ -185,18 +192,40 @@
     }
 
     function openAiForMovie(title) {
-      const movie = catalog.find(m => m.title === title) || { title, summary: 'An acclaimed masterpiece with incredible depth.' };
+      const movie = catalog.find(m => m.title === title) || { title, summary: 'An acclaimed masterpiece with incredible depth.', streamUrl: '' };
       activeMovie = movie;
       document.getElementById('modalTitle').innerText = movie.title;
       document.getElementById('aiModal').style.display = 'flex';
       document.getElementById('modalBody').innerHTML = `
-        <div class="chat-bubble"><strong>Blacklord AI:</strong> Let's talk about <em>${movie.title}</em> (${movie.year})! Rating: ⭐ ${movie.rating}/10.<br><br>${movie.summary}<br><br>Would you like to know about its best scenes, cast gems, or similar recommendations?</div>
+        <div class="chat-bubble"><strong>Blacklord AI:</strong> Let's talk about <em>${movie.title}</em> (${movie.year})! Rating: ⭐ ${movie.rating}/10.<br><br>${movie.summary}<br><br>You can ask me anything about this title or click Watch Now below to stream it live!</div>
       `;
       document.getElementById('modalInput').value = '';
+      document.getElementById('playerContainer').style.display = 'none';
+      const watchBtn = document.getElementById('watchBtn');
+      if (movie.streamUrl || movie.trailerUrl || true) {
+        watchBtn.style.display = 'block';
+      } else {
+        watchBtn.style.display = 'none';
+      }
+    }
+
+    function toggleWatchPlayer() {
+      const container = document.getElementById('playerContainer');
+      const player = document.getElementById('moviePlayer');
+      if (container.style.display === 'none' || !container.style.display) {
+        const query = encodeURIComponent(activeMovie ? activeMovie.title : 'movie trailer');
+        player.src = activeMovie?.streamUrl || `https://www.youtube.com/embed?listType=search&list=${query}`;
+        container.style.display = 'block';
+      } else {
+        container.style.display = 'none';
+        player.src = '';
+      }
     }
 
     function closeModal() {
       document.getElementById('aiModal').style.display = 'none';
+      document.getElementById('playerContainer').style.display = 'none';
+      document.getElementById('moviePlayer').src = '';
     }
 
     async function sendModalPrompt() {
