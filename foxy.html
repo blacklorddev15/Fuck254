@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Foxy AI - Movie & TV Expert | BLACKLORD TECH INC.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.9)), url("https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: #000; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+    .chat-container { flex: 1; max-width: 720px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; padding: 1rem; overflow: hidden; }
+    .chat-box { flex: 1; background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; }
+    .message { max-width: 85%; padding: 0.85rem 1rem; border-radius: 14px; font-size: 0.9rem; line-height: 1.4; }
+    .message.assistant { background: #161922; border: 1px solid rgba(250,204,21,0.2); color: #fff; align-self: flex-start; }
+    .message.user { background: #facc15; color: #000; font-weight: 600; align-self: flex-end; }
+    .chat-input-row { display: flex; gap: 0.5rem; }
+    .chat-input { flex: 1; background: #111318; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem 1rem; color: #fff; font-size: 0.95rem; }
+    .send-btn { background: #facc15; color: #000; border: none; border-radius: 12px; padding: 0 1.25rem; font-weight: 700; cursor: pointer; }
+    .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); color: #22c55e; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+    .status-dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <a href="dashboard.html" class="menu-btn"><i class="fas fa-arrow-left"></i></a>
+      <div>
+        <div style="font-size:0.7rem; color:#facc15; font-weight:700;">FOXY AI</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-style:italic;">Movie & TV Expert</div>
+      </div>
+    </div>
+    <div class="status-badge"><div class="status-dot"></div> Online</div>
+  </header>
+
+  <main class="chat-container">
+    <div class="chat-box" id="chatBox">
+      <div class="message assistant">
+        <strong>FoxyAI:</strong> Hey! I'm FoxyAI, your personal Movie & TV Expert. Ask me anything about recommendations, plot summaries, cast gems, or trending series!
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="userInput" class="chat-input" placeholder="Ask about movies, TV shows, or recommendations..." onkeydown="if(event.key==='Enter') sendMessage()">
+      <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </main>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('userInput');
+      const chatBox = document.getElementById('chatBox');
+      const text = input.value.trim();
+      if (!text) return;
+
+      chatBox.innerHTML += `<div class="message user">${escapeHtml(text)}</div>`;
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      const loadingId = 'msg_' + Date.now();
+      chatBox.innerHTML += `<div class="message assistant" id="${loadingId}"><em>FoxyAI is thinking...</em></div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const res = await fetch('/api/user/foxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: text })
+        });
+        const data = await res.json().catch(() => ({}));
+        const reply = data.reply || "That's a great pick! If you love that title, I'd also recommend checking out similar sci-fi and drama masterpieces on trending streaming platforms.";
+        document.getElementById(loadingId).innerHTML = `<strong>FoxyAI:</strong> ${escapeHtml(reply)}`;
+      } catch (err) {
+        document.getElementById(loadingId).innerHTML = `<strong>FoxyAI:</strong> I recommend checking out top-rated sci-fi, action, or drama series! Let me know if you want a specific summary.`;
+      }
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

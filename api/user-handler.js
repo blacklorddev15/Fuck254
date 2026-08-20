@@ -1296,6 +1296,22 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    if (path === 'foxy') {
+      if (method !== 'POST') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
+      const prompt = String(body.prompt || body.message || '').trim();
+      client.release();
+      const lower = prompt.toLowerCase();
+      let reply = "That's a stellar title! You'll love its intricate plot, gripping character arcs, and stellar cinematography.";
+      if (lower.includes('recommend') || lower.includes('best') || lower.includes('suggest')) {
+        reply = "Top recommendations right now include *Inception* for mind-bending sci-fi, *Breaking Bad* for masterclass drama, *Interstellar* for cinematic scale, and *Stranger Things* for supernatural thrills!";
+      } else if (lower.includes('action') || lower.includes('sci-fi') || lower.includes('anime')) {
+        reply = "For high-octane action and sci-fi, check out *Attack on Titan*, *Cyberpunk: Edgerunners*, *John Wick 4*, or *The Dark Knight*.";
+      } else if (lower.includes('summary') || lower.includes('about')) {
+        reply = "That title features an unforgettable journey filled with plot twists, stellar performances, and critical acclaim. Would you like a breakdown of the main cast or similar titles?";
+      }
+      return res.status(200).json({ success: true, reply });
+    }
+
     if (path === 'dashboard') {
       const phone = String(method === 'GET' ? query.phone : body.phone || '').trim();
       if (!phone) { client.release(); return res.status(400).json({ error: 'Phone required' }); }
