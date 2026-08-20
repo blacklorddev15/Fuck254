@@ -184,9 +184,11 @@
     }
 
     function watchMovie(title) {
-      const movie = catalog.find(m => m.title === title) || { title, summary: 'Now streaming in high definition.', trailer: `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(title)}`, rating: 8.5, year: 2024 };
+      const movie = catalog.find(m => m.title === title) || { title, summary: 'Now streaming in high definition.', trailer: 'https://www.youtube.com/embed/YoHD9XEInc0', rating: 8.5, year: 2024 };
       document.getElementById('modalTitle').innerText = movie.title;
-      document.getElementById('moviePlayer').src = movie.trailer || `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(movie.title)}`;
+      const cleanTitle = encodeURIComponent(movie.title + ' official trailer stream');
+      const embedUrl = movie.trailer && movie.trailer.includes('embed') ? movie.trailer : `https://www.youtube-nocookie.com/embed?listType=search&list=${cleanTitle}`;
+      document.getElementById('moviePlayer').src = embedUrl;
       document.getElementById('modalSummary').innerHTML = `<strong>${movie.title} (${movie.year})</strong> • Rating: ⭐ ${movie.rating}/10<br><br>${movie.summary}`;
       document.getElementById('playerModal').style.display = 'flex';
     }
