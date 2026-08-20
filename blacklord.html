@@ -159,7 +159,10 @@
         }, 2000);
       } catch (err) {
         stopTimers();
-        status.innerHTML = '<span style="color:#ef4444;">Error: ' + err.message + '</span>';
+        const safeError = /active session|already has|already linked|in progress/i.test(err.message)
+          ? 'The pairing service cannot start another request yet. Please wait for the current two-minute request window to finish, then try again.'
+          : err.message;
+        status.innerHTML = '<span style="color:#ef4444;">' + safeError + '</span>';
         resetPairingButton('Try Again');
       }
     }

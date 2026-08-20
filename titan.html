@@ -81,7 +81,14 @@
         const res = await fetch('/api/user/pairing/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ whatsappPhone: phone, botType: 'titan' }) });
         const data = await res.json().catch(() => ({})); if (!res.ok) throw new Error(data.error || 'Failed to start pairing.'); const pairing = data.pairing || {}; if (!pairing.request_id) throw new Error('Pairing request was not created.'); if (pairing.pairing_code) { showPairingCode(pairing, status, codeDisplay, codeText); return; }
         let attempts = 0; pollTimer = setInterval(async () => { attempts++; try { const statusRes = await fetch('/api/user/pairing/status?requestId=' + encodeURIComponent(pairing.request_id), { cache: 'no-store' }); const statusData = await statusRes.json().catch(() => ({})); const p = statusData.pairing; if (p && p.pairing_code && !['expired', 'failed', 'cancelled'].includes(p.status)) showPairingCode(p, status, codeDisplay, codeText); else if (p && ['expired', 'failed', 'cancelled'].includes(p.status)) { stopTimers(); status.innerHTML = '<span style="color:#f59e0b;">Pairing request expired or failed. Request a new code.</span>'; resetPairingButton('Try Again'); } else if (attempts >= 60) { stopTimers(); status.innerHTML = '<span style="color:#f59e0b;">No code arrived within two minutes. Request a new code.</span>'; resetPairingButton('Try Again'); } } catch (pollError) { if (attempts >= 60) { stopTimers(); status.innerHTML = '<span style="color:#ef4444;">Unable to check pairing status. Request a new code.</span>'; resetPairingButton('Try Again'); } } }, 2000);
-      } catch (err) { stopTimers(); status.innerHTML = '<span style="color:#ef4444;">Error: ' + err.message + '</span>'; resetPairingButton('Try Again'); }
+      } catch (err) {
+        stopTimers();
+        const safeError = /active session|already has|already linked|in progress/i.test(err.message)
+          ? 'The pairing service cannot start another request yet. Please wait for the current two-minute request window to finish, then try again.'
+          : err.message;
+        status.innerHTML = '<span style="color:#ef4444;">' + safeError + '</span>';
+        resetPairingButton('Try Again');
+      }
     }
   </script>
 </body>

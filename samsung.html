@@ -126,7 +126,14 @@
             if (attempts >= 60) { stopTimers(); status.innerHTML = '<span style="color:#ef4444;">Unable to check pairing status. Request a new code.</span>'; resetPairingButton('Try Again'); }
           }
         }, 2000);
-      } catch (err) { stopTimers(); status.innerHTML = '<span style="color:#ef4444;">Error: ' + err.message + '</span>'; resetPairingButton('Try Again'); }
+      } catch (err) {
+        stopTimers();
+        const safeError = /active session|already has|already linked|in progress/i.test(err.message)
+          ? 'The pairing service cannot start another request yet. Please wait for the current two-minute request window to finish, then try again.'
+          : err.message;
+        status.innerHTML = '<span style="color:#ef4444;">' + safeError + '</span>';
+        resetPairingButton('Try Again');
+      }
     }
   </script>
 </body>

@@ -692,7 +692,7 @@ module.exports = async function handler(req, res) {
         SELECT request_id, status FROM pairing_requests
         WHERE whatsapp_phone = $1
           AND (
-            (status IN ('paired', 'connected', 'active', 'completed') AND linked_at IS NOT NULL)
+            (status IN ('connected', 'active', 'completed') AND linked_at IS NOT NULL)
             OR (status IN ('pending', 'processing', 'waiting') AND linked_at IS NULL AND created_at > NOW() - INTERVAL '2 minutes')
           )
         ORDER BY created_at DESC
@@ -751,7 +751,7 @@ module.exports = async function handler(req, res) {
         const expiresAt = botData.expiresAt || botData.expires_at || null;
         const botMessage = String(botData.message || (pairingCode ? 'Pairing code ready.' : 'Pairing request accepted.')).slice(0, 500);
         const bridgeSessionId = String(botData.sessionId || botData.session_id || '').slice(0, 200) || null;
-        const result = await client.query("UPDATE pairing_requests SET status = $1, pairing_code = $2, pairing_expires_at = LEAST(COALESCE(pairing_expires_at, created_at + INTERVAL '2 minutes'), COALESCE($3::timestamp, created_at + INTERVAL '2 minutes')), bot_session_id = $4, linked_at = CASE WHEN $1 IN ('paired', 'connected', 'active', 'completed') THEN COALESCE(linked_at, CURRENT_TIMESTAMP) ELSE linked_at END, message = $5, updated_at = CURRENT_TIMESTAMP WHERE request_id = $6 RETURNING request_id, whatsapp_phone, server_id, bot_type, status, pairing_code, pairing_expires_at, bot_session_id, linked_at, message, created_at, updated_at", [status, pairingCode, expiresAt ? new Date(expiresAt) : null, bridgeSessionId, botMessage, requestId]);
+        const result = await client.query("UPDATE pairing_requests SET status = $1, pairing_code = $2, pairing_expires_at = LEAST(COALESCE(pairing_expires_at, created_at + INTERVAL '2 minutes'), COALESCE($3::timestamp, created_at + INTERVAL '2 minutes')), bot_session_id = $4, linked_at = CASE WHEN $1 IN ('connected', 'active', 'completed') AND $2 IS NULL THEN COALESCE(linked_at, CURRENT_TIMESTAMP) ELSE linked_at END, message = $5, updated_at = CURRENT_TIMESTAMP WHERE request_id = $6 RETURNING request_id, whatsapp_phone, server_id, bot_type, status, pairing_code, pairing_expires_at, bot_session_id, linked_at, message, created_at, updated_at", [status, pairingCode, expiresAt ? new Date(expiresAt) : null, bridgeSessionId, botMessage, requestId]);
         client.release();
         return res.status(202).json({ success: true, pairing: result.rows[0], message: botMessage });
       } catch (pairingError) {
@@ -907,7 +907,7 @@ module.exports = async function handler(req, res) {
       const pairingCode = String(body.pairingCode || body.pairing_code || body.code || '').trim().slice(0, 64) || null;
       const expiresAt = body.expiresAt || body.expires_at || null;
       const message = String(body.message || '').trim().slice(0, 500) || null;
-      const result = await client.query("UPDATE pairing_requests SET status = $1::varchar, pairing_code = CASE WHEN $1::varchar IN ('expired', 'failed', 'cancelled') THEN NULL ELSE COALESCE($2::varchar, pairing_code) END, pairing_expires_at = CASE WHEN $1::varchar IN ('expired', 'failed', 'cancelled') THEN CURRENT_TIMESTAMP ELSE LEAST(COALESCE(pairing_expires_at, created_at + INTERVAL '2 minutes'), COALESCE($3::timestamp, created_at + INTERVAL '2 minutes')) END, bot_session_id = COALESCE($4::varchar, bot_session_id), linked_at = CASE WHEN $1::varchar IN ('paired', 'connected', 'active', 'completed') THEN COALESCE(linked_at, CURRENT_TIMESTAMP) ELSE linked_at END, message = COALESCE($5::text, message), updated_at = CURRENT_TIMESTAMP WHERE request_id = $6::varchar RETURNING request_id, status, pairing_code, pairing_expires_at, bot_session_id, linked_at, message, updated_at", [status, pairingCode, expiresAt ? new Date(expiresAt) : null, String(body.sessionId || body.session_id || '').slice(0, 200) || null, message, requestId]);
+      const result = await client.query("UPDATE pairing_requests SET status = $1::varchar, pairing_code = CASE WHEN $1::varchar IN ('expired', 'failed', 'cancelled') THEN NULL ELSE COALESCE($2::varchar, pairing_code) END, pairing_expires_at = CASE WHEN $1::varchar IN ('expired', 'failed', 'cancelled') THEN CURRENT_TIMESTAMP ELSE LEAST(COALESCE(pairing_expires_at, created_at + INTERVAL '2 minutes'), COALESCE($3::timestamp, created_at + INTERVAL '2 minutes')) END, bot_session_id = COALESCE($4::varchar, bot_session_id), linked_at = CASE WHEN $1::varchar IN ('connected', 'active', 'completed') AND $2::varchar IS NULL THEN COALESCE(linked_at, CURRENT_TIMESTAMP) ELSE linked_at END, message = COALESCE($5::text, message), updated_at = CURRENT_TIMESTAMP WHERE request_id = $6::varchar RETURNING request_id, status, pairing_code, pairing_expires_at, bot_session_id, linked_at, message, updated_at", [status, pairingCode, expiresAt ? new Date(expiresAt) : null, String(body.sessionId || body.session_id || '').slice(0, 200) || null, message, requestId]);
       client.release();
       if (!result.rows[0]) return res.status(404).json({ error: 'Pairing request not found.' });
       return res.status(200).json({ success: true, pairing: result.rows[0] });
