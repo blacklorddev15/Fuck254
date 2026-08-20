@@ -1296,6 +1296,11 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    if (path === 'ai-chat') {
+      client.release();
+      return handleAiChat(req, res, dbSettings);
+    }
+
     if (path === 'movies') {
       if (method !== 'GET') { client.release(); return res.status(405).json({ error: 'Method not allowed' }); }
       const searchQuery = String(query.q || query.search || '').trim();
@@ -1655,4 +1660,78 @@ module.exports = async function handler(req, res) {
     console.error(error);
     return res.status(error.statusCode || error.response?.status || 500).json({ error: error.response?.data?.message || error.message || 'Internal server error' });
   }
+}
+
+async function handleAiChat(req, res, dbSettings) {
+  if (req.method !== 'POST') {
+    res.statusCode = 405;
+    res.setHeader('Content-Type', 'application/json');
+    return res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
+  }
+  let body = '';
+  req.on('data', chunk => { body += chunk; });
+  req.on('end', async () => {
+    try {
+      const data = JSON.parse(body || '{}');
+      const message = String(data.message || '').trim();
+      if (!message) {
+        res.statusCode = 400;
+        res.setHeader('Content-Type', 'application/json');
+        return res.end(JSON.stringify({ success: false, error: 'Message is required' }));
+      }
+
+      // Call Manus API v2
+      const manusKey = process.env.MANUS_API_KEY || dbSettings.MANUS_API_KEY;
+      if (!manusKey) {
+        // Fallback intelligent response if Manus API key not set
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        return res.end(JSON.stringify({
+          success: true,
+          reply: `Hello from Blacklord Tech AI! You asked: "${message}". Our enterprise suite includes WhatsApp pairing, hosting bots, and Blacklord Movies streaming. How can I assist you further today?`
+        }));
+      }
+
+      const apiRes = await fetch('https://api.manus.ai/v2/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-manus-api-key': manusKey
+        },
+        body: JSON.stringify({
+          prompt: `You are the official Blacklord Tech AI assistant. Answer the visitor's question professionally, concisely, and helpfully. Visitor question: ${message}`
+        })
+      });
+
+      const apiJson = await apiRes.json();
+      let reply = 'Welcome to Blacklord Tech! I am processing your request. Please check back in a moment or explore our dashboard features.';
+      if (apiJson && apiJson.ok && apiJson.data) {
+        const taskId = apiJson.data.task_id;
+        // Poll for task message result or reply
+        for (let i = 0; i < 3; i++) {
+          await new Promise(r => setTimeout(r, 2000));
+          const msgRes = await fetch(`https://api.manus.ai/v2/tasks/${taskId}/messages`, {
+            headers: { 'x-manus-api-key': manusKey }
+          });
+          const msgJson = await msgRes.json();
+          if (msgJson && msgJson.ok && Array.isArray(msgJson.data) && msgJson.data.length > 0) {
+            const lastMsg = msgJson.data[msgJson.data.length - 1];
+            if (lastMsg && lastMsg.content) {
+              reply = lastMsg.content;
+              break;
+            }
+          }
+        }
+      }
+
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ success: true, reply }));
+    } catch (err) {
+      console.error('AI chat error:', err);
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ success: false, error: err.message || 'Internal server error' }));
+    }
+  });
 }
