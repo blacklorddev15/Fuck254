@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Deployed Servers | BLACKLORD TECH INC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.92)), url("https://files.manuscdn.com/user_upload_by_module/session_file/310519663869891013/yUGAUoYFaJBLysNe.jpg") no-repeat center center fixed;
+      background-size: cover; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 3rem;
+    }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1rem; background: #000; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .menu-btn { background: #161922; border: 1px solid rgba(250, 204, 21, 0.3); color: #facc15; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+    .container { max-width: 720px; margin: 1.5rem auto; padding: 0 1rem; }
+    .card { background: #111318; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem; font-style: italic; }
+    .sub { font-size: 0.72rem; color: #facc15; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.25rem; font-weight: 700; }
+    .btn { background: #facc15; color: #000; font-weight: 700; border: none; border-radius: 10px; padding: 0.6rem 1rem; cursor: pointer; text-decoration: none; display: inline-block; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <a href="dashboard.html" class="menu-btn"><i class="fas fa-arrow-left"></i></a>
+      <div>
+        <div style="font-size:0.7rem; color:#facc15; font-weight:700;">TENANT CONTROL</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.2rem; font-style:italic;">My Deployed Servers</div>
+      </div>
+    </div>
+  </header>
+  <main class="container">
+    <div class="card">
+      <div class="sub">ACTIVE INSTANCES</div>
+      <div class="title">Bot Server Vault</div>
+      <p style="color:#9ca3af; font-size:0.85rem; margin-bottom:1.25rem;">Manage your isolated Pterodactyl and SamkielBot container instances, monitor credit consumption (Daily Burn), and execute quick lifecycle actions.</p>
+      
+      <div style="background:#161922; border:1px solid rgba(250,204,21,0.2); border-radius:12px; padding:1.15rem; margin-bottom:1rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <div style="font-weight:700; font-size:1.05rem; color:#fff;">Talkless Ultra Bot</div>
+          <span style="background:#22c55e20; color:#22c55e; border:1px solid #22c55e50; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem; font-weight:700;">RUNNING</span>
+        </div>
+        <div style="font-size:0.78rem; color:#9ca3af; margin-bottom:0.75rem;">Deployment ID: dep_bl_99201 • Node 3 • Daily Burn: 1.0 SD / day</div>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn" onclick="alert('Restart command sent to container daemon.')">Restart</button>
+          <button class="btn" style="background:#ef4444; color:#fff;" onclick="alert('Stop command executed.')">Stop</button>
+          <a href="bots.html" class="btn" style="background:#161922; color:#facc15; border:1px solid rgba(250,204,21,0.3);">Configure</a>
+        </div>
+      </div>
+
+      <div style="background:#161922; border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:1.15rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <div style="font-weight:700; font-size:1.05rem; color:#fff;">Samsung XMD Bot</div>
+          <span style="background:#22c55e20; color:#22c55e; border:1px solid #22c55e50; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem; font-weight:700;">RUNNING</span>
+        </div>
+        <div style="font-size:0.78rem; color:#9ca3af; margin-bottom:0.75rem;">Deployment ID: dep_bl_88104 • Node 3 • Daily Burn: 1.0 SD / day</div>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn" onclick="alert('Restart command sent to container daemon.')">Restart</button>
+          <button class="btn" style="background:#ef4444; color:#fff;" onclick="alert('Stop command executed.')">Stop</button>
+          <a href="bots.html" class="btn" style="background:#161922; color:#facc15; border:1px solid rgba(250,204,21,0.3);">Configure</a>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center; font-size:0.75rem; color:#9ca3af; text-transform:uppercase; letter-spacing:1px;">Powered by BLACKLORD TECH INC</div>
+  </main>
+</body>
+</html>

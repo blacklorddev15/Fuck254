@@ -88,6 +88,43 @@ async function initDb() {
     `);
 
     await client.query(`
+      CREATE TABLE IF NOT EXISTS support_tickets (
+        id SERIAL PRIMARY KEY,
+        phone VARCHAR(32) NOT NULL,
+        subject VARCHAR(150) NOT NULL,
+        message TEXT NOT NULL,
+        status VARCHAR(32) DEFAULT 'open',
+        admin_reply TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS user_notifications (
+        id SERIAL PRIMARY KEY,
+        phone VARCHAR(32) NOT NULL,
+        title VARCHAR(150) NOT NULL,
+        message TEXT NOT NULL,
+        is_read BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS bot_configurations (
+        id SERIAL PRIMARY KEY,
+        phone VARCHAR(32) NOT NULL,
+        bot_type VARCHAR(64) NOT NULL,
+        prefix VARCHAR(8) DEFAULT '.',
+        owner_number VARCHAR(32),
+        welcome_message TEXT,
+        auto_bio BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(phone, bot_type)
+      );
+    `);
+
+    await client.query(`
       CREATE TABLE IF NOT EXISTS pairing_requests (
         id SERIAL PRIMARY KEY,
         request_id VARCHAR(64) UNIQUE NOT NULL,
